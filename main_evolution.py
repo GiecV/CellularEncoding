@@ -2,7 +2,7 @@ from evolution2 import Evolution
 
 if __name__ == "__main__":
     evolution = Evolution(num_islands=4, island_size=5,
-                          generations=100, inputs=2, outputs=1)
+                          generations=5, inputs=4, outputs=1)
 
     best_individual, best_fitness = evolution.evolve()
 

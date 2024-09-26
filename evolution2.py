@@ -13,8 +13,6 @@ import matplotlib.pyplot as plt
 from sklearn.metrics import mutual_info_score
 
 cpus = 12
-torch.set_num_threads(1)
-torch.set_num_interop_threads(1)
 
 
 class Evolution:
@@ -28,6 +26,7 @@ class Evolution:
         self.inputs = inputs
         self.outputs = outputs
         self.fitness_history = []
+        self.fitness_grids = {}
 
         self.islands = self.initialize_islands()
         self.env = gym.make("CartPole-v1")  # Chosen task is cart-pole
@@ -93,7 +92,7 @@ class Evolution:
                 self.evolve_island(i)  # Evolve each island
 
             print(f'{time.time() - start_time}s')
-            best_individual, best_fitness = self.select_best_individual()
+            best_individual, best_fitness = self.select_best_among_all_islands()
             self.fitness_history.append(best_fitness)
 
         self.plot_fitness_history(self.fitness_history)
@@ -104,26 +103,8 @@ class Evolution:
     # * Evolve a single island
     def evolve_island(self, island_index):
 
-        best_individual = self.select(self.islands[island_index])
-
-        # island = self.islands[island_index]
-        # with ProcessPoolExecutor(max_workers=cpus) as executor:
-        #     futures = []
-        #     for _ in range(self.island_size * self.island_size):
-        #         if (
-        #             random.random() < self.exchange_rate
-        #         ):  # Migrate an individual with a certain probability
-        #             # print('Migrating')
-        #             self.exchange_individual(island_index)
-        #         else:  # Select a random site on the island
-        #             s = (
-        #                 random.randint(0, self.island_size - 1),
-        #                 random.randint(0, self.island_size - 1),
-        #             )
-        #             # Check if the tile is not empty
-        #             if island[s[0]][s[1]] is not None:
-        #                 futures.append(executor.submit(
-        #                     self.evolve_individual, island, s))
+        best_individual, _, self.fitness_grids[island_index] = self.select(
+            self.islands[island_index])
 
         island = self.islands[island_index]
         for _ in range(self.island_size * self.island_size):
@@ -139,18 +120,18 @@ class Evolution:
                 )
                 # Protect the best individual on the island
                 if island[s[0]][s[1]] != best_individual:
-                    self.evolve_individual(island, s)
+                    self.evolve_individual(island, island_index, s)
 
     # * Evolve an individual
-    def evolve_individual(self, island, s):
+    def evolve_individual(self, island, island_index, s):
 
         # Find best individual in a random walk
         parent1 = island[s[0]][s[1]]  # self.random_walk(island, s)
         # Same for the second parent
-        parent2 = self.random_walk(island, s)
+        parent2 = self.random_walk(island, island_index, s)
         tries = 0
         while parent1 == parent2 and tries < 5:  # Do it again if the two individuals are the same
-            parent2 = self.random_walk(island, s)
+            parent2 = self.random_walk(island, island_index, s)
             tries += 1
         if parent1 == parent2:
             offspring = parent1
@@ -165,14 +146,14 @@ class Evolution:
         island[s[0]][s[1]] = offspring
 
     # * Perform a random walk and return the best individual
-    def random_walk(self, island, start):
+    def random_walk(self, island, island_index, start):
 
         x, y = start
         best_individual = None
         best_fitness = None
         moves = []
 
-        for _ in range(4):  # Perform 10 steps of random walk
+        for _ in range(10):  # Perform 10 steps of random walk
             # Choose a random direction
             direction = random.choice([(0, 1), (1, 0), (0, -1), (-1, 0)])
 
@@ -181,8 +162,7 @@ class Evolution:
             x = (x + direction[0]) % self.island_size
             # Move in the y direction
             y = (y + direction[1]) % self.island_size
-            fitness = self.compute_fitness_information(
-                island[x][y])  # ! save fitness for reuse
+            fitness = self.fitness_grids[island_index][x][y]
             if best_individual is None or fitness > best_fitness:
                 # If there is something on the tile and it is better than the current best, update it
                 best_individual = island[x][y]
@@ -203,7 +183,7 @@ class Evolution:
 
         s = random.choice(border_sites)  # Choose a random site on the border
         best_individual = self.random_walk(
-            island, s
+            island, island_index, s
         )  # Perform a random walk from the site
         neighbor_index = self.get_random_neighbor_index(
             island_index
@@ -244,21 +224,24 @@ class Evolution:
         best_fitness = float("-inf")
 
         with ProcessPoolExecutor(cpus) as executor:
-            fitness_list = executor.map(self.compute_fitness_information, [
+            fitness_list = executor.map(self.compute_fitness, [
                                         individual for row in island for individual in row])
 
         fitness_list = list(fitness_list)
 
-        for row in island:  # ! convert to single loop and then to worker function
-            for individual in row:
-                if individual is not None:
-                    # Compute the fitness of each individual
-                    fitness = self.compute_fitness_information(individual)
-                    if fitness > best_fitness:  # If it improves the best, update it
-                        best_fitness = fitness
-                        best_individual = individual
+        fitness_grid = [[0 for _ in range(len(island[0]))]
+                        for _ in range(len(island))]
 
-        return best_individual
+        index = 0
+        for i in range(len(island)):
+            for j in range(len(island[i])):
+                fitness_grid[i][j] = fitness_list[index]
+                if fitness_list[index] > best_fitness:
+                    best_fitness = fitness_list[index]
+                    best_individual = island[i][j]
+                index += 1
+
+        return best_individual, best_fitness, fitness_grid
 
     # * Compute the fitness of an individual
     def compute_fitness(self, individual):
@@ -433,18 +416,17 @@ class Evolution:
                         print(f"Empty slot at ({row_index}, {col_index})")
 
     # * Select the best individual from all islands
-    def select_best_individual(self):
+    def select_best_among_all_islands(self):
         best_individual = None
         best_fitness = float("-inf")
 
-        for island in self.islands:
-            for row in island:
-                for individual in row:
-                    if individual is not None:
-                        fitness = self.compute_fitness_information(individual)
-                        if fitness > best_fitness:
-                            best_fitness = fitness
-                            best_individual = individual
+        for island_index in range(self.num_islands):
+            fitness_grid = self.fitness_grids[island_index]
+            for i in range(self.island_size):
+                for j in range(self.island_size):
+                    if fitness_grid[i][j] > best_fitness:
+                        best_fitness = fitness_grid[i][j]
+                        best_individual = self.islands[island_index][i][j]
 
         return best_individual, best_fitness
 

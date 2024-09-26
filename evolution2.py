@@ -61,12 +61,6 @@ class Evolution:
             genome.change_symbol(level=n, node_id=root, symbol=symbol)
 
         phenotype = Phenotype(genome)  # Create the phenotype
-        # Expand the inputs and outputs of the phenotype
-        # t = phenotype.expand_some_inputs_and_outputs(
-        #     # The outputs to the NN are the inputs to the env and vice versa
-        #     inputs=self.inputs, outputs=self.outputs)  # ! Vice versa for the cartpole
-
-        # Generate the corresponding neural network
         nn = NNFromGraph(phenotype)
 
         return nn
@@ -75,20 +69,14 @@ class Evolution:
     def evolve(self):
         for generation in range(self.generations):
             start_time = time.time()  # Start the simulation timer
-            print(f"Generation {generation+1}/{self.generations}")
+            print(f"Generation {generation + 1}/{self.generations}")
             if (
                 time.time() - start_time > 36_000
             ):  # If more than 10 hours have passed, end the evolution
                 break
 
-            # with ProcessPoolExecutor(max_workers=cpus) as executor:
-            #     futures = []
-            #     for index in range(self.num_islands):
-            #         print(f'Evolving island {index+1}')
-            #         futures.append(executor.submit(self.evolve_island, index))
-
             for i in range(self.num_islands):
-                print(f"Evolving island {i+1}")
+                print(f"Evolving island {i + 1}")
                 self.evolve_island(i)  # Evolve each island
 
             print(f'{time.time() - start_time}s')
@@ -98,7 +86,7 @@ class Evolution:
         self.plot_fitness_history(self.fitness_history)
 
         # Return the best individual in the evolution
-        return self.select_best_individual()
+        return self.select_best_among_all_islands()
 
     # * Evolve a single island
     def evolve_island(self, island_index):
@@ -224,8 +212,7 @@ class Evolution:
         best_fitness = float("-inf")
 
         with ProcessPoolExecutor(cpus) as executor:
-            fitness_list = executor.map(self.compute_fitness, [
-                                        individual for row in island for individual in row])
+            fitness_list = executor.map(self.compute_fitness, [individual for row in island for individual in row])
 
         fitness_list = list(fitness_list)
 
@@ -267,7 +254,7 @@ class Evolution:
                     action)  # Perform the action
                 total_reward += reward
 
-        return total_reward/trials  # Mean of the reward on the trials
+        return total_reward / trials  # Mean of the reward on the trials
 
     def compute_fitness_information(self, individual):
         def target_function(x, y): return x ^ y
@@ -282,7 +269,7 @@ class Evolution:
         mutual_info = mutual_info_score(targets, outputs)
         target_info = mutual_info_score(targets, targets)
 
-        fitness = 0.85 * mutual_info/target_info + 0.15 * individual.t
+        fitness = 0.85 * mutual_info / target_info + 0.15 * individual.t
         return fitness
 
     def compute_each_input_combination(self, individual):
@@ -332,9 +319,6 @@ class Evolution:
 
         g = Genome(trees)
         p = Phenotype(genome=g)
-        # t = p.expand_some_inputs_and_outputs(
-        #     # The outputs to the NN are the inputs to the env and vice versa
-        #     inputs=self.inputs, outputs=self.outputs)
         nn = NNFromGraph(p)
 
         return nn
@@ -368,13 +352,10 @@ class Evolution:
 
             nodes = list(tree.all_nodes_itr())
             for node in nodes:
-                if random.random() < 0.005:  # There is a small chance to mutate a symbol #! 0.005
+                if random.random() < 0.005:  # There is a small chance to mutate a symbol
                     if node.tag == 'e':
                         new_symbol = random.choice(
                             Genome.DIVISION_SYMBOLS + Genome.OPERATIONAL_SYMBOLS)
-                        # tree.update_node(nid=node.identifier, tag=new_symbol)
-                        # new_genome.change_symbol(
-                        #     level=i, node_id=node.identifier, symbol=new_symbol)
                         new_genome.change_symbol(
                             level=i, node_id=node.identifier, symbol=new_symbol)
                     else:
@@ -389,16 +370,9 @@ class Evolution:
 
                         tree.update_node(nid=node.identifier, tag=new_symbol)
 
-                    # new_genome.change_symbol(  # Change the symbol
-                    #     level=i, node_id=node.identifier, symbol=new_symbol
-                    # )
-
             i += 1
 
         p = Phenotype(new_genome)
-        # t = p.expand_some_inputs_and_outputs(
-        # The outputs to the NN are the inputs to the env and vice versa
-        # inputs=self.inputs, outputs=self.outputs)
         nn = NNFromGraph(p)
 
         return nn

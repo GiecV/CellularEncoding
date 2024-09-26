@@ -483,7 +483,7 @@ class Phenotype:
                     self.structure.add_edge(
                         predecessor,
                         structural_node,
-                        weight=w+1,
+                        weight=+1,
                     )
 
                     self.structure.nodes[structural_node]["attr"] = Genome(
@@ -510,7 +510,7 @@ class Phenotype:
                     self.structure.add_edge(
                         predecessor,
                         structural_node,
-                        weight=w-1,
+                        weight=-1,
                     )
 
                     self.structure.nodes[structural_node]["attr"] = Genome(

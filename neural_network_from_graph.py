@@ -10,7 +10,7 @@ from phenotype import Phenotype
 class NNFromGraph(nn.Module):
 
     # * Create the neural network from a graph and find input and output nodes
-    def __init__(self, phenotype: Phenotype, depth=4, t=0, inputs=2, outputs=1):
+    def __init__(self, phenotype: Phenotype, depth=4, t=0, inputs=4, outputs=1):
 
         super(NNFromGraph, self).__init__()
 

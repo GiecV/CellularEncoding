@@ -13,13 +13,9 @@ class Genome:
     DIVISION_SYMBOLS = ["p", "s"]
     OPERATIONAL_SYMBOLS = ["w", "i", "d", "+", "-", "c", "r"]  # a,o
 
-    # JUMPING_SYMBOLS = ["n" + str(num + 1) for num in range(LEVELS - 1)]  # n1, n2, ...
-    # DIVISION_SYMBOLS = ["p", "s", "t", "a", "b", "h", "g"]
-    # TERMINAL_SYMBOLS = ["e", "u", "l"]
-
     SYMBOLS = (
-        TERMINAL_SYMBOLS + JUMPING_SYMBOLS + DIVISION_SYMBOLS +
-        OPERATIONAL_SYMBOLS
+        TERMINAL_SYMBOLS + JUMPING_SYMBOLS + DIVISION_SYMBOLS
+        + OPERATIONAL_SYMBOLS
     )
 
     # * Create the list of trees if none is provided, otherwise use the provided trees

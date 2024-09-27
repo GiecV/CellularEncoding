@@ -1,9 +1,9 @@
-from evolution2 import Evolution
+from cellular_encoding.evolution2 import Evolution
 
 if __name__ == "__main__":
 
-    evolution = Evolution(num_islands=4, island_size=5,
-                          generations=5, inputs=4, outputs=1)
+    evolution = Evolution(num_islands=4, island_size=10,
+                          generations=3, inputs=4, outputs=1)
 
     best_individual, best_fitness = evolution.evolve()
 

@@ -1,22 +1,18 @@
 from treelib import Node, Tree
 import numpy as np
-from counter import GlobalCounter
+from utils.counter import GlobalCounter
 
 
 class Genome:
 
     LEVELS = 1  # How many trees to consider
     STARTING_SYMBOL = "e"  # Each newborn gene will start with the end symbol
-
     TERMINAL_SYMBOLS = ["e"]
     JUMPING_SYMBOLS = ["n1", "n2"]
     DIVISION_SYMBOLS = ["p", "s"]
     OPERATIONAL_SYMBOLS = ["w", "i", "d", "+", "-", "c", "r"]  # a,o
 
-    SYMBOLS = (
-        TERMINAL_SYMBOLS + JUMPING_SYMBOLS + DIVISION_SYMBOLS
-        + OPERATIONAL_SYMBOLS
-    )
+    SYMBOLS = (TERMINAL_SYMBOLS + JUMPING_SYMBOLS + DIVISION_SYMBOLS + OPERATIONAL_SYMBOLS)
 
     # * Create the list of trees if none is provided, otherwise use the provided trees
     def __init__(self, trees=None) -> None:
@@ -85,7 +81,6 @@ class Genome:
 
     # * Get the left subtree
     def get_left_child_genome(self):
-
         root = self._trees[0].root
 
         left_child = self._trees[0].children(root)[0].identifier
@@ -95,7 +90,6 @@ class Genome:
 
     # * Get the right subtree
     def get_right_child_genome(self):
-
         root = self._trees[0].root
 
         right_child = self._trees[0].children(root)[1].identifier
@@ -114,4 +108,11 @@ class Genome:
 
     # * Get the number of trees in the genome
     def get_trees(self):
-        return len(self._trees)
+        return self._trees
+
+    def get_levels(self):
+        return self.LEVELS
+
+    # * Get the tree at a specific level
+    def get_tree(self, level):
+        return self._trees[level]

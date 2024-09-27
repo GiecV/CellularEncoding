@@ -10,6 +10,7 @@ from cellular_encoding.neural_network_from_graph import NNFromGraph
 from utils.counter import GlobalCounter
 from concurrent.futures import ProcessPoolExecutor
 import matplotlib.pyplot as plt
+import utils.convert_action as convert
 
 cpus = 12
 
@@ -29,7 +30,8 @@ class Evolution:
         self.fitness_grids = {}
 
         self.islands = self.initialize_islands()
-        self.env = gym.make("CartPole-v1")  # Chosen task is cart-pole
+        self.env = gym.make("CartPole-v1")  # Chosose task
+        # self.env = gym.make("Pendulum-v1")
 
     # * For each island, create the grid and populate it
     def initialize_islands(self):
@@ -89,8 +91,7 @@ class Evolution:
 
     # * Evolve a single island
     def evolve_island(self, island_index):
-        best_individual, _, self.fitness_grids[island_index] = self.select(
-            self.islands[island_index])
+        best_individual, _, self.fitness_grids[island_index] = self.select(self.islands[island_index])
         island = self.islands[island_index]
 
         for _ in range(self.island_size * self.island_size):
@@ -229,10 +230,7 @@ class Evolution:
                     break
                 # Get the action from the individual
                 action = individual.forward(torch.tensor(obs).float())
-                if action > 0:
-                    action = 1
-                else:
-                    action = 0
+                action = convert.cartpole(action)
                 obs, reward, done, truncated, info = self.env.step(
                     action)  # Perform the action
                 total_reward += reward

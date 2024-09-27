@@ -1,4 +1,9 @@
 from cellular_encoding.evolution2 import Evolution
+import sys
+import os
+
+# Add the project root directory to sys.path
+sys.path.append(os.path.abspath(os.path.dirname(__file__)))
 
 if __name__ == "__main__":
 

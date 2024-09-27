@@ -62,7 +62,7 @@ class Evolution:
             genome.change_symbol(level=n, node_id=root, symbol=symbol)
 
         phenotype = Phenotype(genome)  # Create the phenotype
-        nn = NNFromGraph(phenotype)
+        nn = NNFromGraph(phenotype, inputs=self.inputs, outputs=self.outputs)  # Create the neural network
 
         return nn
 
@@ -268,7 +268,7 @@ class Evolution:
 
         g = Genome(trees)
         p = Phenotype(genome=g)
-        nn = NNFromGraph(p)
+        nn = NNFromGraph(p, inputs=self.inputs, outputs=self.outputs)
 
         return nn
 
@@ -318,7 +318,7 @@ class Evolution:
             i += 1
 
         p = Phenotype(new_genome)
-        nn = NNFromGraph(p)
+        nn = NNFromGraph(p, inputs=self.inputs, outputs=self.outputs)
 
         return nn
 

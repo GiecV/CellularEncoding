@@ -1,4 +1,4 @@
-from cellular_encoding.evolution2 import Evolution
+from cellular_encoding.evolution import Evolution
 import sys
 import os
 

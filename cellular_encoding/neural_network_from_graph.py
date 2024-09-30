@@ -25,8 +25,8 @@ class NNFromGraph(nn.Module):
 
         adjacency_matrix = nx.adjacency_matrix(
             self.graph, weight='weight').todense()
-        self.A = torch.tensor(adjacency_matrix)  # Adjacency matrix
-        self.W = nn.Parameter(torch.clone(self.A.float()))  # Weights matrix
+        self.A = torch.tensor(adjacency_matrix, dtype=torch.float32)  # Adjacency matrix
+        self.W = nn.Parameter(torch.clone(self.A))  # Weights matrix
 
         # Get the input and output nodes
         for i, node in enumerate(self.graph.nodes):

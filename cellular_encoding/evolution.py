@@ -11,7 +11,9 @@ from utils.counter import GlobalCounter
 from concurrent.futures import ProcessPoolExecutor
 import matplotlib.pyplot as plt
 import utils.convert_action as convert
+import warnings
 
+warnings.filterwarnings("ignore")
 cpus = 12
 
 
@@ -229,10 +231,10 @@ class Evolution:
                 if done:
                     break
                 # Get the action from the individual
-                action = individual.forward(torch.tensor(obs).float())
+                obs = torch.tensor(obs.tolist()).float()
+                action = individual.forward(obs)
                 action = convert.cartpole(action)
-                obs, reward, done, truncated, info = self.env.step(
-                    action)  # Perform the action
+                obs, reward, done, truncated, info = self.env.step(action)  # Perform the action
                 total_reward += reward
 
         return total_reward / trials  # Mean of the reward on the trials

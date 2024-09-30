@@ -334,38 +334,42 @@ class Phenotype:
 
         t = 0
 
-        predecessors = list(self.structure.predecessors("O"))
-        successors = list(self.structure.successors("I"))
+        if "O" not in self.structure.nodes:
+            print("Structure already expanded")
+            return t
+        else:
+            predecessors = list(self.structure.predecessors("O"))
+            successors = list(self.structure.successors("I"))
 
-        if len(predecessors) == outputs:
-            t += 0.5
-        if len(successors) == inputs:
-            t += 0.5
+            if len(predecessors) == outputs:
+                t += 0.5
+            if len(successors) == inputs:
+                t += 0.5
 
-        if has_bias:
-            self.create_bias()
+            if has_bias:
+                self.create_bias()
 
-        for i in range(inputs):
-            node_name = f"I{i}"
-            self.structure.add_node(node_name, attr=self.genome, type="input")
-            for successor in successors:
-                w = self.structure.get_edge_data("I", successor)["weight"]
-                self.structure.add_edge(node_name, successor, weight=w)
+            for i in range(inputs):
+                node_name = f"I{i}"
+                self.structure.add_node(node_name, attr=self.genome, type="input")
+                for successor in successors:
+                    w = self.structure.get_edge_data("I", successor)["weight"]
+                    self.structure.add_edge(node_name, successor, weight=w)
 
-        for i in range(outputs):
-            node_name = f"O{i}"
-            self.structure.add_node(node_name, attr=self.genome, type="output")
-            for predecessor in predecessors:
-                w = self.structure.get_edge_data(predecessor, "O")["weight"]
-                self.structure.add_edge(predecessor, node_name, weight=w)
+            for i in range(outputs):
+                node_name = f"O{i}"
+                self.structure.add_node(node_name, attr=self.genome, type="output")
+                for predecessor in predecessors:
+                    w = self.structure.get_edge_data(predecessor, "O")["weight"]
+                    self.structure.add_edge(predecessor, node_name, weight=w)
 
-        self.structure.remove_node("O")
-        self.structure.remove_node("I")
+            self.structure.remove_node("O")
+            self.structure.remove_node("I")
 
-        while self.development_finished() == False:
-            self.develop()
+            while self.development_finished() == False:
+                self.develop()
 
-        return t
+            return t
 
     def create_bias(self):
         self.structure.add_node("IB", attr=self.genome, type="input")

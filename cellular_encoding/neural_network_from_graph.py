@@ -16,7 +16,6 @@ class NNFromGraph(nn.Module):
         self.phenotype = phenotype
         self.input_ids = []
         self.output_ids = []
-        self.bias_id = None
         self.depth = depth  # Can be changed for a better approximation
         self.has_bias = has_bias
 

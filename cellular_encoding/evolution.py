@@ -274,7 +274,6 @@ class Evolution:
 
         g = Genome(trees)
         p = Phenotype(genome=g)
-        # nn = NNFromGraph(p, inputs=self.inputs, outputs=self.outputs)
 
         return p
 

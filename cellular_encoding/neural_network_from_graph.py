@@ -10,7 +10,7 @@ from cellular_encoding.phenotype import Phenotype
 class NNFromGraph(nn.Module):
 
     # * Create the neural network from a graph and find input and output nodes
-    def __init__(self, phenotype: Phenotype, depth=4, inputs=2, outputs=1, has_bias=False):
+    def __init__(self, phenotype: Phenotype, depth=4, inputs=2, outputs=1, has_bias=True):
         super(NNFromGraph, self).__init__()
 
         self.phenotype = phenotype
@@ -39,7 +39,7 @@ class NNFromGraph(nn.Module):
     def forward(self, obs):
 
         if self.has_bias:
-            obs = torch.cat((obs, torch.tensor([1.0])))  # Add the bias value to the input
+            obs = torch.cat((torch.tensor([1.0]), obs))  # Add the bias value to the input
 
         if len(self.input_ids) < len(obs):
             raise ValueError('The observation is larger than the input')

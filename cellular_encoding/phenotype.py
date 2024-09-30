@@ -342,6 +342,9 @@ class Phenotype:
         if len(successors) == inputs:
             t += 0.5
 
+        if has_bias:
+            self.create_bias()
+
         for i in range(inputs):
             node_name = f"I{i}"
             self.structure.add_node(node_name, attr=self.genome, type="input")
@@ -361,8 +364,6 @@ class Phenotype:
 
         while self.development_finished() == False:
             self.develop()
-        if has_bias:
-            self.create_bias()
 
         return t
 

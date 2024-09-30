@@ -55,7 +55,7 @@ class Evolution:
     # * Create a new individual
     def create_individual(self):
         genome = Genome()  # Create a new genome
-        symbols = copy.copy(Genome.SYMBOLS)
+        symbols = copy.deepcopy(Genome.SYMBOLS)
         symbols.remove('n2')
         symbols.remove('n1')
 
@@ -198,11 +198,11 @@ class Evolution:
         best_individual = None
         best_fitness = float("-inf")
 
-        # with ProcessPoolExecutor(cpus) as executor:
-        #     fitness_list = executor.map(self.compute_fitness, [individual for row in island for individual in row])
-        # fitness_list = list(fitness_list)
+        with ProcessPoolExecutor(cpus) as executor:
+            fitness_list = executor.map(self.compute_fitness, [individual for row in island for individual in row])
+        fitness_list = list(fitness_list)
 
-        fitness_list = [self.compute_fitness(individual) for row in island for individual in row]
+        # fitness_list = [self.compute_fitness(individual) for row in island for individual in row]
 
         fitness_grid = [[0 for _ in range(len(island[0]))]
                         for _ in range(len(island))]
@@ -251,7 +251,7 @@ class Evolution:
         g = Genome()
 
         for level in range(g.get_levels()):
-            tree1 = parent1.phenotype.genome.get_tree(level)
+            tree1 = Tree(tree=parent1.phenotype.genome.get_tree(level), deep=True)
             tree2 = Tree(tree=parent2.phenotype.genome.get_tree(level), deep=True)
             cutpoint1 = random.choice(list(tree1.all_nodes_itr())).identifier
             # Choose random cutpoints
@@ -265,10 +265,10 @@ class Evolution:
                 tree1.remove_node(cutpoint1)  # Get the top of the tree
                 # Paste the two trees together
                 tree1.paste(parent.identifier, tree2)
-                tree = tree1  # Save the tree
+                tree = Tree(tree=tree1, deep=True)  # Save the tree
             else:
                 # If the top of the tree is empty, then just copy the bottom part
-                tree = tree2
+                tree = Tree(tree=tree2, deep=True)
             tree = self.update_ids(tree)  # Update ids for avoiding duplicates
             trees.append(tree)  # Save the tree in the genome
 
@@ -292,11 +292,11 @@ class Evolution:
     # * Mutate a symbol of the individual
     def mutate(self, phenotype):
         genome = phenotype.genome
-        new_genome = genome
+        new_genome = copy.deepcopy(genome)
         i = 0
 
         for tree in new_genome.get_trees():
-            jumping_symbols = copy.copy(Genome.JUMPING_SYMBOLS)
+            jumping_symbols = copy.deepcopy(Genome.JUMPING_SYMBOLS)
             if i == 1:
                 jumping_symbols.remove('n2')
             elif i == 2:

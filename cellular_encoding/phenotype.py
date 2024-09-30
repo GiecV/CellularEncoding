@@ -330,7 +330,7 @@ class Phenotype:
         return True
 
     # * Expand the single input and output to match the number of neurons in the first layer
-    def expand_inputs_and_outputs(self, inputs, outputs):
+    def expand_inputs_and_outputs(self, inputs, outputs, has_bias):
 
         t = 0
 
@@ -347,20 +347,27 @@ class Phenotype:
             self.structure.add_node(node_name, attr=self.genome, type="input")
             for successor in successors:
                 w = self.structure.get_edge_data("I", successor)["weight"]
-                self.structure.add_edge(
-                    node_name, successor, weight=w
-                )
+                self.structure.add_edge(node_name, successor, weight=w)
 
         for i in range(outputs):
             node_name = f"O{i}"
             self.structure.add_node(node_name, attr=self.genome, type="output")
             for predecessor in predecessors:
                 w = self.structure.get_edge_data(predecessor, "O")["weight"]
-                self.structure.add_edge(
-                    predecessor, node_name, weight=w
-                )
+                self.structure.add_edge(predecessor, node_name, weight=w)
 
         self.structure.remove_node("O")
         self.structure.remove_node("I")
 
+        while self.development_finished() == False:
+            self.develop()
+        if has_bias:
+            self.create_bias()
+
         return t
+
+    def create_bias(self):
+        self.structure.add_node("IB", attr=self.genome, type="input")
+        for node in list(self.structure.nodes):
+            if node[0] != "I" and node[0] != "O":
+                self.structure.add_edge("IB", node, weight=1)

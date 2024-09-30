@@ -10,17 +10,17 @@ from cellular_encoding.phenotype import Phenotype
 class NNFromGraph(nn.Module):
 
     # * Create the neural network from a graph and find input and output nodes
-    def __init__(self, phenotype: Phenotype, depth=4, inputs=2, outputs=1):
+    def __init__(self, phenotype: Phenotype, depth=4, inputs=2, outputs=1, has_bias=False):
         super(NNFromGraph, self).__init__()
 
         self.phenotype = phenotype
         self.input_ids = []
         self.output_ids = []
+        self.bias_id = None
         self.depth = depth  # Can be changed for a better approximation
+        self.has_bias = has_bias
 
-        self.t = self.phenotype.expand_inputs_and_outputs(inputs, outputs)
-        while not self.phenotype.development_finished():
-            self.phenotype.develop()
+        self.t = self.phenotype.expand_inputs_and_outputs(inputs, outputs, has_bias)
         self.graph = self.phenotype.structure
 
         adjacency_matrix = nx.adjacency_matrix(
@@ -37,6 +37,10 @@ class NNFromGraph(nn.Module):
 
     # * Forward pass means propagating information from the input nodes to the output nodes by doing a weighted sum of the input
     def forward(self, obs):
+
+        if self.has_bias:
+            obs = torch.cat((obs, torch.tensor([1.0])))  # Add the bias value to the input
+
         if len(self.input_ids) < len(obs):
             raise ValueError('The observation is larger than the input')
 

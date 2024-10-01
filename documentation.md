@@ -65,5 +65,6 @@
 #### Counter
 ###### Constants
 - `_counter`: the last id that has been returned
+###### Methods
 - `next(cls)`: increment the counter and return the value
 - `next_str(cls)`: increment the counter and return the value as a string

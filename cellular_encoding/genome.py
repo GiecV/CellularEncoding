@@ -1,5 +1,4 @@
-from treelib import Node, Tree
-import numpy as np
+from treelib import Tree
 from utils.counter import GlobalCounter
 
 
@@ -12,7 +11,7 @@ class Genome:
     DIVISION_SYMBOLS = ["p", "s"]
     OPERATIONAL_SYMBOLS = ["w", "i", "d", "+", "-", "c", "r"]  # a,o
 
-    SYMBOLS = (TERMINAL_SYMBOLS + JUMPING_SYMBOLS + DIVISION_SYMBOLS + OPERATIONAL_SYMBOLS)
+    SYMBOLS = TERMINAL_SYMBOLS + JUMPING_SYMBOLS + DIVISION_SYMBOLS + OPERATIONAL_SYMBOLS
 
     # * Create the list of trees if none is provided, otherwise use the provided trees
     def __init__(self, trees=None) -> None:

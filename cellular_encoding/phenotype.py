@@ -3,7 +3,6 @@ import matplotlib.pyplot as plt
 from collections import defaultdict
 from cellular_encoding.genome import Genome
 import copy
-import random
 
 
 class Phenotype:
@@ -258,57 +257,61 @@ class Phenotype:
 
     # * Show graphically the structure
     def print(self):
-        pos = {}
+        try:
+            pos = {}
 
-        # Check if 'I' is present
-        if "I" in self.structure.nodes:
-            pos["I"] = (0.5, 1.0)  # Top center
-            start_nodes = ["I"]
-        else:
-            start_nodes = [
-                node for node in self.structure.nodes if node.startswith("I")
-            ]
-            for i, node in enumerate(start_nodes):
-                pos[node] = (i / (len(start_nodes) + 1), 1.0)
+            # Check if 'I' is present
+            if "I" in self.structure.nodes:
+                pos["I"] = (0.5, 1.0)  # Top center
+                start_nodes = ["I"]
+            else:
+                start_nodes = [
+                    node for node in self.structure.nodes if node.startswith("I")
+                ]
+                for i, node in enumerate(start_nodes):
+                    pos[node] = (i / (len(start_nodes) + 1), 1.0)
 
-        # Perform BFS to determine levels of each node
-        levels = defaultdict(list)
-        queue = [(node, 0) for node in start_nodes]
-        visited = set()
+            # Perform BFS to determine levels of each node
+            levels = defaultdict(list)
+            queue = [(node, 0) for node in start_nodes]
+            visited = set()
 
-        while queue:
-            node, level = queue.pop(0)
-            if node not in visited:
-                visited.add(node)
-                levels[level].append(node)
-                for successor in self.structure.successors(node):
-                    queue.append((successor, level + 1))
+            while queue:
+                node, level = queue.pop(0)
+                if node not in visited:
+                    visited.add(node)
+                    levels[level].append(node)
+                    for successor in self.structure.successors(node):
+                        queue.append((successor, level + 1))
 
-        # Assign positions to nodes based on levels
-        for level, nodes in levels.items():
-            for i, node in enumerate(nodes):
-                pos[node] = (i / (len(nodes) + 1), 1.0 - (level + 1) * 0.1)
+            # Assign positions to nodes based on levels
+            for level, nodes in levels.items():
+                for i, node in enumerate(nodes):
+                    pos[node] = (i / (len(nodes) + 1), 1.0 - (level + 1) * 0.1)
 
-        # Assign fixed position to not visited nodes
-        fixed_pos = (0.0, 0.0)
-        for node in self.structure.nodes:
-            if node not in pos:
-                pos[node] = fixed_pos
+            # Assign fixed position to not visited nodes
+            fixed_pos = (0.0, 0.0)
+            for node in self.structure.nodes:
+                if node not in pos:
+                    pos[node] = fixed_pos
 
-        # Draw the graph
-        nx.draw(
-            self.structure,
-            pos,
-            with_labels=True,
-            node_size=500,
-            node_color="skyblue",
-            font_size=10,
-            font_weight="bold",
-            arrows=True,
-        )
-        labels = nx.get_edge_attributes(self.structure, 'weight')
-        nx.draw_networkx_edge_labels(self.structure, pos, edge_labels=labels)
-        plt.show()
+            # Draw the graph
+            nx.draw(
+                self.structure,
+                pos,
+                with_labels=True,
+                node_size=500,
+                node_color="skyblue",
+                font_size=10,
+                font_weight="bold",
+                arrows=True,
+            )
+            labels = nx.get_edge_attributes(self.structure, 'weight')
+            nx.draw_networkx_edge_labels(self.structure, pos, edge_labels=labels)
+            plt.show()
+        except:
+            print("Cannot set positions")
+            self.print_no_position()
 
     # * Show the graph without caring about the position of the nodes (useful for not connected components)
     def print_no_position(self):
@@ -336,7 +339,16 @@ class Phenotype:
 
         if "O" not in self.structure.nodes:
             print("Structure already expanded")
-            return t
+            raise ValueError("Structure already expanded")
+            # predecessors = list(self.structure.predecessors("O0"))
+            # successors = list(self.structure.successors("I0"))
+            # if len(predecessors) == outputs:
+            #     t += 0.5
+            # if len(successors) == inputs:
+            #     t += 0.5
+            # print(t)
+            # return t
+
         else:
             predecessors = list(self.structure.predecessors("O"))
             successors = list(self.structure.successors("I"))

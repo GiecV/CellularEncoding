@@ -1,9 +1,6 @@
 import torch
 import torch.nn as nn
-import torch.nn.functional as F
 import networkx as nx
-import random
-
 from cellular_encoding.phenotype import Phenotype
 
 

@@ -31,6 +31,10 @@ This work is heavily inspired by the following foundational papers:
 - Cellular Encoding
 - OpenAI Gym (CartPole-v1)
 
+## Documentation
+
+For detailed documentation, please refer to the [documentation.md](documentation.md) file.
+
 ## Acknowledgments
 
 I would like to thank the Creative AI Lab at ITU Copenhagen for their support and guidance throughout this project.

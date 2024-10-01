@@ -5,8 +5,4 @@ def pendulum(action):
 
 
 def cartpole(action):
-    if action > 0:
-        action = 1
-    else:
-        action = 0
-    return action
+    return 1 if action > 0 else 0

@@ -10,18 +10,13 @@ sys.path.append(os.path.abspath(os.path.dirname(__file__)))
 
 def run():
     evolution = Evolution(num_islands=4, island_size=5,
-                          generations=10, inputs=4, outputs=1)
+                          generations=100, inputs=4, outputs=1)
 
     best_individual, best_fitness = evolution.evolve()
 
     print(f'The best individual has the following genome:')
     best_individual.phenotype.genome.print()
-    try:
-        best_individual.phenotype.print()
-    except:
-        print('Cannot print the phenotype')
-        best_individual.phenotype.print_no_position()
-
+    best_individual.phenotype.print()
     print(f'The best individual has a fitness of {best_fitness}')
 
 

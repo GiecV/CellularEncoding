@@ -2,7 +2,7 @@ from sklearn.metrics import mutual_info_score
 import torch
 
 
-def compute_fitness_information(self, individual):
+def compute_fitness_information(individual):
     def target_function(x, y): return x ^ y
 
     inputs = [[x, y] for x in range(2) for y in range(2)]
@@ -19,7 +19,7 @@ def compute_fitness_information(self, individual):
     return fitness
 
 
-def compute_each_input_combination(self, individual):
+def compute_each_input_combination(individual):
 
     inputs = [[x, y] for x in range(2) for y in range(2)]
     outputs = [individual.forward(torch.tensor(

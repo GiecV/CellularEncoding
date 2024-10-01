@@ -12,6 +12,7 @@ from concurrent.futures import ProcessPoolExecutor
 import matplotlib.pyplot as plt
 import utils.convert_action as convert
 import warnings
+import tasks.xor_gate as xor_gate
 
 warnings.filterwarnings("ignore")
 cpus = 12
@@ -34,7 +35,6 @@ class Evolution:
 
         self.islands = self.initialize_islands()
         self.env = gym.make("CartPole-v1")  # Chosose task
-        # self.env = gym.make("Pendulum-v1")
 
     # * For each island, create the grid and populate it
     def initialize_islands(self):
@@ -119,7 +119,8 @@ class Evolution:
             parent2 = self.random_walk(island_index, s)
             tries += 1
         if parent1 == parent2:
-            offspring_phenotype = parent1.phenotype
+            g = parent1.phenotype.genome
+            offspring_phenotype = Phenotype(g)
         else:
             offspring_phenotype = self.crossover(parent1, parent2)  # Perform crossover
             # Mutate the offspring
@@ -199,7 +200,8 @@ class Evolution:
         best_fitness = float("-inf")
 
         with ProcessPoolExecutor(cpus) as executor:
-            fitness_list = executor.map(self.compute_fitness, [individual for row in island for individual in row])
+            fitness_list = executor.map(self.compute_fitness, [
+                                        individual for row in island for individual in row])
         fitness_list = list(fitness_list)
 
         # fitness_list = [self.compute_fitness(individual) for row in island for individual in row]

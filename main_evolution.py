@@ -1,23 +1,30 @@
 from cellular_encoding.evolution import Evolution
+from cellular_encoding.phenotype import Phenotype
+from cellular_encoding.neural_network_from_graph import NNFromGraph
 import sys
 import os
 import cProfile
 import pstats
+import copy
+import torch
 
 # Add the project root directory to sys.path
 sys.path.append(os.path.abspath(os.path.dirname(__file__)))
 
 
 def run():
-    evolution = Evolution(num_islands=4, island_size=5,
-                          generations=100, inputs=4, outputs=1)
 
-    best_individual, best_fitness = evolution.evolve()
+    os.system('clear')
+    evolution = Evolution(population_size=400, generations=30, mutation_rate=0.05)
+    best_individual = evolution.evolve()
+    os.system('clear')
 
-    print(f'The best individual has the following genome:')
-    best_individual.phenotype.genome.print()
-    best_individual.phenotype.print()
-    print(f'The best individual has a fitness of {best_fitness}')
+    p = Phenotype(best_individual)
+    nn = NNFromGraph(p)
+    print(nn.forward(torch.tensor([0, 0]).float()))
+    print(nn.forward(torch.tensor([0, 1]).float()))
+    print(nn.forward(torch.tensor([1, 0]).float()))
+    print(nn.forward(torch.tensor([1, 1]).float()))
 
 
 if __name__ == "__main__":

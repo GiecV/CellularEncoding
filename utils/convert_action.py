@@ -6,3 +6,8 @@ def pendulum(action):
 
 def cartpole(action):
     return 1 if action > 0 else 0
+
+
+def cartpole2(action):
+    action = int(action.item())
+    return action

@@ -9,7 +9,7 @@ class Genome:
     TERMINAL_SYMBOLS = ["e"]
     JUMPING_SYMBOLS = ["n1", "n2"]
     DIVISION_SYMBOLS = ["p", "s"]
-    OPERATIONAL_SYMBOLS = ["w", "i", "d", "+", "-", "c", "r"]  # a,o
+    OPERATIONAL_SYMBOLS = ["w", "i", "d", "+", "-", "c", "r", "t"]  # a,o
 
     SYMBOLS = TERMINAL_SYMBOLS + JUMPING_SYMBOLS + DIVISION_SYMBOLS + OPERATIONAL_SYMBOLS
 
@@ -115,3 +115,10 @@ class Genome:
     # * Get the tree at a specific level
     def get_tree(self, level):
         return self._trees[level]
+
+    def update_ids(self):
+
+        for tree in self._trees:
+            tree_copy = Tree(tree=tree, deep=True)
+            for node in tree_copy.all_nodes_itr():
+                tree.update_node(node.identifier, identifier=GlobalCounter.next())

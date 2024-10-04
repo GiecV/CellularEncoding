@@ -14,8 +14,8 @@ class Phenotype:
         self.internal_register = 0
 
         # Define initial structure: Input, Initial Cell, Output
-        self.structure.add_node("I", attr=genome, type="input")
-        self.structure.add_node("O", attr=genome, type="output")
+        self.structure.add_node("I", attr=genome, type="input", threshold=0)
+        self.structure.add_node("O", attr=genome, type="output", threshold=0)
         id = self.add_cell()
 
         # Connect the initial structure
@@ -26,7 +26,7 @@ class Phenotype:
     def add_cell(self):
         genome = self.genome
         self.structure.add_node(str(self.cell_count),
-                                attr=genome, type="hidden")
+                                attr=genome, type="hidden", threshold=0)
         self.cell_count += 1
 
         return str(self.cell_count - 1)
@@ -46,6 +46,13 @@ class Phenotype:
                 # Terminal symbol, do nothing
                 if symbol == "e":
                     pass
+
+                # Threshold symbol, set the threshold to 0.5
+                if symbol == "t":
+                    self.structure.nodes[structural_node]["threshold"] = 1  # ! arbitrary, test
+                    self.structure.nodes[structural_node]["attr"] = Genome(
+                        genome.get_left_child_genome()
+                    )
 
                 # Wait symbol, do nothing
                 if symbol == "w":
@@ -295,10 +302,12 @@ class Phenotype:
                 if node not in pos:
                     pos[node] = fixed_pos
 
+            node_labels = {node: f"{node}[{self.structure.nodes[node]['threshold']}]" for node in self.structure.nodes}
             # Draw the graph
             nx.draw(
                 self.structure,
                 pos,
+                labels=node_labels,
                 with_labels=True,
                 node_size=500,
                 node_color="skyblue",
@@ -333,44 +342,28 @@ class Phenotype:
         return True
 
     # * Expand the single input and output to match the number of neurons in the first layer
-    def expand_inputs_and_outputs(self, inputs, outputs, has_bias):
+    def expand_inputs_and_outputs(self, inputs, outputs):
 
         t = 0
 
         if "O" not in self.structure.nodes:
             print("Structure already expanded")
             raise ValueError("Structure already expanded")
-            # predecessors = list(self.structure.predecessors("O0"))
-            # successors = list(self.structure.successors("I0"))
-            # if len(predecessors) == outputs:
-            #     t += 0.5
-            # if len(successors) == inputs:
-            #     t += 0.5
-            # print(t)
-            # return t
 
         else:
             predecessors = list(self.structure.predecessors("O"))
             successors = list(self.structure.successors("I"))
 
-            if len(predecessors) == outputs:
-                t += 0.5
-            if len(successors) == inputs:
-                t += 0.5
-
-            if has_bias:
-                self.create_bias()
-
             for i in range(inputs):
                 node_name = f"I{i}"
-                self.structure.add_node(node_name, attr=self.genome, type="input")
+                self.structure.add_node(node_name, attr=self.genome, type="input", threshold=0)
                 for successor in successors:
                     w = self.structure.get_edge_data("I", successor)["weight"]
                     self.structure.add_edge(node_name, successor, weight=w)
 
             for i in range(outputs):
                 node_name = f"O{i}"
-                self.structure.add_node(node_name, attr=self.genome, type="output")
+                self.structure.add_node(node_name, attr=self.genome, type="output", threshold=0)
                 for predecessor in predecessors:
                     w = self.structure.get_edge_data(predecessor, "O")["weight"]
                     self.structure.add_edge(predecessor, node_name, weight=w)
@@ -381,10 +374,12 @@ class Phenotype:
             while self.development_finished() == False:
                 self.develop()
 
-            return t
+            predecessors = list(self.structure.predecessors("O0"))
+            successors = list(self.structure.successors("I0"))
 
-    def create_bias(self):
-        self.structure.add_node("IB", attr=self.genome, type="input")
-        for node in list(self.structure.nodes):
-            if node[0] != "I" and node[0] != "O":
-                self.structure.add_edge("IB", node, weight=1)
+            if len(predecessors) == outputs:
+                t += 0.5
+            if len(successors) == inputs:
+                t += 0.5
+
+            return t

@@ -98,7 +98,6 @@ class Genome:
 
     # * Get the symbol of the root node
     def get_root_symbol(self):
-
         return self._trees[0].get_node(self._trees[0].root).tag
 
     # * Cut the first n levels
@@ -107,13 +106,16 @@ class Genome:
 
         return self._trees[n:]
 
-    def get_levels(self):
+    # * Get the number of trees in the genome
+    def get_trees(self):
+        return self._trees
 
+    # * Get the number of levels in the genome
+    def get_levels(self):
         return self.LEVELS
 
     # * Get the tree at a specific level
     def get_tree(self, level):
-
         return self._trees[level]
 
     # * Update the identifiers of the nodes

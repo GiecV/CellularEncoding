@@ -49,4 +49,4 @@ class NNFromGraph(nn.Module):
             # x = torch.tanh(torch.matmul(W.T, x) - self.thresholds)  # Weighted sum of the input
             x = torch.where((torch.matmul(W.T, x) - self.thresholds) < 1, torch.tensor(0.0), torch.tensor(1.0))
 
-        return x[self.output_ids]  # Return the output values
+        return x[self.output_ids].int()  # Return the output values

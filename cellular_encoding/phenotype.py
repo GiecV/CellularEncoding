@@ -20,13 +20,12 @@ class Phenotype:
 
         # Connect the initial structure
         self.structure.add_edge("I", id, weight=1)
-        self.structure.add_edge(id, "O", weight=1)
+        self.structure.add_edge(id, "O", weight=-1)
 
-    # * Add a new cell to the structure, its id is a progressive number starting from 0
+    # * Add a new cell to the structure
     def add_cell(self):
         genome = self.genome
-        self.structure.add_node(str(self.cell_count),
-                                attr=genome, type="hidden", threshold=0)
+        self.structure.add_node(str(self.cell_count), attr=genome, type="hidden", threshold=0)
         self.cell_count += 1
 
         return str(self.cell_count - 1)
@@ -49,7 +48,7 @@ class Phenotype:
 
                 # Threshold symbol, set the threshold to 0.5
                 if symbol == "t":
-                    self.structure.nodes[structural_node]["threshold"] = 1  # ! arbitrary, test
+                    self.structure.nodes[structural_node]["threshold"] = 1
                     self.structure.nodes[structural_node]["attr"] = Genome(
                         genome.get_left_child_genome()
                     )
@@ -377,9 +376,10 @@ class Phenotype:
             predecessors = list(self.structure.predecessors("O0"))
             successors = list(self.structure.successors("I0"))
 
-            if len(predecessors) == outputs:
-                t += 0.5
-            if len(successors) == inputs:
-                t += 0.5
+            if len(self.structure.nodes) != inputs + outputs + 1:
+                if len(predecessors) == outputs:
+                    t += 0.5
+                if len(successors) == inputs:
+                    t += 0.5
 
             return t

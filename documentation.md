@@ -1,5 +1,3 @@
-# Documentation
-
 ### Cellular Encoding
 #### Genome
 ###### Constants
@@ -7,64 +5,65 @@
 - `STARTING_SYMBOL`: symbol kept by newborn cells
 - `SYMBOLS = TERMINAL + JUMPING + DIVISION + OPERATIONAL`
 ###### Methods
-- `__init__(self, trees=None)`: create the trees or use the given parameter
-- `change_symbol(self, level, node, symbol)`: update a node (within a level) with a different symbol. Then, create children if needed.
-- `get_symbol(self, level, node_id)`: return the symbol of a node (within a level).
-- `print(self, level)`: print one or all levels (if level is None).
-- `get_genome_from_starting_point(self, node_id)`: Get the subtrees from a starting point
+- `__init__(self, trees:list = None)`: create the trees or use the given parameter
+- `change_symbol(self, level: int, node_id: str, symbol: str)`: update node with id `node_id` in level `level` with a symbol `symbol`. Create children nodes if needed.
+- `get_symbol(self, level: str, node_id: str)`: return the tag of node `node_id` in level `level`.
+- `print(self, level: int = None)`: print one or all levels (if level is None).
+- `get_genome_from_starting_point(self, node_id: str)`: Get the subtrees from a starting point
 - `get_left_child_genome(self)`: Get left subtree
 - `get_right_child_genome(self)`: Get right subtree
 - `get_root_symbol(self)`: get the next symbol to be parsed
-- `jump_to_other_level(self, n)`: cut subtrees and go directly to another one
+- `jump_to_other_level(self, n: str)`: return all the trees starting from $current + n$
+- `get_levels(self)`: return `self.LEVELS`
+- `get_tree(self, level: int)`: return a specific tree
+- `update_ids(self)`: update the id of each node in the trees using unique numbers
 #### Phenotype
 ###### Methods
-- `__init__(self, genome)`: create the initial structure for the neural network (input, hidden neuron, output) and connect them with edges of weight 1.
-- `add_cell(self)`: add a new cell to the structure, its id is a progressive number starting from 0. Return the corresponding id.
+- `__init__(self, genome)`: create the initial structure for the neural network:
+- 1 input neuron `I`
+- 1 hidden neuron with variable `id`
+- 1 output neuron `O`
+`I` is connected to `id` with weight +1
+`id` is connected to `O` with weight -1
+- `add_cell(self)`: add a new hidden neuron to the structure
 - `develop(self)`: for each node in the structural nodes of the network (i.e. no input or output nodes), parse the root symbol and perform the operation. Supported operations:
 	- e, w, n, p, s, r, c, d, i, +, -
 - `print(self)`: show graphically the structure
-- `print_no_position(self)`: show the graph without caring about the position of the nodes (useful for not connected components)
-- `development_finished(self)`: return True if every cell finished developing, otherwise False
-- `expand_inputs_and_outputs(self, inputs, outputs, has_bias)`: expand the single input and output to match the number of neurons in the first layer
-- `create_bias(self)`: add a bias neuron to the structure with tag IB, connected to all hidden cells with a weight 1
-
+- `print_no_position(self)`: show the graph without fixed position of the nodes
+- `development_finished(self)`: return `True` if every cell cannot develop further, otherwise `False`
+- `expand_inputs_and_outputs(self, inputs, outputs)`: expand the single input and output to match the number of neurons in the first layer
 #### NNFromGraph
 ###### Methods
-- `__init__(self, phenotype, depth=4, inputs=2, outputs=1, has_bias=True)`: create the neural network from a graph and find input and output nodes
-- `forward(self, obs)`: forward pass means propagating information from the input nodes to the output nodes by doing a weighted sum of the input
+- `__init__(self, phenotype, depth=4, inputs=2, outputs=1)`: create the neural network with the correc number of inputs and outputs starting from a phenotype.
+- `forward(self, obs)`: forward pass means propagating information from the input nodes to the output nodes by doing a weighted sum of the input.
 
 #### Evolution
 ###### Methods
-- `__init__(self, num_islands, island_size, generations, exchange_rate=0.01, mutation_rate=0.005, inputs=2, outputs=1)`: initialize the islands and select the task
-- `initialize_islands(self)`: create the grid for each island and populate it
-- `create_individual(self)`: create a new individual
-- `evolve(self)`:  evolve the population controlling generations and islands
-- `evolve_island(self, island_index)`: decide if an individual has to migrate or to breed.
-- `evolve_individual(self, island, island_index, s)`: perform random walk, crossover and mutation
-- `random_walk(island, start)`: perform a random walk and return the best individual
-- `exchange_individual(self, island_index)`: migrate individual to a neighbor island
-- `get_random_neighbor_index(self, island_index)`: get index of a random neighbor island
-- `receive_individual(self, island_index, individual, s)`: receive individual from another island
-- `select(self, island)`: select the fittest individual from the island
-- `update_fitness_grid(self, island, best_fitness, fitness_list, fitness_grid)`: save the fitness for each individual in an island
-- `compute_fitness(self, individual)`: compute the fitness of an individual
-- `crossover(self, parent1, parent2)`: perform crossover between two parents
-- `update_ids(self, tree)`: update the identifiers of the nodes in the tree to be unique
+- `__init__(self, population_size=100, generations=200, exchange_rate=0.01, mutation_rate=0.005, depopulation_rate=0.01)`: set class variables.
+- `initialize_population(self)`: create the initial population.
+- `create_individual(self)`: create an individual with random initial tag.
+- `evolve(self)`:  evolve the population controlling generations. Return the best individual.
+- `get_offspring(self)`: make each individual reproduce with a random partner. There is a small chance for the offspring to mutate. Return the entire offspring.
+- `select_best(self, population)`: compute the fitness score for each individual in the population. Select the best `self.population_size` individuals, discard the others.
+- `crossover(self, parent1, parent2)`: perform crossover between two parents.
 - `mutate(self, phenotype)`: mutate a symbol of the individual
-- `display_individuals(self)`: display the genotype of each individual
-- `select_best_among_all_islands(self)`: select the best individual from all islands
-- `plot_fitness_history(self)`: plot the best fitness in each generation
+- `plot_fitness_history(self)`: plot the best fitness at each generation
 ### Tasks
 #### xor_gate.py
-- `compute_fitness_information(individual)`: compute the xor for each combination of 2 inputs. Compute the mutual information (using `sklearn.metrics.mutual_info_score(f_nn, f_target)`). Compute `t` (add 0.5 if the input layer is of the correct size, add 0.5 if the output layer is of the correct size). Compute and return the fitness with: $$fitness = 0.85 \frac{\tau(f_{nn}, f_{target})}{\tau(f_{target}, f_{target})}+0.15*t$$
-- `compute_each_input_combination(individual)`: compute the output of the neural network for each combination of inputs and print the result
+- `compute_fitness(individual)`: return the fitness score, which is the number of correct guesses out of all possible combinations of inputs, divided by the total. 
+- `compute_fitness_information_formula(individual)`: compute the xor for each combination of 2 inputs and return the fitness score: $$fitness = 0.85 \frac{\tau(f_{nn}, f_{target})}{\tau(f_{target}, f_{target})}+0.15*t$$
+	- $\tau$ is the mutual information `sklearn.metrics.mutual_info_score(f_nn, f_target)`
+	- `t` is 0 + 0.5 if the input layer has the correct size + 0.5 if the output layer has the correct size
+- `compute_fitness_target(individual, print_info=False)`: return the similarity score between `individual` and a network that computes XOR. The score is computed using the following formula: $$fitness = \frac{s_{depth} + s_{nodes} + s_{tags} + s_{successors}}{4}$$
+	- $s_{depth} = 1 - \frac{|depth_{individual} - depth_{target}|}{\max(depth_{individual}, depth_{target})}$ 
+	- $s_{nodes} = 1 - \frac{|nodes_{individual} - nodes_{target}|}{\max(nodes_{individual}, nodes_{target})}$ 
+	- $s_{tags}= \frac{tags_{common} - \Delta_{tags}}{tags_{target}}$
+	- $s_{successors}= \frac{successors_{common} - \Delta_{successors}}{successors_{target}}$
+#### cartpole.py
+- `compute_fitness(individual)`: return the average score of the individual over 5 trials with 200 maximum steps.
 ### Utils
-#### convert_action.py
-- `pendulum(action)`: returns $4 * (action - 0.5)$
-- `cartpole(action)`: returns 1 if `action` > 0 else 0
 #### Counter
 ###### Constants
 - `_counter`: the last id that has been returned
-###### Methods
 - `next(cls)`: increment the counter and return the value
 - `next_str(cls)`: increment the counter and return the value as a string

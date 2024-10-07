@@ -1,16 +1,40 @@
 from sklearn.metrics import mutual_info_score
 from cellular_encoding.genome import Genome
+from cellular_encoding.phenotype import Phenotype
+from cellular_encoding.neural_network_from_graph import NNFromGraph
 import torch
 
 
 def target_function(x, y): return x ^ y
 
 
-def compute_fitness_information(individual):
+def compute_fitness(individual):
+
+    p = Phenotype(individual)
+    nn = NNFromGraph(p)
+    fitness_outputs = 0
 
     inputs = [[x, y] for x in range(2) for y in range(2)]
     targets = [target_function(x, y) for x, y in inputs]
-    outputs = [individual.forward(torch.tensor(
+    outputs = [nn.forward(torch.tensor([x, y]).float()).item() for x, y in inputs]
+
+    for i in range(len(outputs)):
+        if outputs[i] == targets[i]:
+            fitness_outputs += 1
+
+    fitness = fitness_outputs / 4  # * 0.85 + nn.t * 0.15
+
+    return fitness
+
+
+def compute_fitness_information_formula(individual):
+
+    p = Phenotype(individual)
+    nn = NNFromGraph(p)
+
+    inputs = [[x, y] for x in range(2) for y in range(2)]
+    targets = [target_function(x, y) for x, y in inputs]
+    outputs = [nn.forward(torch.tensor(
         [x, y]).float()).item() for x, y in inputs]
 
     outputs = [1 if x > 0.5 else 0 for x in outputs]
@@ -18,19 +42,9 @@ def compute_fitness_information(individual):
     mutual_info = mutual_info_score(targets, outputs)
     target_info = mutual_info_score(targets, targets)
 
-    fitness = 0.85 * mutual_info / target_info + 0.15 * individual.t
-    # fitness = individual.t
+    fitness = 0.85 * mutual_info / target_info + 0.15 * nn.t
+    fitness = individual.t
     return fitness
-
-
-def compute_each_input_combination(individual):
-
-    inputs = [[x, y] for x in range(2) for y in range(2)]
-    outputs = [individual.forward(torch.tensor(
-        [x, y]).float()).item() for x, y in inputs]
-
-    for i, input in enumerate(inputs):
-        print(f'f({input})={outputs[i]}')
 
 
 def compute_fitness_target(individual, print_info=False):

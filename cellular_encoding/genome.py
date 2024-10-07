@@ -14,7 +14,7 @@ class Genome:
     SYMBOLS = TERMINAL_SYMBOLS + JUMPING_SYMBOLS + DIVISION_SYMBOLS + OPERATIONAL_SYMBOLS
 
     # * Create the list of trees if none is provided, otherwise use the provided trees
-    def __init__(self, trees=None) -> None:
+    def __init__(self, trees: list = None) -> None:
 
         if trees is None:
             self._trees = []
@@ -58,7 +58,7 @@ class Genome:
         return self._trees[level].get_node(node_id).tag
 
     # * Print a specific level or all of them
-    def print(self, level=None):
+    def print(self, level: int = None):
         if level is not None:
             if level >= 0 and level < self.LEVELS:
                 self._trees[level].show(idhidden=False)
@@ -98,24 +98,25 @@ class Genome:
 
     # * Get the symbol of the root node
     def get_root_symbol(self):
+
         return self._trees[0].get_node(self._trees[0].root).tag
 
     # * Cut the first n levels
     def jump_to_other_level(self, n: str):
         n = int(n)
+
         return self._trees[n:]
 
-    # * Get the number of trees in the genome
-    def get_trees(self):
-        return self._trees
-
     def get_levels(self):
+
         return self.LEVELS
 
     # * Get the tree at a specific level
     def get_tree(self, level):
+
         return self._trees[level]
 
+    # * Update the identifiers of the nodes
     def update_ids(self):
 
         for tree in self._trees:

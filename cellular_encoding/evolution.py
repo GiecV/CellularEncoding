@@ -9,7 +9,8 @@ from utils.counter import GlobalCounter
 from concurrent.futures import ProcessPoolExecutor
 import matplotlib.pyplot as plt
 import warnings
-from tasks.xor_gate import compute_fitness_target
+# from tasks.xor_gate import compute_fitness
+from tasks.cartpole import compute_fitness
 
 
 warnings.filterwarnings("ignore")
@@ -20,13 +21,14 @@ torch.set_num_interop_threads(1)
 class Evolution:
 
     # * Initialize the evolution
-    def __init__(self, population_size=100, generations=100, exchange_rate=0.01, mutation_rate=0.005):
+    def __init__(self, population_size=400, generations=200, exchange_rate=0.01, mutation_rate=0.005, depopulation_rate=0.01):
         self.population_size = population_size
         self.generations = generations
         self.exchange_rate = exchange_rate
         self.mutation_rate = mutation_rate
         self.fitness_history = []
         self.fitness_grids = {}
+        self.depopulation_rate = depopulation_rate
 
         self.population = self.initialize_population()
         self.fitness_scores = [None] * self.population_size
@@ -62,9 +64,9 @@ class Evolution:
             offspring = self.get_offspring()
             new_population = self.population + offspring
             self.population, self.fitness_scores = self.select_best(new_population)
+            # self.population_size -= max(1, int(self.population_size * self.depopulation_rate))
+            # print(f'Population size: {self.population_size}')
             print(f'{time.time() - start_time} s')
-
-        self.plot_fitness_history()
 
         return self.population[0]
 
@@ -79,17 +81,16 @@ class Evolution:
             child.update_ids()
             offspring.append(child)
         for individual in offspring:
-            if random.random() < self.mutation_rate:
-                individual = self.mutate(individual)
+            individual = self.mutate(individual)
 
         return offspring
 
     def select_best(self, population):
 
-        # with ProcessPoolExecutor(cpus) as executor:
-        #     fitness_list = executor.map(self.compute_fitness, population)
-        # fitness_list = list(fitness_list)
-        fitness_list = [compute_fitness_target(individual) for individual in population]
+        with ProcessPoolExecutor(cpus) as executor:
+            fitness_list = executor.map(compute_fitness, population)
+        fitness_list = list(fitness_list)
+        # fitness_list = [compute_fitness(individual) for individual in population]
         individuals_and_fitness = list(zip(population, fitness_list))
         individuals_and_fitness.sort(key=lambda x: x[1], reverse=True)
         best_individuals = [individual for individual, fitness in individuals_and_fitness[:self.population_size]]
@@ -161,17 +162,6 @@ class Evolution:
             i += 1
 
         return new_genome
-
-    # * Display the genotype of each individual
-    def display_individuals(self):
-        for island_index, island in enumerate(self.islands):
-            print(f"Island {island_index}:")
-            for row_index, row in enumerate(island):
-                for col_index, individual in enumerate(row):
-                    if individual is not None:
-                        print(f"Individual at ({row_index}, {col_index}):")
-                    else:
-                        print(f"Empty slot at ({row_index}, {col_index})")
 
     # * Plot the best fitness in every generation
     def plot_fitness_history(self):

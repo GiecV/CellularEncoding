@@ -1,6 +1,5 @@
 import random
 import time
-import gym
 import torch
 import copy
 from treelib import Tree

@@ -3,7 +3,7 @@ import time
 import torch
 import copy
 from treelib import Tree
-from cellular_encoding.genome import Genome
+from core.genome import Genome
 from utils.counter import GlobalCounter
 from concurrent.futures import ProcessPoolExecutor
 import matplotlib.pyplot as plt

@@ -1,7 +1,7 @@
 import networkx as nx
 import matplotlib.pyplot as plt
 from collections import defaultdict
-from cellular_encoding.genome import Genome
+from core.genome import Genome
 import copy
 
 

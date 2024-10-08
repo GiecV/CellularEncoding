@@ -1,5 +1,5 @@
-from cellular_encoding.phenotype import Phenotype
-from cellular_encoding.neural_network_from_graph import NNFromGraph
+from core.phenotype import Phenotype
+from core.neural_network_from_graph import NNFromGraph
 
 import gym
 import torch

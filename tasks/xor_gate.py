@@ -1,7 +1,7 @@
 from sklearn.metrics import mutual_info_score
-from cellular_encoding.genome import Genome
-from cellular_encoding.phenotype import Phenotype
-from cellular_encoding.neural_network_from_graph import NNFromGraph
+from core.genome import Genome
+from core.phenotype import Phenotype
+from core.neural_network_from_graph import NNFromGraph
 import torch
 
 

@@ -1,6 +1,6 @@
-from cellular_encoding.evolution import Evolution
-from cellular_encoding.phenotype import Phenotype
-from cellular_encoding.neural_network_from_graph import NNFromGraph
+from core.evolution import Evolution
+from core.phenotype import Phenotype
+from core.neural_network_from_graph import NNFromGraph
 import sys
 import os
 

@@ -2,7 +2,7 @@ import torch
 import torch.nn as nn
 import networkx as nx
 
-from cellular_encoding.phenotype import Phenotype
+from core.phenotype import Phenotype
 
 
 class NNFromGraph(nn.Module):

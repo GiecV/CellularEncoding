@@ -29,3 +29,12 @@ def compute_fitness(individual):
             total_reward += reward
 
     return total_reward / trials  # Mean of the reward on the trials
+
+
+def compute_fitness_growth_penalty(individual, penalty=0):
+
+    fitness = compute_fitness(individual)
+
+    nodes = individual.get_number_of_nodes()
+
+    return fitness - penalty * nodes  # Penalize the number of nodes

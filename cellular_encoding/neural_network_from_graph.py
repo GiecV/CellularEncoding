@@ -38,15 +38,13 @@ class NNFromGraph(nn.Module):
 
         if len(self.input_ids) < len(obs):
             raise ValueError('The observation is larger than the input')
-
         # We don't want 0 weights to change (no structural modifications), so we mask the weights with the adjacency matrix (n*0=0) by element-wise multiplication
         W = (torch.abs(self.W) * self.A)
         x = torch.zeros(len(self.graph.nodes))  # State of each node
-
         for i in range(self.depth):  # Propagate information one layer at a time
             # The value of the output is frozen to the value of the observation for avoiding information loss
             x[self.input_ids] = (obs)
             # x = torch.tanh(torch.matmul(W.T, x) - self.thresholds)  # Weighted sum of the input
             x = torch.where((torch.matmul(W.T, x) - self.thresholds) < 1, torch.tensor(0.0), torch.tensor(1.0))
-
+        # x = torch.where(x > 0, torch.tensor(1), torch.tensor(0))
         return x[self.output_ids].int()  # Return the output values

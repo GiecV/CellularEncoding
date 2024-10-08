@@ -125,3 +125,6 @@ class Genome:
             tree_copy = Tree(tree=tree, deep=True)
             for node in tree_copy.all_nodes_itr():
                 tree.update_node(node.identifier, identifier=GlobalCounter.next())
+
+    def get_number_of_nodes(self):
+        return sum([len(tree.all_nodes()) for tree in self._trees])

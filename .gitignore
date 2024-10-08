@@ -624,7 +624,7 @@ FodyWeavers.xsd
 /porva.py
 /prova2.py
 /wandb
-/old_code
+/dump
 setup.cfg
 
 output

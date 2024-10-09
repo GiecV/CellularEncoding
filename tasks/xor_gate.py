@@ -9,22 +9,14 @@ def target_function(x, y): return x ^ y
 
 
 def compute_fitness(individual):
-
     p = Phenotype(individual)
     nn = NNFromGraph(p)
-    fitness_outputs = 0
-
     inputs = [[x, y] for x in range(2) for y in range(2)]
     targets = [target_function(x, y) for x, y in inputs]
     outputs = [nn.forward(torch.tensor([x, y]).float()).item() for x, y in inputs]
 
-    for i in range(len(outputs)):
-        if outputs[i] == targets[i]:
-            fitness_outputs += 1
-
-    fitness = fitness_outputs / 4  # * 0.85 + nn.t * 0.15
-
-    return fitness
+    fitness_outputs = sum(outputs[i] == targets[i] for i in range(len(outputs)))
+    return fitness_outputs / 4
 
 
 def compute_fitness_information_formula(individual):
@@ -84,16 +76,16 @@ def compute_fitness_target(individual, print_info=False):
     successors1 = []
     for node in individual_tree.all_nodes_itr():
         successors = node.successors(individual_tree.identifier)
-        successors_of_node = []
-        for successor in successors:
-            successors_of_node.append(individual_tree.get_node(successor).tag)
+        successors_of_node = [
+            individual_tree.get_node(successor).tag for successor in successors
+        ]
         successors1.append(successors_of_node)
     successors2 = []
     for node in target_tree.all_nodes_itr():
         successors = node.successors(target_tree.identifier)
-        successors_of_node = []
-        for successor in successors:
-            successors_of_node.append(target_tree.get_node(successor).tag)
+        successors_of_node = [
+            target_tree.get_node(successor).tag for successor in successors
+        ]
         successors2.append(successors_of_node)
 
     successors_difference = abs(len(successors1) - len(successors2))

@@ -59,12 +59,12 @@ class Genome:
 
     # * Print a specific level or all of them
     def print(self, level: int = None):
-        if level is not None:
-            if level >= 0 and level < self.LEVELS:
-                self._trees[level].show(idhidden=False)
-        else:
+        if level is None:
             for tree in self._trees:
                 tree.show(idhidden=False)
+
+        elif level >= 0 and level < self.LEVELS:
+            self._trees[level].show(idhidden=False)
 
     # * Get the subtree from a starting point
     def get_genome_from_starting_point(self, node_id: str):
@@ -83,18 +83,14 @@ class Genome:
         root = self._trees[0].root
 
         left_child = self._trees[0].children(root)[0].identifier
-        trees = self.get_genome_from_starting_point(left_child)
-
-        return trees
+        return self.get_genome_from_starting_point(left_child)
 
     # * Get the right subtree
     def get_right_child_genome(self):
         root = self._trees[0].root
 
         right_child = self._trees[0].children(root)[1].identifier
-        trees = self.get_genome_from_starting_point(right_child)
-
-        return trees
+        return self.get_genome_from_starting_point(right_child)
 
     # * Get the symbol of the root node
     def get_root_symbol(self):
@@ -120,11 +116,10 @@ class Genome:
 
     # * Update the identifiers of the nodes
     def update_ids(self):
-
         for tree in self._trees:
-            tree_copy = Tree(tree=tree, deep=True)
-            for node in tree_copy.all_nodes_itr():
-                tree.update_node(node.identifier, identifier=GlobalCounter.next())
+            node_ids = [node.identifier for node in tree.all_nodes_itr()]
+            for node_id in node_ids:
+                tree.update_node(node_id, identifier=GlobalCounter.next())
 
     def get_number_of_nodes(self):
-        return sum([len(tree.all_nodes()) for tree in self._trees])
+        return sum(len(tree.all_nodes()) for tree in self._trees)

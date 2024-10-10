@@ -6,7 +6,7 @@ from core.genome import Genome
 from concurrent.futures import ProcessPoolExecutor
 import matplotlib.pyplot as plt
 import warnings
-from tasks.cartpole import compute_fitness
+from tasks.parity import compute_fitness
 
 warnings.filterwarnings("ignore")
 cpus = 12

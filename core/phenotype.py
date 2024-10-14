@@ -16,11 +16,11 @@ class Phenotype:
         # Define initial structure: Input, Initial Cell, Output
         self.structure.add_node("I", attr=genome, type="input", threshold=0)
         self.structure.add_node("O", attr=genome, type="output", threshold=0)
-        id = self.add_cell()
+        identificator = self.add_cell()
 
         # Connect the initial structure
-        self.structure.add_edge("I", id, weight=1)
-        self.structure.add_edge(id, "O", weight=-1)
+        self.structure.add_edge("I", identificator, weight=1)
+        self.structure.add_edge(identificator, "O", weight=-1)
 
     # * Add a new cell to the structure
     def add_cell(self):
@@ -37,14 +37,10 @@ class Phenotype:
 
         for structural_node in old_structure.nodes:
 
-            if structural_node[0] != "I" and structural_node[0] != "O":
+            if structural_node[0] not in ["I", "O"]:
 
                 genome = self.structure.nodes[structural_node]["attr"]
                 symbol = genome.get_root_symbol()
-
-                # Terminal symbol, do nothing
-                if symbol == "e":
-                    pass
 
                 # Threshold symbol, set the threshold to 0.5
                 if symbol == "t":
@@ -59,13 +55,11 @@ class Phenotype:
                         genome.get_left_child_genome()
                     )
 
-                # Jump to another level
                 elif symbol[0] == "n":
                     self.structure.nodes[structural_node]["attr"] = Genome(
                         genome.jump_to_other_level(symbol[1])
                     )
 
-                # Parallel division: the two cells have the same edges
                 elif symbol == "p":
                     new_node = self.add_cell()
 
@@ -109,7 +103,6 @@ class Phenotype:
                         genome.get_left_child_genome()
                     )
 
-                # Sequential division: one of the two cells inherits the input, the other the output
                 elif symbol == "s":
                     new_node = self.add_cell()
 
@@ -150,7 +143,6 @@ class Phenotype:
                         genome.get_left_child_genome()
                     )
 
-                # R operation: create a new recurrent link
                 elif symbol == "r":
 
                     # Add recurrent link
@@ -165,7 +157,6 @@ class Phenotype:
                         genome.get_left_child_genome()
                     )
 
-                # I operation: increment link_register
                 elif symbol == "i":
                     self.internal_register += 1
 
@@ -173,7 +164,6 @@ class Phenotype:
                         genome.get_left_child_genome()
                     )
 
-                # D operation: decrement link_register
                 elif symbol == "d":
                     self.internal_register -= 1
 
@@ -181,7 +171,6 @@ class Phenotype:
                         genome.get_left_child_genome()
                     )
 
-                # + operation: sets the input link with id internal_register to 1
                 elif symbol == "+":
 
                     link_to_edit = self.internal_register
@@ -209,7 +198,6 @@ class Phenotype:
                         genome.get_left_child_genome()
                     )
 
-                # - operation: sets the input link with id internal_register to -1
                 elif symbol == "-":
                     link_to_edit = self.internal_register
 
@@ -225,18 +213,7 @@ class Phenotype:
 
                     w = self.structure.get_edge_data(
                         predecessor, structural_node)["weight"]
-                    self.structure.remove_edge(predecessor, structural_node)
-                    self.structure.add_edge(
-                        predecessor,
-                        structural_node,
-                        weight=-1,
-                    )
-
-                    self.structure.nodes[structural_node]["attr"] = Genome(
-                        genome.get_left_child_genome()
-                    )
-
-                # C operation: sets the input link with id internal_register to 0
+                    self.change_weight(predecessor, structural_node, -1, genome)
                 elif symbol == "c":
                     link_to_edit = self.internal_register
 
@@ -250,16 +227,16 @@ class Phenotype:
                     else:
                         predecessor = predecessors[0]
 
-                    self.structure.remove_edge(predecessor, structural_node)
-                    self.structure.add_edge(
-                        predecessor,
-                        structural_node,
-                        weight=0
-                    )
+                    self.change_weight(predecessor, structural_node, 0, genome)
 
-                    self.structure.nodes[structural_node]["attr"] = Genome(
-                        genome.get_left_child_genome()
-                    )
+    # * Change weight of desired edge
+    def change_weight(self, predecessor, structural_node, weight, genome):
+        self.structure.remove_edge(predecessor, structural_node)
+        self.structure.add_edge(predecessor, structural_node, weight=weight)
+
+        self.structure.nodes[structural_node]["attr"] = Genome(
+            genome.get_left_child_genome()
+        )
 
     # * Show graphically the structure
     def print(self):
@@ -287,9 +264,10 @@ class Phenotype:
                 if node not in visited:
                     visited.add(node)
                     levels[level].append(node)
-                    for successor in self.structure.successors(node):
-                        queue.append((successor, level + 1))
-
+                    queue.extend(
+                        (successor, level + 1)
+                        for successor in self.structure.successors(node)
+                    )
             # Assign positions to nodes based on levels
             for level, nodes in levels.items():
                 for i, node in enumerate(nodes):
@@ -317,7 +295,7 @@ class Phenotype:
             labels = nx.get_edge_attributes(self.structure, 'weight')
             nx.draw_networkx_edge_labels(self.structure, pos, edge_labels=labels)
             plt.show()
-        except:
+        except Exception:
             print("Cannot set positions")
             self.print_no_position()
 
@@ -326,11 +304,11 @@ class Phenotype:
         nx.draw(self.structure, with_labels=True)
         plt.show()
 
-    # Return True if every cell finished developing, otherwise False
+    # * Return True if every cell finished developing, otherwise False
     def development_finished(self):
 
         for node in self.structure.nodes:
-            if node[0] != "I" and node[0] != "O":
+            if node[0] not in ["I", "O"]:
                 genome = self.structure.nodes[node]["attr"]
                 symbol = genome.get_root_symbol()
 
@@ -342,8 +320,6 @@ class Phenotype:
 
     # * Expand the single input and output to match the number of neurons in the first layer
     def expand_inputs_and_outputs(self, inputs, outputs):
-
-        t = 0
 
         if "O" not in self.structure.nodes:
             print("Structure already expanded")
@@ -375,6 +351,8 @@ class Phenotype:
 
             predecessors = list(self.structure.predecessors("O0"))
             successors = list(self.structure.successors("I0"))
+
+            t = 0
 
             if len(self.structure.nodes) != inputs + outputs + 1:
                 if len(predecessors) == outputs:

@@ -5,7 +5,7 @@ from core.phenotype import Phenotype
 from core.neural_network_from_graph import NNFromGraph
 
 
-def compute_fitness(individual, n=5):
+def compute_fitness(individual, n=4):
 
     p = Phenotype(individual)
     nn = NNFromGraph(p)

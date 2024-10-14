@@ -18,8 +18,14 @@ def run():
     evolution.plot_fitness_history()
 
     p = Phenotype(best_individual)
-    nn = NNFromGraph(p, inputs=5, outputs=1)
+    nn = NNFromGraph(p, inputs=4, outputs=1)
     nn.phenotype.print()
+
+    # for individual, fitness in evolution.innovative_individuals:
+    #     print(f'Fitness: {fitness}')
+    #     p = Phenotype(individual)
+    #     nn = NNFromGraph(p, inputs=4, outputs=1)
+    #     nn.phenotype.print()
 
 
 if __name__ == "__main__":

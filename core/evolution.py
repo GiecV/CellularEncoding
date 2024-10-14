@@ -21,6 +21,7 @@ class Evolution:
         self.exchange_rate = exchange_rate
         self.mutation_rate = mutation_rate
         self.fitness_history = []
+        self.innovative_individuals = []
         self.fitness_grids = {}
         self.depopulation_rate = depopulation_rate
 
@@ -44,12 +45,18 @@ class Evolution:
         return genome
 
     def evolve(self):
+
+        best_score = float('-inf')
+
         for generation in range(self.generations):
             start_time = time.time()
             print(f"Generation {generation + 1}/{self.generations}")
             offspring = self.get_offspring()
             new_population = self.population + offspring
             self.population, self.fitness_scores = self.select_best(new_population)
+            if self.fitness_scores[0] > best_score:
+                self.innovative_individuals.append((self.population[0], self.fitness_scores[0]))
+                best_score = self.fitness_scores[0]
             print(f'{time.time() - start_time} s')
 
         return self.population[0]

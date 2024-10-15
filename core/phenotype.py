@@ -36,209 +36,164 @@ class Phenotype:
         old_structure = copy.deepcopy(self.structure)
 
         for structural_node in old_structure.nodes:
+            if structural_node[0] in ["I", "O"]:
+                continue
+            genome = self.structure.nodes[structural_node]["attr"]
+            symbol = genome.get_root_symbol()
 
-            if structural_node[0] not in ["I", "O"]:
+            new_node = self.perform_operation(structural_node, symbol, genome)
 
-                genome = self.structure.nodes[structural_node]["attr"]
-                symbol = genome.get_root_symbol()
+            self.read_genome(structural_node, new_node, symbol, genome)
 
-                # Threshold symbol, set the threshold to 0.5
-                if symbol == "t":
-                    self.structure.nodes[structural_node]["threshold"] = 1
-                    self.structure.nodes[structural_node]["attr"] = Genome(
-                        genome.get_left_child_genome()
-                    )
+    def perform_operation(self, structural_node, symbol, genome):
+        new_node = None
 
-                # Wait symbol, do nothing
-                if symbol == "w":
-                    self.structure.nodes[structural_node]["attr"] = Genome(
-                        genome.get_left_child_genome()
-                    )
+        if symbol == "t":
+            self.edit_threshold(structural_node)
+        elif symbol == "w":
+            pass
+        elif symbol == "n":
+            self.jump(structural_node, genome)
+        elif symbol == "p":
+            new_node = self.split_parallel(structural_node)
+        elif symbol == "s":
+            new_node = self.split_sequential(structural_node)
+        elif symbol == "r":
+            self.add_recurrent_edge(structural_node)
+        elif symbol == "i":
+            self.edit_register(+1)
+        elif symbol == "d":
+            self.edit_register(-1)
+        elif symbol == "+":
+            self.change_weight(structural_node, 1)
+        elif symbol == "-":
+            self.change_weight(structural_node, -1)
+        elif symbol == "c":
+            self.change_weight(structural_node, 0)
+        return new_node
 
-                elif symbol[0] == "n":
-                    self.structure.nodes[structural_node]["attr"] = Genome(
-                        genome.jump_to_other_level(symbol[1])
-                    )
+    def edit_threshold(self, structural_node):
+        self.structure.nodes[structural_node]["threshold"] = 1
 
-                elif symbol == "p":
-                    new_node = self.add_cell()
+    def jump(self, structural_node, genome):
+        self.structure.nodes[structural_node]["attr"] = Genome(
+            genome.jump_to_other_level(1)
+        )
 
-                    predecessors = list(
-                        self.structure.predecessors(structural_node))
-                    successors = list(
-                        self.structure.successors(structural_node))
+    def split_parallel(self, structural_node):
+        new_node = self.add_cell()
 
-                    # Change pre-existing recurrent links to old->new link
-                    if self.structure.has_edge(structural_node, structural_node):
-                        self.structure.remove_edge(
-                            structural_node, structural_node)
-                        if not self.structure.has_edge(structural_node, new_node):
-                            self.structure.add_edge(
-                                structural_node,
-                                new_node,
-                                weight=1,
-                            )
+        predecessors = list(self.structure.predecessors(structural_node))
+        successors = list(self.structure.successors(structural_node))
 
-                    # Copy predecessor links
-                    for predecessor in predecessors:
-                        self.structure.add_edge(
-                            predecessor,
-                            new_node,
-                            weight=1,
-                        )
+        # Change pre-existing recurrent links to old->new link
+        if self.structure.has_edge(structural_node, structural_node):
+            self.structure.remove_edge(structural_node, structural_node)
+            if not self.structure.has_edge(structural_node, new_node):
+                self.structure.add_edge(
+                    structural_node,
+                    new_node,
+                    weight=1,
+                )
 
-                    # Copy successor links
-                    for successor in successors:
-                        self.structure.add_edge(
-                            new_node,
-                            successor,
-                            weight=1,
-                        )
+        # Copy predecessor links
+        for predecessor in predecessors:
+            self.structure.add_edge(
+                predecessor,
+                new_node,
+                weight=1,
+            )
 
-                    # Update the genome of the two cells
-                    self.structure.nodes[new_node]["attr"] = Genome(
-                        genome.get_right_child_genome()
-                    )
-                    self.structure.nodes[structural_node]["attr"] = Genome(
-                        genome.get_left_child_genome()
-                    )
+        # Copy successor links
+        for successor in successors:
+            self.structure.add_edge(
+                new_node,
+                successor,
+                weight=1,
+            )
 
-                elif symbol == "s":
-                    new_node = self.add_cell()
+        return new_node
 
-                    successors = list(
-                        self.structure.successors(structural_node))
+    def split_sequential(self, structural_node):
+        new_node = self.add_cell()
 
-                    # Change pre-existing recurrent links to old->new link
-                    if self.structure.has_edge(structural_node, structural_node):
-                        self.structure.remove_edge(
-                            structural_node, structural_node)
-                        if not self.structure.has_edge(structural_node, new_node):
-                            self.structure.add_edge(
-                                structural_node,
-                                new_node,
-                                weight=1,
-                            )
+        successors = list(self.structure.successors(structural_node))
 
-                    # Successor links have to be removed from the parent and added to the new cell
-                    for successor in successors:
-                        if self.structure.has_edge(structural_node, successor):
-                            self.structure.remove_edge(
-                                structural_node, successor)
-                            self.structure.add_edge(
-                                new_node,
-                                successor,
-                                weight=1,
-                            )
+        # Change pre-existing recurrent links to old->new link
+        if self.structure.has_edge(structural_node, structural_node):
+            self.structure.remove_edge(
+                structural_node, structural_node)
+            if not self.structure.has_edge(structural_node, new_node):
+                self.structure.add_edge(
+                    structural_node,
+                    new_node,
+                    weight=1,
+                )
 
-                    # Connect the two cells
-                    self.structure.add_edge(
-                        structural_node, new_node, weight=1)
+        # Successor links have to be removed from the parent and added to the new cell
+        for successor in successors:
+            if self.structure.has_edge(structural_node, successor):
+                self.structure.remove_edge(
+                    structural_node, successor)
+                self.structure.add_edge(
+                    new_node,
+                    successor,
+                    weight=1,
+                )
 
-                    # Update the genome of the two cells
-                    self.structure.nodes[new_node]["attr"] = Genome(
-                        genome.get_right_child_genome()
-                    )
-                    self.structure.nodes[structural_node]["attr"] = Genome(
-                        genome.get_left_child_genome()
-                    )
+        # Connect the two cells
+        self.structure.add_edge(structural_node, new_node, weight=1)
 
-                elif symbol == "r":
+        return new_node
 
-                    # Add recurrent link
-                    self.structure.add_edge(
-                        structural_node,
-                        structural_node,
-                        weight=1,
-                    )
+    def add_recurrent_edge(self, structural_node):
+        self.structure.add_edge(
+            structural_node,
+            structural_node,
+            weight=1,
+        )
 
-                    # Update the genome
-                    self.structure.nodes[structural_node]["attr"] = Genome(
-                        genome.get_left_child_genome()
-                    )
+    def edit_register(self, value):
+        self.internal_register += value
 
-                elif symbol == "i":
-                    self.internal_register += 1
+    def read_genome(self, structural_node, new_node, symbol, genome):
+        if symbol in ["p", "s"]:
+            self.split(structural_node, new_node, genome)
+        elif symbol in ["t", "w", "r", "i", "d", "+", "-", "c"]:
+            self.continue_reading(structural_node, genome)
 
-                    self.structure.nodes[structural_node]["attr"] = Genome(
-                        genome.get_left_child_genome()
-                    )
-
-                elif symbol == "d":
-                    self.internal_register -= 1
-
-                    self.structure.nodes[structural_node]["attr"] = Genome(
-                        genome.get_left_child_genome()
-                    )
-
-                elif symbol == "+":
-
-                    link_to_edit = self.internal_register
-
-                    predecessors = list(
-                        self.structure.predecessors(structural_node))
-
-                    if 0 <= link_to_edit < len(predecessors):
-                        predecessor = predecessors[link_to_edit]
-                    elif link_to_edit >= len(predecessors):
-                        predecessor = predecessors[-1]
-                    else:
-                        predecessor = predecessors[0]
-
-                    w = self.structure.get_edge_data(
-                        predecessor, structural_node)["weight"]
-                    self.structure.remove_edge(predecessor, structural_node)
-                    self.structure.add_edge(
-                        predecessor,
-                        structural_node,
-                        weight=+1,
-                    )
-
-                    self.structure.nodes[structural_node]["attr"] = Genome(
-                        genome.get_left_child_genome()
-                    )
-
-                elif symbol == "-":
-                    link_to_edit = self.internal_register
-
-                    predecessors = list(
-                        self.structure.predecessors(structural_node))
-
-                    if 0 <= link_to_edit < len(predecessors):
-                        predecessor = predecessors[link_to_edit]
-                    elif link_to_edit >= len(predecessors):
-                        predecessor = predecessors[-1]
-                    else:
-                        predecessor = predecessors[0]
-
-                    w = self.structure.get_edge_data(
-                        predecessor, structural_node)["weight"]
-                    self.change_weight(predecessor, structural_node, -1, genome)
-                elif symbol == "c":
-                    link_to_edit = self.internal_register
-
-                    predecessors = list(
-                        self.structure.predecessors(structural_node))
-
-                    if 0 <= link_to_edit < len(predecessors):
-                        predecessor = predecessors[link_to_edit]
-                    elif link_to_edit >= len(predecessors):
-                        predecessor = predecessors[-1]
-                    else:
-                        predecessor = predecessors[0]
-
-                    self.change_weight(predecessor, structural_node, 0, genome)
-
-    # * Change weight of desired edge
-    def change_weight(self, predecessor, structural_node, weight, genome):
-        self.structure.remove_edge(predecessor, structural_node)
-        self.structure.add_edge(predecessor, structural_node, weight=weight)
-
+    def split(self, structural_node, new_node, genome):
+        self.structure.nodes[new_node]["attr"] = Genome(
+            genome.get_right_child_genome()
+        )
         self.structure.nodes[structural_node]["attr"] = Genome(
             genome.get_left_child_genome()
         )
 
-    # * Show graphically the structure
+    def continue_reading(self, structural_node, genome):
+        self.structure.nodes[structural_node]["attr"] = Genome(
+            genome.get_left_child_genome()
+        )
+
+    def change_weight(self, structural_node, weight):
+        link_to_edit = self.internal_register
+
+        predecessors = list(self.structure.predecessors(structural_node))
+
+        if 0 <= link_to_edit < len(predecessors):
+            predecessor = predecessors[link_to_edit]
+        elif link_to_edit >= len(predecessors):
+            predecessor = predecessors[-1]
+        else:
+            predecessor = predecessors[0]
+
+        self.structure.remove_edge(predecessor, structural_node)
+        self.structure.add_edge(
+            predecessor,
+            structural_node,
+            weight=weight,
+        )
+
     def print(self):
         try:
             pos = {}
@@ -353,6 +308,7 @@ class Phenotype:
             successors = list(self.structure.successors("I0"))
 
             t = 0
+            r = 1
 
             if len(self.structure.nodes) != inputs + outputs + 1:
                 if len(predecessors) == outputs:
@@ -360,4 +316,8 @@ class Phenotype:
                 if len(successors) == inputs:
                     t += 0.5
 
-            return t
+            if len(self.structure.nodes) / (len(predecessors) + len(successors)) > 15:
+                r = 0
+                t = 0
+
+            return t, r

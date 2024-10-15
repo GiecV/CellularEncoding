@@ -15,7 +15,7 @@ torch.set_num_interop_threads(1)
 
 class Evolution:
 
-    def __init__(self, population_size=400, generations=200, exchange_rate=0.01, mutation_rate=0.005, depopulation_rate=0.01):
+    def __init__(self, population_size=400, generations=200, exchange_rate=0.01, mutation_rate=0.005, inputs=2):
         self.population_size = population_size
         self.generations = generations
         self.exchange_rate = exchange_rate
@@ -23,7 +23,7 @@ class Evolution:
         self.fitness_history = []
         self.innovative_individuals = []
         self.fitness_grids = {}
-        self.depopulation_rate = depopulation_rate
+        self.inputs = inputs
 
         self.population = self.initialize_population()
         self.fitness_scores = [None] * self.population_size
@@ -73,8 +73,9 @@ class Evolution:
         return [self.mutate(individual) for individual in offspring]
 
     def select_best(self, population):
+        ns = [self.inputs for _ in range(len(population))]
         with ProcessPoolExecutor(cpus) as executor:
-            fitness_list = list(executor.map(compute_fitness, population))
+            fitness_list = list(executor.map(compute_fitness, population, ns))
         individuals_and_fitness = sorted(zip(population, fitness_list), key=lambda x: x[1], reverse=True)
         best_individuals = [individual for individual, _ in individuals_and_fitness[:self.population_size]]
         best_fitness_scores = [fitness for _, fitness in individuals_and_fitness[:self.population_size]]

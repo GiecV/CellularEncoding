@@ -7,7 +7,7 @@ from core.phenotype import Phenotype
 
 class NNFromGraph(nn.Module):
 
-    def __init__(self, phenotype: Phenotype, depth=4, inputs=4, outputs=1):
+    def __init__(self, phenotype: Phenotype, depth=4, inputs=2, outputs=1):
         super(NNFromGraph, self).__init__()
 
         self.phenotype = phenotype
@@ -15,7 +15,7 @@ class NNFromGraph(nn.Module):
         self.output_ids = []
         self.depth = depth
 
-        self.t = self.phenotype.expand_inputs_and_outputs(inputs, outputs)
+        self.t, self.r = self.phenotype.expand_inputs_and_outputs(inputs, outputs)
         self.graph = self.phenotype.structure
 
         adjacency_matrix = nx.adjacency_matrix(

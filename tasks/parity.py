@@ -3,15 +3,19 @@ import itertools
 
 from core.phenotype import Phenotype
 from core.neural_network_from_graph import NNFromGraph
+from sklearn.metrics import mutual_info_score
 
 
-def compute_fitness(individual, n=4):
+def compute_fitness(individual, n=2):
 
     p = Phenotype(individual)
-    nn = NNFromGraph(p)
+    nn = NNFromGraph(p, inputs=n, outputs=1)
 
-    correct_attempts = 0
-    total_attempts = 2**n
+    if nn.r == 0:
+        return 0
+
+    outputs = []
+    targets = []
 
     # Generate all possible combinations of n binary inputs
     for combination in itertools.product([0, 1], repeat=n):
@@ -19,12 +23,13 @@ def compute_fitness(individual, n=4):
 
         # Get the output from the neural network
         output = nn(input_data)
+        outputs.append(output.item())
 
         # Compute the expected parity of the input combination
         expected_parity = sum(combination) % 2
+        targets.append(expected_parity)
 
-        # Compare the network's output parity with the expected parity
-        if output == expected_parity:
-            correct_attempts += 1
+    mutual_info = mutual_info_score(outputs, targets)
+    target_info = mutual_info_score(targets, targets)
 
-    return correct_attempts / total_attempts
+    return 0.85 * mutual_info / target_info + 0.15 * nn.t

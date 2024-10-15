@@ -11,14 +11,15 @@ sys.path.append(os.path.abspath(os.path.dirname(__file__)))
 def run():
 
     os.system('clear')
-    evolution = Evolution(population_size=400, generations=100, mutation_rate=0.05)
+    inputs = 5
+    evolution = Evolution(population_size=1000, generations=100, mutation_rate=0.05, inputs=inputs)
     best_individual = evolution.evolve()
     os.system('clear')
 
     evolution.plot_fitness_history()
 
     p = Phenotype(best_individual)
-    nn = NNFromGraph(p, inputs=4, outputs=1)
+    nn = NNFromGraph(p, inputs=inputs, outputs=1)
     nn.phenotype.print()
 
     # for individual, fitness in evolution.innovative_individuals:

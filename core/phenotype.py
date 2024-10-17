@@ -42,7 +42,6 @@ class Phenotype:
             symbol = genome.get_root_symbol()
 
             new_node = self.perform_operation(structural_node, symbol, genome)
-
             self.read_genome(structural_node, new_node, symbol, genome)
 
     def perform_operation(self, structural_node, symbol, genome):
@@ -76,9 +75,7 @@ class Phenotype:
         self.structure.nodes[structural_node]["threshold"] = 1
 
     def jump(self, structural_node, genome):
-        self.structure.nodes[structural_node]["attr"] = Genome(
-            genome.jump_to_other_level(1)
-        )
+        pass
 
     def split_parallel(self, structural_node):
         new_node = self.add_cell()
@@ -161,6 +158,10 @@ class Phenotype:
             self.split(structural_node, new_node, genome)
         elif symbol in ["t", "w", "r", "i", "d", "+", "-", "c"]:
             self.continue_reading(structural_node, genome)
+        elif symbol == "n":
+            self.structure.nodes[structural_node]["attr"] = Genome(
+                genome.jump()
+            )
 
     def split(self, structural_node, new_node, genome):
         self.structure.nodes[new_node]["attr"] = Genome(
@@ -193,71 +194,6 @@ class Phenotype:
             structural_node,
             weight=weight,
         )
-
-    def print(self):
-        try:
-            pos = {}
-
-            # Check if 'I' is present
-            if "I" in self.structure.nodes:
-                pos["I"] = (0.5, 1.0)  # Top center
-                start_nodes = ["I"]
-            else:
-                start_nodes = [
-                    node for node in self.structure.nodes if node.startswith("I")
-                ]
-                for i, node in enumerate(start_nodes):
-                    pos[node] = (i / (len(start_nodes) + 1), 1.0)
-
-            # Perform BFS to determine levels of each node
-            levels = defaultdict(list)
-            queue = [(node, 0) for node in start_nodes]
-            visited = set()
-
-            while queue:
-                node, level = queue.pop(0)
-                if node not in visited:
-                    visited.add(node)
-                    levels[level].append(node)
-                    queue.extend(
-                        (successor, level + 1)
-                        for successor in self.structure.successors(node)
-                    )
-            # Assign positions to nodes based on levels
-            for level, nodes in levels.items():
-                for i, node in enumerate(nodes):
-                    pos[node] = (i / (len(nodes) + 1), 1.0 - (level + 1) * 0.1)
-
-            # Assign fixed position to not visited nodes
-            fixed_pos = (0.0, 0.0)
-            for node in self.structure.nodes:
-                if node not in pos:
-                    pos[node] = fixed_pos
-
-            node_labels = {node: f"{node}[{self.structure.nodes[node]['threshold']}]" for node in self.structure.nodes}
-            # Draw the graph
-            nx.draw(
-                self.structure,
-                pos,
-                labels=node_labels,
-                with_labels=True,
-                node_size=500,
-                node_color="skyblue",
-                font_size=10,
-                font_weight="bold",
-                arrows=True,
-            )
-            labels = nx.get_edge_attributes(self.structure, 'weight')
-            nx.draw_networkx_edge_labels(self.structure, pos, edge_labels=labels)
-            plt.show()
-        except Exception:
-            print("Cannot set positions")
-            self.print_no_position()
-
-    # * Show the graph without caring about the position of the nodes (useful for not connected components)
-    def print_no_position(self):
-        nx.draw(self.structure, with_labels=True)
-        plt.show()
 
     # * Return True if every cell finished developing, otherwise False
     def development_finished(self):
@@ -316,7 +252,9 @@ class Phenotype:
                 if len(successors) == inputs:
                     t += 0.5
 
-            if len(self.structure.nodes) / (len(predecessors) + len(successors)) > 15:
+            hidden_units = sum(self.structure.nodes[node]["type"] == "hidden" for node in self.structure.nodes)
+
+            if hidden_units / inputs + outputs > 4:
                 r = 0
                 t = 0
 

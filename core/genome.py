@@ -4,14 +4,13 @@ from utils.counter import GlobalCounter
 
 class Genome:
 
-    LEVELS = 1  # How many trees to consider
+    LEVELS = 3  # How many trees to consider
     STARTING_SYMBOL = "e"  # Each newborn gene will start with the end symbol
-    TERMINAL_SYMBOLS = ["e"]
-    JUMPING_SYMBOLS = ["n1", "n2"]
+    TERMINAL_SYMBOLS = ["e", "n"]
     DIVISION_SYMBOLS = ["p", "s"]
-    OPERATIONAL_SYMBOLS = ["w", "i", "d", "+", "-", "c", "r", "t"]  # a,o
+    OPERATIONAL_SYMBOLS = ["w", "i", "d", "+", "-", "c", "r", "t"]
 
-    SYMBOLS = TERMINAL_SYMBOLS + JUMPING_SYMBOLS + DIVISION_SYMBOLS + OPERATIONAL_SYMBOLS
+    SYMBOLS = TERMINAL_SYMBOLS + DIVISION_SYMBOLS + OPERATIONAL_SYMBOLS
 
     # * Create the list of trees if none is provided, otherwise use the provided trees
     def __init__(self, trees: list = None) -> None:
@@ -34,12 +33,12 @@ class Genome:
     # * Edit the symbol of a gene and create the proper amount of children
     def change_symbol(self, level: int, node_id: str, symbol: str):
 
-        if symbol not in self.SYMBOLS and symbol[0] not in self.OPERATIONAL_SYMBOLS:
+        if symbol not in self.SYMBOLS and symbol not in self.OPERATIONAL_SYMBOLS:
             raise ValueError(f"Invalid symbol: {symbol}")
 
         self._trees[level].update_node(nid=node_id, tag=symbol)
 
-        if symbol not in self.TERMINAL_SYMBOLS and symbol not in self.JUMPING_SYMBOLS:
+        if symbol not in self.TERMINAL_SYMBOLS:
             self._trees[level].create_node(
                 tag=self.STARTING_SYMBOL,
                 identifier=GlobalCounter.next(),
@@ -96,11 +95,15 @@ class Genome:
     def get_root_symbol(self):
         return self._trees[0].get_node(self._trees[0].root).tag
 
-    # * Cut the first n levels
-    def jump_to_other_level(self, n: str):
-        n = int(n)
-
-        return self._trees[n:]
+    # * Cut the first level
+    def jump(self):
+        tree = Tree()
+        tree.create_node(
+            tag=self.STARTING_SYMBOL,
+            identifier=GlobalCounter.next(),
+            parent=None,
+        )
+        return self._trees[1:] + [tree]
 
     # * Get the number of trees in the genome
     def get_trees(self):
@@ -123,3 +126,6 @@ class Genome:
 
     def get_number_of_nodes(self):
         return sum(len(tree.all_nodes()) for tree in self._trees)
+
+    def __str__(self):
+        return ''.join(str(tree) + '\n' for tree in self._trees)

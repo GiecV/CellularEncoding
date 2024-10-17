@@ -626,5 +626,6 @@ FodyWeavers.xsd
 /wandb
 /archive
 setup.cfg
+/img
 
 output

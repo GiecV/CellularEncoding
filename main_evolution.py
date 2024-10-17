@@ -1,8 +1,8 @@
 from core.evolution import Evolution
-from core.phenotype import Phenotype
-from core.neural_network_from_graph import NNFromGraph
+from utils.innovative_visualizer import Visualizer
 import sys
 import os
+
 
 # Add the project root directory to sys.path
 sys.path.append(os.path.abspath(os.path.dirname(__file__)))
@@ -11,22 +11,13 @@ sys.path.append(os.path.abspath(os.path.dirname(__file__)))
 def run():
 
     os.system('clear')
-    inputs = 5
-    evolution = Evolution(population_size=1000, generations=100, mutation_rate=0.05, inputs=inputs)
+    inputs = 2
+    evolution = Evolution(population_size=1000, generations=300, mutation_rate=0.05, inputs=inputs)
     best_individual = evolution.evolve()
     os.system('clear')
 
-    evolution.plot_fitness_history()
-
-    p = Phenotype(best_individual)
-    nn = NNFromGraph(p, inputs=inputs, outputs=1)
-    nn.phenotype.print()
-
-    # for individual, fitness in evolution.innovative_individuals:
-    #     print(f'Fitness: {fitness}')
-    #     p = Phenotype(individual)
-    #     nn = NNFromGraph(p, inputs=4, outputs=1)
-    #     nn.phenotype.print()
+    Visualizer.plot_fitness_history(evolution.fitness_history)
+    Visualizer.print_innovative_networks(evolution.innovative_individuals, save=True)
 
 
 if __name__ == "__main__":

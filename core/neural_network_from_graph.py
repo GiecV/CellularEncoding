@@ -7,7 +7,7 @@ from core.phenotype import Phenotype
 
 class NNFromGraph(nn.Module):
 
-    def __init__(self, phenotype: Phenotype, depth=4, inputs=2, outputs=1):
+    def __init__(self, phenotype: Phenotype, depth=7, inputs=2, outputs=1):
         super(NNFromGraph, self).__init__()
 
         self.phenotype = phenotype

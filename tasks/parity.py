@@ -3,7 +3,7 @@ import itertools
 
 from core.phenotype import Phenotype
 from core.neural_network_from_graph import NNFromGraph
-from sklearn.metrics import mutual_info_score
+from sklearn.metrics import normalized_mutual_info_score
 
 
 def compute_fitness(individual, n=2):
@@ -29,7 +29,6 @@ def compute_fitness(individual, n=2):
         expected_parity = sum(combination) % 2
         targets.append(expected_parity)
 
-    mutual_info = mutual_info_score(outputs, targets)
-    target_info = mutual_info_score(targets, targets)
+    mutual_info = normalized_mutual_info_score(outputs, targets)
 
-    return 0.85 * mutual_info / target_info + 0.15 * nn.t
+    return mutual_info

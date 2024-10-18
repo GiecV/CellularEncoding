@@ -17,9 +17,7 @@ In cellular encoding, a **tree of operations** is used to define how the neural 
 
 #### Grammar Symbols
 
-$$
-
-    \begin{tabular}{|c|c|l|}
+$$\begin{tabular}{|c|c|l|}
         \hline
         \rowcolor{darkgrey} % Color for the first row
         \textbf{Symbol} & \textbf{Arity} & \textbf{Operation} \\
@@ -60,9 +58,7 @@ $$
         \rowcolor{white}
         \texttt{t} & 1 & Set threshold of the current cell to 1 \\
         \hline
-    \end{tabular}
-
-$$
+    \end{tabular}$$
 
 At present, this network is being tested on simple tasks, such as balancing a pole in the **CartPole-v1 environment** from OpenAI's Gym.
 

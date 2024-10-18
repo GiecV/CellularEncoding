@@ -76,7 +76,7 @@ class Visualizer:
                 tree_graph = self.treelib_to_nx(tree, node_labels)
 
                 # Layout for tree graph
-                tree_pos = nx.bfs_layout(tree_graph, tree.root, align='horizontal')
+                tree_pos = nx.bfs_layout(tree_graph, tree.root, align='horizontal')  # type: ignore
                 max_y = max(y for x, y in tree_pos.values())
                 tree_pos = {node: (x, max_y - y) for node, (x, y) in tree_pos.items()}
 

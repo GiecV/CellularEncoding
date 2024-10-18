@@ -16,6 +16,8 @@ class Evolution:
 
     def __init__(self, population_size=400, generations=200, exchange_rate=0.01, mutation_rate=0.005, inputs=2):
         self.population_size = population_size
+        self.min_population_size = population_size // 10
+        self.max_population_size = population_size
         self.generations = generations
         self.exchange_rate = exchange_rate
         self.mutation_rate = mutation_rate
@@ -59,7 +61,9 @@ class Evolution:
                 best_score = self.fitness_scores[0]
                 if self.fitness_scores[0] == 1:
                     break
-            print(f'{time.time() - start_time} s')
+            self.generation_time = time.time() - start_time
+            self.edit_population_size()
+            print(f'{self.generation_time} s')
 
         return self.population[0]
 
@@ -88,6 +92,12 @@ class Evolution:
         self.fitness_history.append(best_fitness_scores[0])
         return best_individuals, best_fitness_scores
 
+    def edit_population_size(self, acceptable_time=30):
+        if self.generation_time > acceptable_time:
+            self.population_size = max(self.min_population_size, int(self.population_size * .9))
+        elif self.generation_time < acceptable_time:
+            self.population_size = min(self.max_population_size, int(self.population_size * 1.1))
+
     # * Perform crossover between two parents
     def crossover(self, parent1, parent2):
         child1, child2 = self.get_children(parent1, parent2)
@@ -109,7 +119,7 @@ class Evolution:
             parent = tree1.parent(cutpoint1)
             if parent is not None:
                 root = tree2.root
-                tree2.get_node(root).parent = parent.identifier
+                tree2.get_node(root).parent = parent.identifier  # type: ignore
                 tree1.remove_node(cutpoint1)
                 tree1.paste(parent.identifier, tree2)
                 tree = Tree(tree=tree1, deep=True)
@@ -123,7 +133,7 @@ class Evolution:
             parent2_node = tree2.parent(cutpoint2)
             if parent2_node is not None:
                 root = subtree1.root
-                subtree1.get_node(root).parent = parent2_node.identifier
+                subtree1.get_node(root).parent = parent2_node.identifier  # type: ignore
                 tree2.remove_node(cutpoint2)
                 tree2.paste(parent2_node.identifier, subtree1)
                 new_tree2 = Tree(tree=tree2, deep=True)

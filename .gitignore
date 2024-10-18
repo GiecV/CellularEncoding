@@ -627,5 +627,6 @@ FodyWeavers.xsd
 /archive
 setup.cfg
 /img
+.vscode
 
 output

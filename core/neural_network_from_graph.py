@@ -31,6 +31,7 @@ class NNFromGraph(nn.Module):
                 self.output_ids.append(i)
             self.thresholds[i] = self.graph.nodes[node].get("threshold", 0.0)
 
+    # * Propagate the input through the network
     def forward(self, obs):
 
         if len(self.input_ids) < len(obs):

@@ -27,9 +27,11 @@ class Evolution:
         self.population = self.initialize_population()
         self.fitness_scores = [None] * self.population_size
 
+    # * Create the initial population
     def initialize_population(self):
         return [self.create_individual() for _ in range(self.population_size)]
 
+    # * Create an individual with random initial tag
     def create_individual(self):
         genome = Genome()
         symbols = Genome.SYMBOLS
@@ -41,6 +43,7 @@ class Evolution:
 
         return genome
 
+    # * Evolve the population controlling generations. Return the best individual
     def evolve(self):
 
         best_score = float('-inf')
@@ -60,22 +63,24 @@ class Evolution:
 
         return self.population[0]
 
+    # * Make each individual reproduce with a random partner
     def get_offspring(self):
         offspring = []
         for parent1 in self.population:
             parent2 = random.choice(self.population)
             while parent1 == parent2:
                 parent2 = random.choice(self.population)
-            child = self.crossover(parent1, parent2)
-            child.update_ids()
-            offspring.append(child)
+            child1, child2 = self.crossover(parent1, parent2)
+            child1.update_ids()
+            child2.update_ids()
+            offspring.extend((child1, child2))
         return [self.mutate(individual) for individual in offspring]
 
+    # * Select the best `self.population_size` individuals, discard the others
     def select_best(self, population):
         ns = [self.inputs for _ in range(len(population))]
         with ProcessPoolExecutor(cpus) as executor:
             fitness_list = list(executor.map(compute_fitness, population, ns))
-        # fitness_list = [compute_fitness(individual, self.inputs) for individual in population]
         individuals_and_fitness = sorted(zip(population, fitness_list), key=lambda x: x[1], reverse=True)
         best_individuals = [individual for individual, _ in individuals_and_fitness[:self.population_size]]
         best_fitness_scores = [fitness for _, fitness in individuals_and_fitness[:self.population_size]]
@@ -83,8 +88,16 @@ class Evolution:
         self.fitness_history.append(best_fitness_scores[0])
         return best_individuals, best_fitness_scores
 
+    # * Perform crossover between two parents
     def crossover(self, parent1, parent2):
+        child1, child2 = self.get_children(parent1, parent2)
+
+        return child1, child2
+
+    # * Create two children starting from two parents
+    def get_children(self, parent1, parent2):
         trees = []
+        trees2 = []
         g = Genome()
 
         for level in range(g.get_levels()):
@@ -104,8 +117,23 @@ class Evolution:
                 tree = Tree(tree=tree2, deep=True)
             trees.append(tree)
 
-        return Genome(trees)
+            tree1 = Tree(tree=parent1.get_tree(level), deep=True)
+            tree2 = Tree(tree=parent2.get_tree(level), deep=True)
+            subtree1 = tree1.subtree(cutpoint1)
+            parent2_node = tree2.parent(cutpoint2)
+            if parent2_node is not None:
+                root = subtree1.root
+                subtree1.get_node(root).parent = parent2_node.identifier
+                tree2.remove_node(cutpoint2)
+                tree2.paste(parent2_node.identifier, subtree1)
+                new_tree2 = Tree(tree=tree2, deep=True)
+            else:
+                new_tree2 = Tree(tree=subtree1, deep=True)
+            trees2.append(new_tree2)
 
+        return Genome(trees), Genome(trees2)
+
+    # * Mutate symbols of the individual
     def mutate(self, genome):
         for i, tree in enumerate(genome.get_trees()):
             nodes = list(tree.all_nodes_itr())

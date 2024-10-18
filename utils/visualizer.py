@@ -88,29 +88,21 @@ class Visualizer:
         plt.tight_layout()
         plt.subplots_adjust(hspace=0.8)
         if save:
-            os.makedirs('img', exist_ok=True)
-            timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
-            plt.savefig(os.path.join('img', f'innovative_networks_{timestamp}.png'))
+            self.save_file_with_name('innovative_networks_')
         plt.show()
 
     def treelib_to_nx(self, tree, node_labels):
         graph = nx.DiGraph()  # Create a directed graph
 
         def add_edges(node):
-            """
-            Recursive function to traverse the tree and add edges to the NetworkX graph.
-            """
             for child in tree.children(node.identifier):  # Use children() to get the child nodes
                 graph.add_edge(node.identifier, child.identifier)  # Add edge from parent to child
                 node_labels[child.identifier] = child.tag
                 add_edges(child)  # Recurse on the child node
 
         # Start the recursive process from the root
-        if tree.root in tree:
-            node_labels[tree.root] = tree.get_node(tree.root).tag
-            add_edges(tree[tree.root])
-        else:
-            print("Error: Root node is missing in the tree")
+        node_labels[tree.root] = tree.get_node(tree.root).tag
+        add_edges(tree[tree.root])
         if len(tree.nodes) == 1:
             root_node = tree[tree.root]
             node_labels[root_node.identifier] = root_node.tag
@@ -129,9 +121,7 @@ class Visualizer:
         plt.title('Fitness History Over Generations')
         plt.grid(True)
         if save:
-            os.makedirs('img', exist_ok=True)
-            timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
-            plt.savefig(os.path.join('img', f'fitness_history_{timestamp}.png'))
+            self.save_file_with_name('fitness_history_')
         plt.show()
 
     def print_phenotype(self, phenotype, save=False):
@@ -155,13 +145,16 @@ class Visualizer:
             labels = nx.get_edge_attributes(phenotype.structure, 'weight')
             nx.draw_networkx_edge_labels(phenotype.structure, pos, edge_labels=labels)
             if save:
-                os.makedirs('img', exist_ok=True)
-                timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
-                plt.savefig(os.path.join('img', f'phenotype_{timestamp}.png'))
+                self.save_file_with_name('phenotype_')
             plt.show()
         except Exception:
             print("Cannot set positions")
             self.print_no_position(phenotype)
+
+    def save_file_with_name(self, name):
+        os.makedirs('img', exist_ok=True)
+        timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+        plt.savefig(os.path.join('img', f'{name}{timestamp}.png'))
 
     def print_no_position(self, phenotype):
         nx.draw(phenotype.structure, with_labels=True)

@@ -44,6 +44,7 @@ class Phenotype:
             new_node = self.perform_operation(structural_node, symbol, genome)
             self.read_genome(structural_node, new_node, symbol, genome)
 
+    # * Perform the proper operation according to the symbol
     def perform_operation(self, structural_node, symbol, genome):
         new_node = None
 
@@ -69,14 +70,18 @@ class Phenotype:
             self.change_weight(structural_node, -1)
         elif symbol == "c":
             self.change_weight(structural_node, 0)
+
         return new_node
 
+    # * Edit threshold of a cell
     def edit_threshold(self, structural_node):
         self.structure.nodes[structural_node]["threshold"] = 1
 
+    # * Jump to the next level
     def jump(self, structural_node, genome):
         pass
 
+    # * Perform a parallel split
     def split_parallel(self, structural_node):
         new_node = self.add_cell()
 
@@ -111,6 +116,7 @@ class Phenotype:
 
         return new_node
 
+    # * Perform a sequential split
     def split_sequential(self, structural_node):
         new_node = self.add_cell()
 
@@ -143,6 +149,7 @@ class Phenotype:
 
         return new_node
 
+    # * Add a recurrent edge
     def add_recurrent_edge(self, structural_node):
         self.structure.add_edge(
             structural_node,
@@ -150,9 +157,11 @@ class Phenotype:
             weight=1,
         )
 
+    # * Set self.internal_register to value
     def edit_register(self, value):
         self.internal_register += value
 
+    # * Move the pointer of the cell to the next symbol
     def read_genome(self, structural_node, new_node, symbol, genome):
         if symbol in ["p", "s"]:
             self.split(structural_node, new_node, genome)
@@ -163,6 +172,7 @@ class Phenotype:
                 genome.jump()
             )
 
+    # * Choose next symbols for the new cells
     def split(self, structural_node, new_node, genome):
         self.structure.nodes[new_node]["attr"] = Genome(
             genome.get_right_child_genome()
@@ -171,11 +181,13 @@ class Phenotype:
             genome.get_left_child_genome()
         )
 
+    # * Move to the next symbol
     def continue_reading(self, structural_node, genome):
         self.structure.nodes[structural_node]["attr"] = Genome(
             genome.get_left_child_genome()
         )
 
+    # * Set weight as the weight of the input edge pointed by the internal register
     def change_weight(self, structural_node, weight):
         link_to_edit = self.internal_register
 

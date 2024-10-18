@@ -123,9 +123,3 @@ class Genome:
             node_ids = [node.identifier for node in tree.all_nodes_itr()]
             for node_id in node_ids:
                 tree.update_node(node_id, identifier=GlobalCounter.next())
-
-    def get_number_of_nodes(self):
-        return sum(len(tree.all_nodes()) for tree in self._trees)
-
-    def __str__(self):
-        return ''.join(str(tree) + '\n' for tree in self._trees)

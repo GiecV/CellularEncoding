@@ -1,5 +1,5 @@
 from core.evolution import Evolution
-from utils.innovative_visualizer import Visualizer
+from utils.visualizer import Visualizer
 import sys
 import os
 
@@ -11,13 +11,13 @@ sys.path.append(os.path.abspath(os.path.dirname(__file__)))
 def run():
 
     os.system('clear')
-    inputs = 3
+    inputs = 4
     evolution = Evolution(population_size=1000, generations=300, mutation_rate=0.05, inputs=inputs)
     best_individual = evolution.evolve()
     os.system('clear')
 
-    # Visualizer.plot_fitness_history(evolution.fitness_history)
     visualizer = Visualizer(inputs=inputs, outputs=1)
+    visualizer.plot_fitness_history(evolution.fitness_history)
     visualizer.print_innovative_networks(evolution.innovative_individuals, save=True)
 
 

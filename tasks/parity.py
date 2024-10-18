@@ -29,6 +29,4 @@ def compute_fitness(individual, n=2):
         expected_parity = sum(combination) % 2
         targets.append(expected_parity)
 
-    mutual_info = normalized_mutual_info_score(outputs, targets)
-
-    return mutual_info
+    return normalized_mutual_info_score(outputs, targets)

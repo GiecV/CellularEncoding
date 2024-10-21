@@ -39,15 +39,17 @@ class Genome:
         self._trees[level].update_node(nid=node_id, tag=symbol)
 
         if symbol not in self.TERMINAL_SYMBOLS:
+            end_symbol = 'e' if level == 2 else 'n'
+
             self._trees[level].create_node(
-                tag=self.STARTING_SYMBOL,
+                tag=end_symbol,
                 identifier=GlobalCounter.next(),
                 parent=node_id,
             )
 
             if symbol in self.DIVISION_SYMBOLS:
                 self._trees[level].create_node(
-                    tag=self.STARTING_SYMBOL,
+                    tag=end_symbol,
                     identifier=GlobalCounter.next(),
                     parent=node_id,
                 )

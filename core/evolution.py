@@ -14,12 +14,11 @@ cpus = 12
 
 class Evolution:
 
-    def __init__(self, population_size=400, generations=200, exchange_rate=0.01, mutation_rate=0.005, inputs=2):
+    def __init__(self, population_size=400, generations=200, mutation_rate=0.005, inputs=2):
         self.population_size = population_size
         self.min_population_size = population_size // 10
         self.max_population_size = population_size
         self.generations = generations
-        self.exchange_rate = exchange_rate
         self.mutation_rate = mutation_rate
         self.fitness_history = []
         self.innovative_individuals = []
@@ -37,7 +36,6 @@ class Evolution:
     def create_individual(self):
         genome = Genome()
         symbols = Genome.SYMBOLS
-
         for n in range(genome.get_levels()):
             symbol = random.choice(symbols)
             root = genome.get_tree(n).root

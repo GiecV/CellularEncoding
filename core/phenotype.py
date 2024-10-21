@@ -216,7 +216,8 @@ class Phenotype:
                 symbol = genome.get_root_symbol()
 
                 # If the node that has to be processed is not terminal, then continue
-                if symbol not in genome.TERMINAL_SYMBOLS:
+                # if symbol not in genome.TERMINAL_SYMBOLS:
+                if symbol != "e":
                     return False
 
         return True

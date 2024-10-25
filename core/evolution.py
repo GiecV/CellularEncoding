@@ -3,9 +3,11 @@ import time
 from treelib import Tree
 from core.genome import Genome
 from concurrent.futures import ProcessPoolExecutor
-import matplotlib.pyplot as plt
 import warnings
 from tasks.parity import compute_fitness
+import os
+from datetime import datetime
+import json
 
 warnings.filterwarnings("ignore")
 cpus = 12
@@ -14,19 +16,18 @@ cpus = 12
 
 class Evolution:
 
-    def __init__(self, population_size=400, generations=200, mutation_rate=0.005, inputs=2):
+    def __init__(self, population_size=1000, generations=300, mutation_rate=0.05, inputs=2, population=None):
         self.population_size = population_size
-        self.min_population_size = population_size // 10
-        self.max_population_size = population_size
         self.generations = generations
         self.mutation_rate = mutation_rate
         self.fitness_history = []
         self.innovative_individuals = []
         self.fitness_grids = {}
         self.inputs = inputs
-
-        self.population = self.initialize_population()
         self.fitness_scores = [None] * self.population_size
+        self.logs = []
+
+        self.population = population or self.initialize_population()
 
     # * Create the initial population
     def initialize_population(self):
@@ -44,7 +45,7 @@ class Evolution:
         return genome
 
     # * Evolve the population controlling generations. Return the best individual
-    def evolve(self, adjust_population_size=True):
+    def evolve(self, info=True):
 
         best_score = float('-inf')
 
@@ -57,12 +58,22 @@ class Evolution:
             if self.fitness_scores[0] > best_score:
                 self.innovative_individuals.append((self.population[0], self.fitness_scores[0]))
                 best_score = self.fitness_scores[0]
-                if self.fitness_scores[0] == 1:
-                    break
+
             self.generation_time = time.time() - start_time
-            if adjust_population_size:
-                self.edit_population_size()
+
+            if info:
+                self.logs.append({
+                    'generation': generation + 1,
+                    'best_score': best_score,
+                    'generation_time': self.generation_time,
+                    'individuals': [individual.json() for individual in self.population],
+                    'fitness_scores': self.fitness_scores
+                })
+
             print(f'{self.generation_time} s')
+
+            if self.fitness_scores[0] == 1:
+                break
 
         return self.population[0]
 
@@ -71,8 +82,10 @@ class Evolution:
         offspring = []
         for parent1 in self.population:
             parent2 = random.choice(self.population)
+            index1 = self.population.index(parent1)
             while parent1 == parent2:
                 parent2 = random.choice(self.population)
+            index2 = self.population.index(parent2)
             child1, child2 = self.crossover(parent1, parent2)
             child1.update_ids()
             child2.update_ids()

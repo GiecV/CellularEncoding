@@ -125,3 +125,6 @@ class Genome:
             node_ids = [node.identifier for node in tree.all_nodes_itr()]
             for node_id in node_ids:
                 tree.update_node(node_id, identifier=GlobalCounter.next())
+
+    def json(self):
+        return [tree.to_json(with_data=False) for tree in self._trees]

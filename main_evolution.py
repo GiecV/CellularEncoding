@@ -11,14 +11,16 @@ sys.path.append(os.path.abspath(os.path.dirname(__file__)))
 def run():
 
     os.system('clear')
-    inputs = 5
-    evolution = Evolution(population_size=1000, generations=300, mutation_rate=0.05, inputs=inputs)
+    inputs = 3
+    evolution = Evolution(population_size=1000, generations=300, mutation_rate=0.05, inputs=inputs,
+                          info=True)
+
     best_individual = evolution.evolve()
     os.system('clear')
 
     visualizer = Visualizer(inputs=inputs, outputs=1)
     visualizer.plot_fitness_history(evolution.fitness_history)
-    visualizer.print_innovative_networks(evolution.innovative_individuals, save=True)
+    visualizer.print_innovative_networks(evolution.innovative_individuals, save=False)
 
 
 if __name__ == "__main__":

@@ -6,6 +6,7 @@ from collections import defaultdict, deque
 from matplotlib.gridspec import GridSpec
 import os
 from datetime import datetime
+import json
 
 
 class Visualizer:
@@ -158,4 +159,83 @@ class Visualizer:
 
     def print_no_position(self, phenotype):
         nx.draw(phenotype.structure, with_labels=True)
+        plt.show()
+
+    def plot_fitness_results(self, json_file_path, save=False):
+
+        if not os.path.exists(json_file_path):
+            raise FileNotFoundError(f"The file {json_file_path} does not exist.")
+
+        with open(json_file_path, 'r') as file:
+            data = json.load(file)
+
+        scores = {}
+
+        for run in data:
+            inputs = run['inputs']
+            iteration = run['iteration']
+
+            if iteration not in scores:
+                scores[iteration] = []
+
+            for generation in run['log']:
+
+                if inputs == 3:
+                    fitness = generation['best_score'] * 3 / 5
+                else:
+                    fitness = generation['best_score']
+                scores[iteration].append(fitness)
+
+        max_length = max(len(fitness_values) for fitness_values in scores.values())
+        for iteration in scores:
+            scores[iteration].extend([1] * (max_length - len(scores[iteration])))
+
+        avg_fitness = [sum(fitness_values[i] for fitness_values in scores.values()) / len(scores)
+                       for i in range(max_length)]
+        plt.plot(avg_fitness, label='3i5i')
+        plt.xlabel('Generation')
+        plt.ylabel('Fitness')
+        plt.title('Average Fitness, 10 Runs')
+        plt.legend()
+
+        if save:
+            self.save_file_with_name('fitness_')
+        plt.show()
+
+    def plot_time(self, json_file_path, save=False):
+
+        if not os.path.exists(json_file_path):
+            raise FileNotFoundError(f"The file {json_file_path} does not exist.")
+
+        with open(json_file_path, 'r') as file:
+            data = json.load(file)
+
+        scores = {}
+
+        for run in data:
+            inputs = run['inputs']
+            iteration = run['iteration']
+
+            if iteration not in scores:
+                scores[iteration] = []
+
+            for generation in run['log']:
+                time = generation['generation_time']
+                scores[iteration].append(time)
+
+        max_length = max(len(fitness_values) for fitness_values in scores.values())
+        for iteration in scores:
+            last_value = scores[iteration][-1]
+            scores[iteration].extend([last_value] * (max_length - len(scores[iteration])))
+
+        avg_time = [sum(values[i] for values in scores.values()) / len(scores)
+                    for i in range(max_length)]
+        plt.plot(avg_time, label='3i5i')
+        plt.xlabel('Generation')
+        plt.ylabel('Time')
+        plt.title('Average Fitness, 10 Runs')
+        plt.legend()
+
+        if save:
+            self.save_file_with_name('time_')
         plt.show()

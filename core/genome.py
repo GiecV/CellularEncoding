@@ -13,7 +13,7 @@ class Genome:
     SYMBOLS = TERMINAL_SYMBOLS + DIVISION_SYMBOLS + OPERATIONAL_SYMBOLS
 
     # * Create the list of trees if none is provided, otherwise use the provided trees
-    def __init__(self, trees: list = None) -> None:
+    def __init__(self, trees: list = None, parents=None) -> None:
 
         if trees is None:
             self._trees = []
@@ -29,6 +29,8 @@ class Genome:
         else:
             self.LEVELS = len(trees)
             self._trees = trees
+
+        self.parents = parents
 
     # * Edit the symbol of a gene and create the proper amount of children
     def change_symbol(self, level: int, node_id: str, symbol: str):
@@ -127,4 +129,10 @@ class Genome:
                 tree.update_node(node_id, identifier=GlobalCounter.next())
 
     def json(self):
-        return [tree.to_json(with_data=False) for tree in self._trees]
+        return {
+            "genome": [tree.to_json(with_data=False) for tree in self._trees],
+            "parents": self.parents
+        }
+
+    def update_parents(self, a, b):
+        self.parents = [a, b]

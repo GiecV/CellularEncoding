@@ -63,7 +63,6 @@ class Evolution:
 
             if info:
                 self.logs.append({
-                    'generation': generation + 1,
                     'best_score': best_score,
                     'generation_time': self.generation_time,
                     'individuals': [individual.json() for individual in self.population],
@@ -75,7 +74,7 @@ class Evolution:
             if self.fitness_scores[0] == 1:
                 break
 
-        return self.population[0]
+        return self.population[0], generation + 1
 
     # * Make each individual reproduce with a random partner
     def get_offspring(self):
@@ -86,7 +85,7 @@ class Evolution:
             while parent1 == parent2:
                 parent2 = random.choice(self.population)
             index2 = self.population.index(parent2)
-            child1, child2 = self.crossover(parent1, parent2)
+            child1, child2 = self.crossover(parent1, parent2, [index1, index2])
             child1.update_ids()
             child2.update_ids()
             offspring.extend((child1, child2))
@@ -111,13 +110,13 @@ class Evolution:
             self.population_size = min(self.max_population_size, int(self.population_size * 1.1))
 
     # * Perform crossover between two parents
-    def crossover(self, parent1, parent2):
-        child1, child2 = self.get_children(parent1, parent2)
+    def crossover(self, parent1, parent2, parents_indexes):
+        child1, child2 = self.get_children(parent1, parent2, parents_indexes)
 
         return child1, child2
 
     # * Create two children starting from two parents
-    def get_children(self, parent1, parent2):
+    def get_children(self, parent1, parent2, parents_indexes):
         trees = []
         trees2 = []
         g = Genome()
@@ -153,7 +152,7 @@ class Evolution:
                 new_tree2 = Tree(tree=subtree1, deep=True)
             trees2.append(new_tree2)
 
-        return Genome(trees), Genome(trees2)
+        return Genome(trees, parents_indexes), Genome(trees2, parents_indexes)
 
     # * Mutate symbols of the individual
     def mutate(self, genome):

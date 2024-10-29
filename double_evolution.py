@@ -8,7 +8,7 @@ import json
 def run():
     clear_console()
     inputs1 = 3
-    inputs2 = 6
+    inputs2 = 5
     iterations = 10
     log = []
     populations = []
@@ -26,11 +26,12 @@ def evolve_stage(inputs, iterations, log, populations=None):
     for i in range(iterations):
         print(f'Individual {i + 1} with {inputs} inputs:')
         evolution = Evolution(inputs=inputs, population=populations[i])
-        best_individual = evolution.evolve()
+        best_individual, generations = evolution.evolve()
 
         log.append({
             'iteration': i,
             'inputs': inputs,
+            'generations': generations,
             'log': evolution.logs
         })
 

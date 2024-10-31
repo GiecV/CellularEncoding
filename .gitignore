@@ -631,6 +631,4 @@ setup.cfg
 
 output
 main.py
-double_evolution.py
-single_evolution.py
 /docs/

@@ -5,10 +5,30 @@ from core.neural_network_from_graph import NNFromGraph
 import torch
 
 
-def target_function(x, y): return x ^ y
+def target_function(x, y):
+    """
+    Compute the XOR of two binary inputs.
+
+    Args:
+        x (int): The first binary input.
+        y (int): The second binary input.
+
+    Returns:
+        int: The XOR of the inputs.
+    """
+    return x ^ y
 
 
 def compute_fitness(individual):
+    """
+    Compute the fitness of an individual for the XOR problem.
+
+    Args:
+        individual: The individual whose fitness is to be computed.
+
+    Returns:
+        float: The fitness value, which is the proportion of correct outputs.
+    """
     p = Phenotype(individual)
     nn = NNFromGraph(p)
     inputs = [[x, y] for x in range(2) for y in range(2)]
@@ -20,7 +40,15 @@ def compute_fitness(individual):
 
 
 def compute_fitness_information_formula(individual):
+    """
+    Compute the fitness of an individual using an information-theoretic formula.
 
+    Args:
+        individual: The individual whose fitness is to be computed.
+
+    Returns:
+        float: The fitness value based on mutual information and neural network complexity.
+    """
     p = Phenotype(individual)
     nn = NNFromGraph(p)
 
@@ -40,7 +68,16 @@ def compute_fitness_information_formula(individual):
 
 
 def compute_fitness_target(individual, print_info=False):
+    """
+    Compute the fitness of an individual with an option to print detailed information.
 
+    Args:
+        individual: The individual whose fitness is to be computed.
+        print_info (bool, optional): Whether to print detailed information. Default is False.
+
+    Returns:
+        float: The fitness value.
+    """
     target = Genome()
     root = target.get_tree(0).root
     target.change_symbol(0, root + 0, 's')

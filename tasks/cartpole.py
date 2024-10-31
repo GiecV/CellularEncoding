@@ -8,7 +8,15 @@ env = gym.make('CartPole-v1')
 
 
 def compute_fitness(individual):
+    """
+    Compute the fitness of an individual in the CartPole environment.
 
+    Args:
+        individual: The individual whose fitness is to be computed.
+
+    Returns:
+        float: The mean reward obtained over a number of trials.
+    """
     p = Phenotype(individual)
     nn = NNFromGraph(p, inputs=4, outputs=1)
 
@@ -32,7 +40,16 @@ def compute_fitness(individual):
 
 
 def compute_fitness_growth_penalty(individual, penalty=0):
+    """
+    Compute the fitness of an individual with a growth penalty.
 
+    Args:
+        individual: The individual whose fitness is to be computed.
+        penalty (float, optional): The penalty factor for the number of nodes. Default is 0.
+
+    Returns:
+        float: The penalized fitness value.
+    """
     fitness = compute_fitness(individual)
 
     nodes = individual.get_number_of_nodes()

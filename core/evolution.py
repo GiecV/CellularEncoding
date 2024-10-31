@@ -5,13 +5,9 @@ from core.genome import Genome
 from concurrent.futures import ProcessPoolExecutor
 import warnings
 from tasks.parity import compute_fitness
-import os
-from datetime import datetime
-import json
 
 warnings.filterwarnings("ignore")
 cpus = 12
-# torch.set_num_interop_threads(1)
 
 
 class Evolution:
@@ -48,9 +44,10 @@ class Evolution:
     def evolve(self, info=True):
 
         best_score = float('-inf')
+        start_time = time.time()
 
         for generation in range(self.generations):
-            start_time = time.time()
+            generation_start_time = time.time()
             print(f"Generation {generation + 1}/{self.generations}")
             offspring = self.get_offspring()
             new_population = self.population + offspring
@@ -59,7 +56,7 @@ class Evolution:
                 self.innovative_individuals.append((self.population[0], self.fitness_scores[0]))
                 best_score = self.fitness_scores[0]
 
-            self.generation_time = time.time() - start_time
+            self.generation_time = time.time() - generation_start_time
 
             if info:
                 self.logs.append({
@@ -71,7 +68,10 @@ class Evolution:
 
             print(f'{self.generation_time} s')
 
-            if self.fitness_scores[0] == 1:
+            # if self.fitness_scores[0] == 1:
+            #     break
+            print('Elapsed time:', (time.time() - start_time) / 60, 'min')
+            if time.time() - start_time > 1200:
                 break
 
         return self.population[0], generation + 1

@@ -7,15 +7,32 @@ from matplotlib.gridspec import GridSpec
 import os
 from datetime import datetime
 import json
+import numpy as np
 
 
 class Visualizer:
 
     def __init__(self, inputs=2, outputs=1):
+        """
+        Initialize the Visualizer with the number of inputs and outputs.
+
+        Args:
+            inputs (int, optional): The number of input nodes. Default is 2.
+            outputs (int, optional): The number of output nodes. Default is 1.
+        """
         self.inputs = inputs
         self.outputs = outputs
 
     def _calculate_node_positions(self, structure):
+        """
+        Calculate the positions of nodes in the neural network graph.
+
+        Args:
+            structure (networkx.DiGraph): The graph structure of the neural network.
+
+        Returns:
+            dict: A dictionary mapping nodes to their positions.
+        """
         start_nodes = [node for node in structure.nodes if node.startswith("I")]
         pos = {node: (i / (len(start_nodes) + 1), 1.0) for i, node in enumerate(start_nodes)}
 
@@ -42,6 +59,13 @@ class Visualizer:
         return pos
 
     def print_innovative_networks(self, innovative_individuals, save=False):
+        """
+        Print and optionally save the innovative neural networks.
+
+        Args:
+            innovative_individuals (list): A list of innovative individuals.
+            save (bool, optional): Whether to save the plots. Default is False.
+        """
         num_individuals = len(innovative_individuals)
         rows = num_individuals
         cols = 4  # 1 for NN + 3 for trees
@@ -93,6 +117,16 @@ class Visualizer:
         plt.show()
 
     def treelib_to_nx(self, tree, node_labels):
+        """
+        Convert a tree structure from treelib to a NetworkX directed graph.
+
+        Args:
+            tree (treelib.Tree): The tree structure to convert.
+            node_labels (dict): A dictionary to store node labels.
+
+        Returns:
+            networkx.DiGraph: The converted directed graph.
+        """
         graph = nx.DiGraph()  # Create a directed graph
 
         def add_edges(node):
@@ -111,10 +145,23 @@ class Visualizer:
         return graph
 
     def print_population(self, population):
+        """
+        Print the details of each individual in the population.
+
+        Args:
+            population (list): A list of individuals in the population.
+        """
         for individual in population:
             individual.print()
 
     def plot_fitness_history(self, history, save=False):
+        """
+        Plot the fitness history over generations.
+
+        Args:
+            history (list): A list of fitness values over generations.
+            save (bool, optional): Whether to save the plot. Default is False.
+        """
         generations = list(range(1, len(history) + 1))
         plt.plot(generations, history, marker='o')
         plt.xlabel('Generation')
@@ -126,6 +173,13 @@ class Visualizer:
         plt.show()
 
     def print_phenotype(self, phenotype, save=False):
+        """
+        Print and optionally save the phenotype structure.
+
+        Args:
+            phenotype (Phenotype): The phenotype to print.
+            save (bool, optional): Whether to save the plot. Default is False.
+        """
         try:
             pos = self._calculate_node_positions(phenotype.structure)
 
@@ -153,6 +207,12 @@ class Visualizer:
             self.print_no_position(phenotype)
 
     def save_file_with_name(self, name):
+        """
+        Save the current plot with a given name.
+
+        Args:
+            name (str): The base name for the file to save.
+        """
         os.makedirs('img', exist_ok=True)
         timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
         plt.savefig(os.path.join('img', f'{name}{timestamp}.png'))
@@ -161,8 +221,15 @@ class Visualizer:
         nx.draw(phenotype.structure, with_labels=True)
         plt.show()
 
-    def plot_fitness_results(self, json_file_path, save=False):
+    def plot_average_fitness(self, json_file_path, save=False):
+        """
+        Plot the average fitness over generations with standard deviation.
 
+        Args:
+            scores (dict): A dictionary containing fitness scores for each run.
+            max_length (int): The maximum length of the generations.
+            save (bool, optional): Whether to save the plot. Default is False.
+        """
         if not os.path.exists(json_file_path):
             raise FileNotFoundError(f"The file {json_file_path} does not exist.")
 
@@ -192,7 +259,13 @@ class Visualizer:
 
         avg_fitness = [sum(fitness_values[i] for fitness_values in scores.values()) / len(scores)
                        for i in range(max_length)]
+        std_dev = [np.std([values[i] for values in scores.values()]) for i in range(max_length)]
+
         plt.plot(avg_fitness, label='3i5i')
+        plt.fill_between(range(max_length),
+                         [avg_fitness[i] - std_dev[i] for i in range(max_length)],
+                         [avg_fitness[i] + std_dev[i] for i in range(max_length)],
+                         color='b', alpha=0.2)
         plt.xlabel('Generation')
         plt.ylabel('Fitness')
         plt.title('Average Fitness, 10 Runs')
@@ -202,8 +275,60 @@ class Visualizer:
             self.save_file_with_name('fitness_')
         plt.show()
 
-    def plot_time(self, json_file_path, save=False):
+    def plot_all_runs(self, json_file_path, save=False):
+        """
+        Plot the fitness of all runs from a JSON file.
 
+        Args:
+            json_file_path (str): The path to the JSON file containing the run data.
+            save (bool, optional): Whether to save the plot. Default is False.
+
+        Raises:
+            FileNotFoundError: If the JSON file does not exist.
+        """
+        if not os.path.exists(json_file_path):
+            raise FileNotFoundError(f"The file {json_file_path} does not exist.")
+
+        with open(json_file_path, 'r') as file:
+            data = json.load(file)
+
+            scores = {}
+
+            for run in data:
+                inputs = run['inputs']
+                iteration = run['iteration']
+
+                if iteration not in scores:
+                    scores[iteration] = []
+
+                for generation in run['log']:
+
+                    if inputs == 3:
+                        fitness = generation['best_score'] * 3 / 5
+                    else:
+                        fitness = generation['best_score']
+                    scores[iteration].append(fitness)
+
+        for iteration, fitness_values in scores.items():
+            plt.plot(fitness_values, label=f'Run {iteration}')
+
+        plt.xlabel('Generation')
+        plt.ylabel('Fitness')
+        plt.title('Average Fitness, 10 Runs')
+        plt.legend()
+
+        if save:
+            self.save_file_with_name('runs_')
+        plt.show()
+
+    def plot_time(self, json_file_path, save=False):
+        """
+        Plot the time taken for each generation.
+
+        Args:
+            time_data (list): A list of time values for each generation.
+            save (bool, optional): Whether to save the plot. Default is False.
+        """
         if not os.path.exists(json_file_path):
             raise FileNotFoundError(f"The file {json_file_path} does not exist.")
 
@@ -230,10 +355,16 @@ class Visualizer:
 
         avg_time = [sum(values[i] for values in scores.values()) / len(scores)
                     for i in range(max_length)]
+        std_dev = [np.std([values[i] for values in scores.values()]) for i in range(max_length)]
+
         plt.plot(avg_time, label='3i5i')
+        plt.fill_between(range(max_length),
+                         [avg_time[i] - std_dev[i] for i in range(max_length)],
+                         [avg_time[i] + std_dev[i] for i in range(max_length)],
+                         color='b', alpha=0.2)
         plt.xlabel('Generation')
-        plt.ylabel('Time')
-        plt.title('Average Fitness, 10 Runs')
+        plt.ylabel('Time (s)')
+        plt.title('Average Time, 10 Runs')
         plt.legend()
 
         if save:

@@ -7,7 +7,16 @@ from sklearn.metrics import normalized_mutual_info_score
 
 
 def compute_fitness(individual, n=2):
+    """
+    Compute the fitness of an individual in the parity problem.
 
+    Args:
+        individual: The individual whose fitness is to be computed.
+        n (int, optional): The number of binary inputs. Default is 2.
+
+    Returns:
+        float: The normalized mutual information score between the outputs and the targets.
+    """
     p = Phenotype(individual)
     nn = NNFromGraph(p, inputs=n, outputs=1)
 

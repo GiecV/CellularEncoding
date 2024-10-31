@@ -14,9 +14,9 @@ def run():
     populations = []
 
     log, populations = evolve_stage(
-        inputs=inputs1, iterations=iterations, generations=50, log=log)
+        ins=inputs1, iterations=iterations, gen=50, log=log)
     log, populations = evolve_stage(
-        inputs=inputs2, iterations=iterations, generations=200, log=log, populations=populations)
+        ins=inputs2, iterations=iterations, gen=200, log=log, pops=populations)
 
     save(log)
 

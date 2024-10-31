@@ -7,7 +7,7 @@ import warnings
 from tasks.parity import compute_fitness
 
 warnings.filterwarnings("ignore")
-cpus = 12
+cpus = 128
 
 
 class Evolution:
@@ -51,9 +51,11 @@ class Evolution:
             print(f"Generation {generation + 1}/{self.generations}")
             offspring = self.get_offspring()
             new_population = self.population + offspring
-            self.population, self.fitness_scores = self.select_best(new_population)
+            self.population, self.fitness_scores = self.select_best(
+                new_population)
             if self.fitness_scores[0] > best_score:
-                self.innovative_individuals.append((self.population[0], self.fitness_scores[0]))
+                self.innovative_individuals.append(
+                    (self.population[0], self.fitness_scores[0]))
                 best_score = self.fitness_scores[0]
 
             self.generation_time = time.time() - generation_start_time
@@ -71,7 +73,7 @@ class Evolution:
             # if self.fitness_scores[0] == 1:
             #     break
             print('Elapsed time:', (time.time() - start_time) / 60, 'min')
-            if time.time() - start_time > 1200:
+            if time.time() - start_time > 1800:
                 break
 
         return self.population[0], generation + 1
@@ -96,18 +98,23 @@ class Evolution:
         ns = [self.inputs for _ in range(len(population))]
         with ProcessPoolExecutor(cpus) as executor:
             fitness_list = list(executor.map(compute_fitness, population, ns))
-        individuals_and_fitness = sorted(zip(population, fitness_list), key=lambda x: x[1], reverse=True)
-        best_individuals = [individual for individual, _ in individuals_and_fitness[:self.population_size]]
-        best_fitness_scores = [fitness for _, fitness in individuals_and_fitness[:self.population_size]]
+        individuals_and_fitness = sorted(
+            zip(population, fitness_list), key=lambda x: x[1], reverse=True)
+        best_individuals = [individual for individual,
+                            _ in individuals_and_fitness[:self.population_size]]
+        best_fitness_scores = [
+            fitness for _, fitness in individuals_and_fitness[:self.population_size]]
 
         self.fitness_history.append(best_fitness_scores[0])
         return best_individuals, best_fitness_scores
 
     def edit_population_size(self, acceptable_time=30):
         if self.generation_time > acceptable_time:
-            self.population_size = max(self.min_population_size, int(self.population_size * .9))
+            self.population_size = max(
+                self.min_population_size, int(self.population_size * .9))
         elif self.generation_time < acceptable_time:
-            self.population_size = min(self.max_population_size, int(self.population_size * 1.1))
+            self.population_size = min(
+                self.max_population_size, int(self.population_size * 1.1))
 
     # * Perform crossover between two parents
     def crossover(self, parent1, parent2, parents_indexes):
@@ -144,7 +151,8 @@ class Evolution:
             parent2_node = tree2.parent(cutpoint2)
             if parent2_node is not None:
                 root = subtree1.root
-                subtree1.get_node(root).parent = parent2_node.identifier  # type: ignore
+                subtree1.get_node(
+                    root).parent = parent2_node.identifier  # type: ignore
                 tree2.remove_node(cutpoint2)
                 tree2.paste(parent2_node.identifier, subtree1)
                 new_tree2 = Tree(tree=tree2, deep=True)
@@ -162,7 +170,8 @@ class Evolution:
                 if random.random() < self.mutation_rate:
                     if node.tag in ['e', 'n']:
                         new_symbol = random.choice(Genome.SYMBOLS)
-                        genome.change_symbol(level=i, node_id=node.identifier, symbol=new_symbol)
+                        genome.change_symbol(
+                            level=i, node_id=node.identifier, symbol=new_symbol)
                     else:
                         new_symbol = (
                             random.choice(Genome.DIVISION_SYMBOLS)

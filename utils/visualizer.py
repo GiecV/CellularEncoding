@@ -33,8 +33,10 @@ class Visualizer:
         Returns:
             dict: A dictionary mapping nodes to their positions.
         """
-        start_nodes = [node for node in structure.nodes if node.startswith("I")]
-        pos = {node: (i / (len(start_nodes) + 1), 1.0) for i, node in enumerate(start_nodes)}
+        start_nodes = [
+            node for node in structure.nodes if node.startswith("I")]
+        pos = {node: (i / (len(start_nodes) + 1), 1.0)
+               for i, node in enumerate(start_nodes)}
 
         levels = defaultdict(list)
         queue = deque((node, 0) for node in start_nodes)
@@ -45,12 +47,14 @@ class Visualizer:
             if node not in visited:
                 visited.add(node)
                 levels[level].append(node)
-                queue.extend((successor, level + 1) for successor in structure.successors(node))
+                queue.extend((successor, level + 1)
+                             for successor in structure.successors(node))
 
         pos |= {
             node: (
                 i / (len(nodes) + 1),
-                0.0 if node.startswith("O") else 1 - (level / (len(levels) + 1)),
+                0.0 if node.startswith("O") else 1 -
+                (level / (len(levels) + 1)),
             )
             for level, nodes in levels.items()
             for i, node in enumerate(nodes)
@@ -75,7 +79,8 @@ class Visualizer:
 
         for idx, (individual, fitness_score) in enumerate(innovative_individuals):
             phenotype = Phenotype(individual)
-            nn = NNFromGraph(phenotype, inputs=self.inputs, outputs=self.outputs)
+            nn = NNFromGraph(phenotype, inputs=self.inputs,
+                             outputs=self.outputs)
 
             # Neural network plot (col 0)
             pos = self._calculate_node_positions(nn.phenotype.structure)
@@ -86,14 +91,16 @@ class Visualizer:
             nx.draw(nn.phenotype.structure, pos, labels=node_labels, with_labels=True, node_size=500,
                     node_color="skyblue", font_size=10, font_weight="bold", arrows=True, ax=ax_nn)
             labels = nx.get_edge_attributes(nn.phenotype.structure, 'weight')
-            nx.draw_networkx_edge_labels(nn.phenotype.structure, pos, edge_labels=labels, ax=ax_nn)
+            nx.draw_networkx_edge_labels(
+                nn.phenotype.structure, pos, edge_labels=labels, ax=ax_nn)
             ax_nn.set_title(f'Neural Network\nFitness Score: {
                             "{:.2f}".format(fitness_score)}', fontsize=14)
 
             # Genome: visualizing 3 trees (cols 1, 2, 3)
             genome = individual.get_trees()  # Assuming the genome is a list of 3 trees
             for tree_idx, tree in enumerate(genome):
-                ax_tree = fig.add_subplot(gs[idx, tree_idx + 1])  # tree_idx + 1 to skip the NN column
+                # tree_idx + 1 to skip the NN column
+                ax_tree = fig.add_subplot(gs[idx, tree_idx + 1])
 
                 node_labels = {}
 
@@ -101,9 +108,11 @@ class Visualizer:
                 tree_graph = self.treelib_to_nx(tree, node_labels)
 
                 # Layout for tree graph
-                tree_pos = nx.bfs_layout(tree_graph, tree.root, align='horizontal')  # type: ignore
+                tree_pos = nx.bfs_layout(
+                    tree_graph, tree.root, align='horizontal')  # type: ignore
                 max_y = max(y for x, y in tree_pos.values())
-                tree_pos = {node: (x, max_y - y) for node, (x, y) in tree_pos.items()}
+                tree_pos = {node: (x, max_y - y)
+                            for node, (x, y) in tree_pos.items()}
 
                 # Plot the tree as a NetworkX graph
                 nx.draw(tree_graph, pos=tree_pos, labels=node_labels, with_labels=True, node_size=500, node_color="lightgreen",
@@ -130,8 +139,10 @@ class Visualizer:
         graph = nx.DiGraph()  # Create a directed graph
 
         def add_edges(node):
-            for child in tree.children(node.identifier):  # Use children() to get the child nodes
-                graph.add_edge(node.identifier, child.identifier)  # Add edge from parent to child
+            # Use children() to get the child nodes
+            for child in tree.children(node.identifier):
+                # Add edge from parent to child
+                graph.add_edge(node.identifier, child.identifier)
                 node_labels[child.identifier] = child.tag
                 add_edges(child)  # Recurse on the child node
 
@@ -198,7 +209,8 @@ class Visualizer:
                 arrows=True,
             )
             labels = nx.get_edge_attributes(phenotype.structure, 'weight')
-            nx.draw_networkx_edge_labels(phenotype.structure, pos, edge_labels=labels)
+            nx.draw_networkx_edge_labels(
+                phenotype.structure, pos, edge_labels=labels)
             if save:
                 self.save_file_with_name('phenotype_')
             plt.show()
@@ -231,7 +243,8 @@ class Visualizer:
             save (bool, optional): Whether to save the plot. Default is False.
         """
         if not os.path.exists(json_file_path):
-            raise FileNotFoundError(f"The file {json_file_path} does not exist.")
+            raise FileNotFoundError(
+                f"The file {json_file_path} does not exist.")
 
         with open(json_file_path, 'r') as file:
             data = json.load(file)
@@ -246,25 +259,26 @@ class Visualizer:
                 scores[iteration] = []
 
             for generation in run['log']:
-
-                if inputs == 3:
-                    fitness = generation['best_score'] * 3 / 5
-                else:
-                    fitness = generation['best_score']
+                fitness = generation['best_score']
                 scores[iteration].append(fitness)
 
-        max_length = max(len(fitness_values) for fitness_values in scores.values())
+        max_length = max(len(fitness_values)
+                         for fitness_values in scores.values())
         for iteration in scores:
-            scores[iteration].extend([1] * (max_length - len(scores[iteration])))
+            scores[iteration].extend(
+                [1] * (max_length - len(scores[iteration])))
 
         avg_fitness = [sum(fitness_values[i] for fitness_values in scores.values()) / len(scores)
                        for i in range(max_length)]
-        std_dev = [np.std([values[i] for values in scores.values()]) for i in range(max_length)]
+        std_dev = [np.std([values[i] for values in scores.values()])
+                   for i in range(max_length)]
 
         plt.plot(avg_fitness, label='3i5i')
         plt.fill_between(range(max_length),
-                         [avg_fitness[i] - std_dev[i] for i in range(max_length)],
-                         [avg_fitness[i] + std_dev[i] for i in range(max_length)],
+                         [avg_fitness[i] - std_dev[i]
+                             for i in range(max_length)],
+                         [avg_fitness[i] + std_dev[i]
+                             for i in range(max_length)],
                          color='b', alpha=0.2)
         plt.xlabel('Generation')
         plt.ylabel('Fitness')
@@ -287,7 +301,8 @@ class Visualizer:
             FileNotFoundError: If the JSON file does not exist.
         """
         if not os.path.exists(json_file_path):
-            raise FileNotFoundError(f"The file {json_file_path} does not exist.")
+            raise FileNotFoundError(
+                f"The file {json_file_path} does not exist.")
 
         with open(json_file_path, 'r') as file:
             data = json.load(file)
@@ -330,7 +345,8 @@ class Visualizer:
             save (bool, optional): Whether to save the plot. Default is False.
         """
         if not os.path.exists(json_file_path):
-            raise FileNotFoundError(f"The file {json_file_path} does not exist.")
+            raise FileNotFoundError(
+                f"The file {json_file_path} does not exist.")
 
         with open(json_file_path, 'r') as file:
             data = json.load(file)
@@ -348,14 +364,17 @@ class Visualizer:
                 time = generation['generation_time']
                 scores[iteration].append(time)
 
-        max_length = max(len(fitness_values) for fitness_values in scores.values())
+        max_length = max(len(fitness_values)
+                         for fitness_values in scores.values())
         for iteration in scores:
             last_value = scores[iteration][-1]
-            scores[iteration].extend([last_value] * (max_length - len(scores[iteration])))
+            scores[iteration].extend(
+                [last_value] * (max_length - len(scores[iteration])))
 
         avg_time = [sum(values[i] for values in scores.values()) / len(scores)
                     for i in range(max_length)]
-        std_dev = [np.std([values[i] for values in scores.values()]) for i in range(max_length)]
+        std_dev = [np.std([values[i] for values in scores.values()])
+                   for i in range(max_length)]
 
         plt.plot(avg_time, label='3i5i')
         plt.fill_between(range(max_length),

@@ -1,9 +1,10 @@
 import json
 from treelib import Tree
 from core.genome import Genome
+from utils.visualizer import Visualizer
 
 
-def get_lineage(self, file_name, gens_to_save=5):
+def get_lineage(file_name, gens_to_save=5):
 
     print('a')
 
@@ -24,6 +25,7 @@ def get_lineage(self, file_name, gens_to_save=5):
 
     with open(file_name, 'r') as file:
         data = json.load(file)
+    data = data[0]
     log = data['log']
 
     genomes = []
@@ -35,12 +37,15 @@ def get_lineage(self, file_name, gens_to_save=5):
 
 if __name__ == "__main__":
 
-    genomes = get_lineage('logs/3i6i copy.json', 1)
-    json.dump(genomes, open('logs/lineage.json', 'w'), indent=4)
+    genomes = get_lineage('logs/3iprovapickle.json', 4)
+    json.dump(genomes, open('logs/prova.json', 'w'), indent=4)
 
-    # with open('logs/lineage.json', 'r') as file:
-    #     genomes_json = json.load(file)
+    with open('logs/prova.json', 'r') as file:
+        genomes_json = json.load(file)
 
     # for entry in genomes_json:
     #     genome = Genome()
     #     genome.from_json_pickle(entry)
+    #     genome.print()
+    visualizer = Visualizer()
+    visualizer.print_lineage(genomes_json, save=True)

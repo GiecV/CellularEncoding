@@ -1,6 +1,6 @@
 from treelib import Tree
 from utils.counter import GlobalCounter
-import json
+import base64
 import pickle
 """
 genome.py
@@ -265,8 +265,13 @@ class Genome:
         Returns:
             dict: A dictionary containing the pickled representation of the genome and parent information.
         """
+
+        encoded_trees = [pickle.dumps(tree) for tree in self._trees]
+        encoded_trees = [base64.b64encode(tree).decode(
+            'utf-8') for tree in encoded_trees]
+
         return {
-            "genome": [pickle.dumps(tree) for tree in self._trees],
+            "genome": encoded_trees,
             "parents": self.parents
         }
 
@@ -282,8 +287,10 @@ class Genome:
         Returns:
             None
         """
-        self._trees = [pickle.loads(tree)
+        self._trees = [base64.b64decode(tree)
                        for tree in json_individual['genome']]
+        self._trees = [pickle.loads(tree)
+                       for tree in self._trees]
 
     def update_parents(self, a, b):
         """

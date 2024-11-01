@@ -7,13 +7,13 @@ import json
 
 def run():
     clear_console()
-    inputs = 6
+    inputs = 3
     iterations = 10
     log = []
     populations = []
 
     log, populations = evolve_stage(
-        ins=inputs, iterations=iterations, gen=250, log=log)
+        ins=inputs, iterations=iterations, gen=200, log=log)
 
     save(log)
 

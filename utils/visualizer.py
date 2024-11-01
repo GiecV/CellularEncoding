@@ -428,3 +428,9 @@ class Visualizer:
                 nn.phenotype.structure, pos, edge_labels=labels, ax=ax_nn)
             ax_nn.set_title(f'Neural Network\nFitness Score: {
                             "{:.2f}".format(generation)}', fontsize=14)
+
+        plt.tight_layout()
+        plt.subplots_adjust(hspace=0.8)
+        if save:
+            self.save_file_with_name('innovative_networks_')
+        plt.show()

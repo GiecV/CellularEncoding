@@ -64,7 +64,7 @@ class Evolution:
                 self.logs.append({
                     'best_score': best_score,
                     'generation_time': self.generation_time,
-                    'individuals': [individual.json() for individual in self.population],
+                    'individuals': [individual.json_pickle() for individual in self.population],
                     'fitness_scores': self.fitness_scores
                 })
 

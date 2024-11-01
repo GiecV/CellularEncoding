@@ -41,7 +41,7 @@ class Evolution:
         return genome
 
     # * Evolve the population controlling generations. Return the best individual
-    def evolve(self, info=True):
+    def evolve(self, info=True, max_time=2100):
 
         best_score = float('-inf')
         start_time = time.time()
@@ -73,7 +73,7 @@ class Evolution:
             # if self.fitness_scores[0] == 1:
             #     break
             print('Elapsed time:', (time.time() - start_time) / 60, 'min')
-            if time.time() - start_time > 1800:
+            if time.time() - start_time > max_time:
                 break
 
         return self.population[0], generation + 1

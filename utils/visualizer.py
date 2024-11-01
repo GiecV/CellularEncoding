@@ -318,10 +318,7 @@ class Visualizer:
 
                 for generation in run['log']:
 
-                    if inputs == 3:
-                        fitness = generation['best_score'] * 3 / 5
-                    else:
-                        fitness = generation['best_score']
+                    fitness = generation['best_score']
                     scores[iteration].append(fitness)
 
         for iteration, fitness_values in scores.items():

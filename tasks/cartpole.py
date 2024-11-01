@@ -5,6 +5,7 @@ import gym
 import torch
 
 env = gym.make('CartPole-v1')
+torch.set_num_threads(1)
 
 
 def compute_fitness(individual):
@@ -33,7 +34,8 @@ def compute_fitness(individual):
                 break
             # Get the action from the individual
             action = nn.forward(torch.tensor(obs, dtype=torch.float32)).item()
-            obs, reward, done, truncated, info = env.step(action)  # Perform the action
+            obs, reward, done, truncated, info = env.step(
+                action)  # Perform the action
             total_reward += reward
 
     return total_reward / trials  # Mean of the reward on the trials

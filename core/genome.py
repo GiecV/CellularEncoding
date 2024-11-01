@@ -1,5 +1,7 @@
 from treelib import Tree
 from utils.counter import GlobalCounter
+import json
+import pickle
 """
 genome.py
 
@@ -253,6 +255,35 @@ class Genome:
             "genome": [tree.to_json(with_data=False) for tree in self._trees],
             "parents": self.parents
         }
+
+    def json_pickle(self):
+        """
+        Serializes the genome data using pickle.
+
+        This method prepares the genome data for serialization by converting each tree into a pickled representation. It also includes the parent information, making it suitable for storage or transmission in a binary format.
+
+        Returns:
+            dict: A dictionary containing the pickled representation of the genome and parent information.
+        """
+        return {
+            "genome": [pickle.dumps(tree) for tree in self._trees],
+            "parents": self.parents
+        }
+
+    def from_json_pickle(self, json_individual):
+        """
+        Deserializes the genome data from a pickled format.
+
+        This method reconstructs the genome data from a pickled representation. It converts each pickled tree back into a tree object and updates the genome's tree list.
+
+        Args:
+            json_individual (dict): A dictionary containing the pickled representation of the genome and parent information.
+
+        Returns:
+            None
+        """
+        self._trees = [pickle.loads(tree)
+                       for tree in json_individual['genome']]
 
     def update_parents(self, a, b):
         """

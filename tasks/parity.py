@@ -5,6 +5,8 @@ from core.phenotype import Phenotype
 from core.neural_network_from_graph import NNFromGraph
 from sklearn.metrics import normalized_mutual_info_score
 
+torch.set_num_threads(1)
+
 
 def compute_fitness(individual, n=2):
     """

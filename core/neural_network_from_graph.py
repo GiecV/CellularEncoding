@@ -4,6 +4,8 @@ import networkx as nx
 
 from core.phenotype import Phenotype
 
+torch.set_num_threads(1)
+
 
 class NNFromGraph(nn.Module):
 
@@ -15,14 +17,16 @@ class NNFromGraph(nn.Module):
         self.output_ids = []
         self.depth = depth
 
-        self.t, self.r = self.phenotype.expand_inputs_and_outputs(inputs, outputs)
+        self.t, self.r = self.phenotype.expand_inputs_and_outputs(
+            inputs, outputs)
         self.graph = self.phenotype.structure
 
         adjacency_matrix = nx.adjacency_matrix(
             self.graph, weight='weight').todense()
         self.A = torch.tensor(adjacency_matrix, dtype=torch.float32)
         self.W = nn.Parameter(torch.clone(self.A))
-        self.thresholds = torch.zeros(len(self.graph.nodes), dtype=torch.float32)
+        self.thresholds = torch.zeros(
+            len(self.graph.nodes), dtype=torch.float32)
 
         for i, node in enumerate(self.graph.nodes):
             if self.graph.nodes[node]["type"] == "input":
@@ -44,6 +48,7 @@ class NNFromGraph(nn.Module):
 
         for _ in range(self.depth):
             x[self.input_ids] = obs
-            x = torch.where((torch.matmul(W.T, x) - self.thresholds) < 1, zero_tensor, one_tensor)
+            x = torch.where((torch.matmul(W.T, x) - self.thresholds)
+                            < 1, zero_tensor, one_tensor)
 
         return x[self.output_ids].int()

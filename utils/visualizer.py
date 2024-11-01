@@ -1,5 +1,6 @@
 from core.phenotype import Phenotype
 from core.neural_network_from_graph import NNFromGraph
+from core.genome import Genome
 import networkx as nx
 import matplotlib.pyplot as plt
 from collections import defaultdict, deque
@@ -386,3 +387,44 @@ class Visualizer:
         if save:
             self.save_file_with_name('time_')
         plt.show()
+
+    def print_lineage(self, json_individuals, save=False):
+        """
+        Print and optionally save the innovative neural networks.
+
+        Args:
+            innovative_individuals (list): A list of innovative individuals.
+            save (bool, optional): Whether to save the plots. Default is False.
+        """
+        sorted_individuals = sorted(
+            json_individuals, key=lambda x: x['generation'], reverse=True)
+        for i, individual in enumerate(sorted_individuals):
+            genome = Genome()
+            genome.from_json_pickle(individual)
+            sorted_individuals[i] = (genome, individual['generation'])
+
+        num_individuals = len(json_individuals)
+        rows = num_individuals
+        cols = 4  # 1 for NN + 3 for trees
+
+        fig = plt.figure(figsize=(13, rows * 6))
+        gs = GridSpec(rows, cols, figure=fig)
+
+        for idx, (individual, generation) in enumerate(sorted_individuals):
+            phenotype = Phenotype(individual)
+            nn = NNFromGraph(phenotype, inputs=self.inputs,
+                             outputs=self.outputs)
+
+            # Neural network plot (col 0)
+            pos = self._calculate_node_positions(nn.phenotype.structure)
+            node_labels = {node: f"{node}[{nn.phenotype.structure.nodes[node]['threshold']}]"
+                           for node in nn.phenotype.structure.nodes}
+
+            ax_nn = fig.add_subplot(gs[idx, 0])
+            nx.draw(nn.phenotype.structure, pos, labels=node_labels, with_labels=True, node_size=500,
+                    node_color="skyblue", font_size=10, font_weight="bold", arrows=True, ax=ax_nn)
+            labels = nx.get_edge_attributes(nn.phenotype.structure, 'weight')
+            nx.draw_networkx_edge_labels(
+                nn.phenotype.structure, pos, edge_labels=labels, ax=ax_nn)
+            ax_nn.set_title(f'Neural Network\nFitness Score: {
+                            "{:.2f}".format(generation)}', fontsize=14)

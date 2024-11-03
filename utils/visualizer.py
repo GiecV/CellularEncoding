@@ -266,8 +266,11 @@ class Visualizer:
         max_length = max(len(fitness_values)
                          for fitness_values in scores.values())
         for iteration in scores:
+            # scores[iteration].extend(
+            #     [1] * (max_length - len(scores[iteration])))
+            last_value = scores[iteration][-1]
             scores[iteration].extend(
-                [1] * (max_length - len(scores[iteration])))
+                [last_value] * (max_length - len(scores[iteration])))
 
         avg_fitness = [sum(fitness_values[i] for fitness_values in scores.values()) / len(scores)
                        for i in range(max_length)]

@@ -72,8 +72,10 @@ class Genome:
 
         self._trees[level].update_node(nid=node_id, tag=symbol)
 
+        # if symbol not in self.TERMINAL_SYMBOLS:
+        #     end_symbol = 'e' if level == 2 else 'n'
         if symbol not in self.TERMINAL_SYMBOLS:
-            end_symbol = 'e' if level == 2 else 'n'
+            end_symbol = 'e'
 
             self._trees[level].create_node(
                 tag=end_symbol,

@@ -322,8 +322,7 @@ class Visualizer:
                     nn.phenotype.structure, 'weight')
                 nx.draw_networkx_edge_labels(
                     nn.phenotype.structure, pos, edge_labels=labels, ax=ax_nn)
-                ax_nn.set_title(f'Neural Network\nGeneration: {generation}, In: {
-                                run['inputs']}, Iteration: {run['iteration']}', fontsize=14)
+                ax_nn.set_title(f'Generation: {generation}', fontsize=14)
 
                 genome = individual.get_trees()  # Assuming the genome is a list of 3 trees
                 for tree_idx, tree in enumerate(genome):

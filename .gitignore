@@ -621,14 +621,4 @@ FodyWeavers.xsd
 # End of https://www.toptal.com/developers/gitignore/api/visualstudiocode,python,macos,visualstudio
 
 /__pycache__
-/porva.py
-/prova2.py
-/wandb
-/archive
-setup.cfg
-/img
 .vscode
-
-output
-main.py
-/docs/

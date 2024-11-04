@@ -94,8 +94,7 @@ class Visualizer:
             labels = nx.get_edge_attributes(nn.phenotype.structure, 'weight')
             nx.draw_networkx_edge_labels(
                 nn.phenotype.structure, pos, edge_labels=labels, ax=ax_nn)
-            ax_nn.set_title(f'Neural Network\nFitness Score: {
-                            "{:.2f}".format(fitness_score)}', fontsize=14)
+            ax_nn.set_title(f'Fitness Score: {"{:.2f}".format(fitness_score)}')
 
             # Genome: visualizing 3 trees (cols 1, 2, 3)
             genome = individual.get_trees()  # Assuming the genome is a list of 3 trees

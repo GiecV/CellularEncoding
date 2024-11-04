@@ -8,8 +8,37 @@ torch.set_num_threads(1)
 
 
 class NNFromGraph(nn.Module):
+    """
+    Neural network implementation based on a phenotype's graph structure.
+
+    This class constructs a neural network using the structure defined in a phenotype, allowing for 
+    the propagation of inputs through the network. It initializes the network parameters and manages 
+    the forward pass of data through the network layers.
+
+    Args:
+        phenotype (Phenotype): The phenotype that defines the structure of the neural network.
+        depth (int, optional): The number of propagation layers in the network. Defaults to 7.
+        inputs (int, optional): The number of input nodes. Defaults to 2.
+        outputs (int, optional): The number of output nodes. Defaults to 1.
+    """
 
     def __init__(self, phenotype: Phenotype, depth=7, inputs=2, outputs=1):
+        """
+        Initialize the neural network from a phenotype's graph structure.
+
+        This constructor sets up the neural network by extracting the structure from the provided phenotype,
+        initializing parameters, and preparing the adjacency matrix for the network. It also identifies input
+        and output nodes based on the phenotype's configuration.
+
+        Args:
+            phenotype (Phenotype): The phenotype that defines the structure of the neural network.
+            depth (int, optional): The number of propagation layers in the network. Defaults to 7.
+            inputs (int, optional): The number of input nodes. Defaults to 2.
+            outputs (int, optional): The number of output nodes. Defaults to 1.
+
+        Returns:
+            None
+        """
         super(NNFromGraph, self).__init__()
 
         self.phenotype = phenotype
@@ -35,9 +64,23 @@ class NNFromGraph(nn.Module):
                 self.output_ids.append(i)
             self.thresholds[i] = self.graph.nodes[node].get("threshold", 0.0)
 
-    # * Propagate the input through the network
     def forward(self, obs):
+        """
+        Propagate the input observations through the neural network.
 
+        This method takes the input observations and processes them through the network for a specified number 
+        of layers, applying weights and thresholds to determine the output. It raises an error if the input 
+        observations exceed the expected size.
+
+        Args:
+            obs: A tensor containing the input observations to be processed by the network.
+
+        Raises:
+            ValueError: If the observation size is larger than the expected input size.
+
+        Returns:
+            Tensor: The output of the network corresponding to the specified output nodes.
+        """
         if len(self.input_ids) < len(obs):
             raise ValueError('The observation is larger than the input')
 

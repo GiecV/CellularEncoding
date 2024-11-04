@@ -1,5 +1,4 @@
 from core.evolution import Evolution
-from utils.visualizer import Visualizer
 import os
 from datetime import datetime
 import json

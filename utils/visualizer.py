@@ -234,65 +234,6 @@ class Visualizer:
         nx.draw(phenotype.structure, with_labels=True)
         plt.show()
 
-    def plot_average_fitness(self, json_file_path, save=False):
-        """
-        Plot the average fitness over generations with standard deviation.
-
-        Args:
-            scores (dict): A dictionary containing fitness scores for each run.
-            max_length (int): The maximum length of the generations.
-            save (bool, optional): Whether to save the plot. Default is False.
-        """
-        if not os.path.exists(json_file_path):
-            raise FileNotFoundError(
-                f"The file {json_file_path} does not exist.")
-
-        with open(json_file_path, 'r') as file:
-            data = json.load(file)
-
-        scores = {}
-
-        for run in data:
-            inputs = run['inputs']
-            iteration = run['iteration']
-
-            if iteration not in scores:
-                scores[iteration] = []
-
-            for generation in run['log']:
-                fitness = generation['best_score']
-                scores[iteration].append(fitness)
-
-        max_length = max(len(fitness_values)
-                         for fitness_values in scores.values())
-        for iteration in scores:
-            # scores[iteration].extend(
-            #     [1] * (max_length - len(scores[iteration])))
-            last_value = scores[iteration][-1]
-            scores[iteration].extend(
-                [last_value] * (max_length - len(scores[iteration])))
-
-        avg_fitness = [sum(fitness_values[i] for fitness_values in scores.values()) / len(scores)
-                       for i in range(max_length)]
-        std_dev = [np.std([values[i] for values in scores.values()])
-                   for i in range(max_length)]
-
-        plt.plot(avg_fitness, label='3i5i')
-        plt.fill_between(range(max_length),
-                         [avg_fitness[i] - std_dev[i]
-                             for i in range(max_length)],
-                         [avg_fitness[i] + std_dev[i]
-                             for i in range(max_length)],
-                         color='b', alpha=0.2)
-        plt.xlabel('Generation')
-        plt.ylabel('Fitness')
-        plt.title('Average Fitness, 10 Runs')
-        plt.legend()
-
-        if save:
-            self.save_file_with_name('fitness_')
-        plt.show()
-
     def plot_all_runs(self, json_file_path, save=False):
         """
         Plot the fitness of all runs from a JSON file.
@@ -335,60 +276,6 @@ class Visualizer:
 
         if save:
             self.save_file_with_name('runs_')
-        plt.show()
-
-    def plot_time(self, json_file_path, save=False):
-        """
-        Plot the time taken for each generation.
-
-        Args:
-            time_data (list): A list of time values for each generation.
-            save (bool, optional): Whether to save the plot. Default is False.
-        """
-        if not os.path.exists(json_file_path):
-            raise FileNotFoundError(
-                f"The file {json_file_path} does not exist.")
-
-        with open(json_file_path, 'r') as file:
-            data = json.load(file)
-
-        scores = {}
-
-        for run in data:
-            inputs = run['inputs']
-            iteration = run['iteration']
-
-            if iteration not in scores:
-                scores[iteration] = []
-
-            for generation in run['log']:
-                time = generation['generation_time']
-                scores[iteration].append(time)
-
-        max_length = max(len(fitness_values)
-                         for fitness_values in scores.values())
-        for iteration in scores:
-            last_value = scores[iteration][-1]
-            scores[iteration].extend(
-                [last_value] * (max_length - len(scores[iteration])))
-
-        avg_time = [sum(values[i] for values in scores.values()) / len(scores)
-                    for i in range(max_length)]
-        std_dev = [np.std([values[i] for values in scores.values()])
-                   for i in range(max_length)]
-
-        plt.plot(avg_time, label='3i5i')
-        plt.fill_between(range(max_length),
-                         [avg_time[i] - std_dev[i] for i in range(max_length)],
-                         [avg_time[i] + std_dev[i] for i in range(max_length)],
-                         color='b', alpha=0.2)
-        plt.xlabel('Generation')
-        plt.ylabel('Time (s)')
-        plt.title('Average Time, 10 Runs')
-        plt.legend()
-
-        if save:
-            self.save_file_with_name('time_')
         plt.show()
 
     def print_lineage(self, json_path, save=False):
@@ -439,13 +326,35 @@ class Visualizer:
                 ax_nn.set_title(f'Neural Network\nGeneration: {generation}, In: {
                                 run['inputs']}, Iteration: {run['iteration']}', fontsize=14)
 
+                genome = individual.get_trees()  # Assuming the genome is a list of 3 trees
+                for tree_idx, tree in enumerate(genome):
+                    # tree_idx + 1 to skip the NN column
+                    ax_tree = fig.add_subplot(gs[idx, tree_idx + 1])
+
+                    node_labels = {}
+
+                    # Convert treelib tree to NetworkX graph
+                    tree_graph = self.treelib_to_nx(tree, node_labels)
+
+                    # Layout for tree graph
+                    tree_pos = nx.bfs_layout(
+                        tree_graph, tree.root, align='horizontal')  # type: ignore
+                    max_y = max(y for x, y in tree_pos.values())
+                    tree_pos = {node: (x, max_y - y)
+                                for node, (x, y) in tree_pos.items()}
+
+                    # Plot the tree as a NetworkX graph
+                    nx.draw(tree_graph, pos=tree_pos, labels=node_labels, with_labels=True, node_size=500, node_color="lightgreen",
+                            font_size=10, font_weight="bold", arrows=False, ax=ax_tree)
+                    ax_tree.set_title(f'Tree {tree_idx + 1}', fontsize=12)
+
         plt.tight_layout()
         plt.subplots_adjust(hspace=0.8)
         if save:
             self.save_file_with_name('innovative_networks_')
         plt.show()
 
-    def plot_multiple_times(self, json_file_paths, save=False):
+    def plot_times(self, json_file_paths, save=False):
         """
         Plot the time taken for each generation for multiple JSON files.
 
@@ -487,8 +396,16 @@ class Visualizer:
 
             avg_time = [sum(values[i] for values in scores.values()) / len(scores)
                         for i in range(max_length)]
+            std_dev = [np.std([values[i] for values in scores.values()])
+                       for i in range(max_length)]
 
             plt.plot(avg_time, label=os.path.basename(json_file_path))
+            plt.fill_between(range(max_length),
+                             [avg_time[i] - std_dev[i]
+                                 for i in range(max_length)],
+                             [avg_time[i] + std_dev[i]
+                                 for i in range(max_length)],
+                             alpha=0.2)
 
         plt.xlabel('Generation')
         plt.ylabel('Average Time')
@@ -499,7 +416,7 @@ class Visualizer:
             self.save_file_with_name('runs_')
         plt.show()
 
-    def plot_multiple_avg_fitness(self, json_file_paths, save=False):
+    def plot_avg_fitness(self, json_file_paths, save=False):
         """
         Plot the average fitness over generations with standard deviation for multiple JSON files.
 
@@ -528,7 +445,6 @@ class Visualizer:
                     scores[iteration] = []
 
                 for generation in run['log']:
-                    print(generation)
                     fitness = generation['best_score']
                     scores[iteration].append(fitness)
 

@@ -7,7 +7,7 @@ import warnings
 from tasks.parity import compute_fitness
 
 warnings.filterwarnings("ignore")
-cpus = 12
+cpus = 128
 
 
 class Evolution:

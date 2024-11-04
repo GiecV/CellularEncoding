@@ -391,7 +391,7 @@ class Visualizer:
             self.save_file_with_name('time_')
         plt.show()
 
-    def print_lineage(self, json_individuals, save=False):
+    def print_lineage(self, json_path, save=False):
         """
         Print and optionally save the innovative neural networks.
 
@@ -399,41 +399,163 @@ class Visualizer:
             innovative_individuals (list): A list of innovative individuals.
             save (bool, optional): Whether to save the plots. Default is False.
         """
-        sorted_individuals = sorted(
-            json_individuals, key=lambda x: x['generation'], reverse=True)
-        for i, individual in enumerate(sorted_individuals):
-            genome = Genome()
-            genome.from_json_pickle(individual)
-            sorted_individuals[i] = (genome, individual['generation'])
 
-        num_individuals = len(json_individuals)
-        rows = num_individuals
-        cols = 4  # 1 for NN + 3 for trees
+        with open(json_path, 'r') as file:
+            json_file = json.load(file)
 
-        fig = plt.figure(figsize=(13, rows * 6))
-        gs = GridSpec(rows, cols, figure=fig)
+        for run in json_file:
+            json_individuals = run['lineage']
 
-        for idx, (individual, generation) in enumerate(sorted_individuals):
-            phenotype = Phenotype(individual)
-            nn = NNFromGraph(phenotype, inputs=self.inputs,
-                             outputs=self.outputs)
+            for i, individual in enumerate(json_individuals):
+                genome = Genome()
+                genome.from_json_pickle(individual)
+                json_individuals[i] = (genome, individual['generation'])
 
-            # Neural network plot (col 0)
-            pos = self._calculate_node_positions(nn.phenotype.structure)
-            node_labels = {node: f"{node}[{nn.phenotype.structure.nodes[node]['threshold']}]"
-                           for node in nn.phenotype.structure.nodes}
+            num_individuals = len(json_individuals)
+            rows = num_individuals
+            cols = 4  # 1 for NN + 3 for trees
 
-            ax_nn = fig.add_subplot(gs[idx, 0])
-            nx.draw(nn.phenotype.structure, pos, labels=node_labels, with_labels=True, node_size=500,
-                    node_color="skyblue", font_size=10, font_weight="bold", arrows=True, ax=ax_nn)
-            labels = nx.get_edge_attributes(nn.phenotype.structure, 'weight')
-            nx.draw_networkx_edge_labels(
-                nn.phenotype.structure, pos, edge_labels=labels, ax=ax_nn)
-            ax_nn.set_title(f'Neural Network\nFitness Score: {
-                            "{:.2f}".format(generation)}', fontsize=14)
+            fig = plt.figure(figsize=(13, rows * 6))
+            gs = GridSpec(rows, cols, figure=fig)
+
+            for idx, (individual, generation) in enumerate(json_individuals):
+                phenotype = Phenotype(individual)
+                nn = NNFromGraph(phenotype, inputs=self.inputs,
+                                 outputs=self.outputs)
+
+                # Neural network plot (col 0)
+                pos = self._calculate_node_positions(
+                    nn.phenotype.structure)
+                node_labels = {node: f"{node}[{nn.phenotype.structure.nodes[node]['threshold']}]"
+                               for node in nn.phenotype.structure.nodes}
+
+                ax_nn = fig.add_subplot(gs[idx, 0])
+                nx.draw(nn.phenotype.structure, pos, labels=node_labels, with_labels=True, node_size=500,
+                        node_color="skyblue", font_size=10, font_weight="bold", arrows=True, ax=ax_nn)
+                labels = nx.get_edge_attributes(
+                    nn.phenotype.structure, 'weight')
+                nx.draw_networkx_edge_labels(
+                    nn.phenotype.structure, pos, edge_labels=labels, ax=ax_nn)
+                ax_nn.set_title(f'Neural Network\nGeneration: {generation}, In: {
+                                run['inputs']}, Iteration: {run['iteration']}', fontsize=14)
 
         plt.tight_layout()
         plt.subplots_adjust(hspace=0.8)
         if save:
             self.save_file_with_name('innovative_networks_')
+        plt.show()
+
+    def plot_multiple_times(self, json_file_paths, save=False):
+        """
+        Plot the time taken for each generation for multiple JSON files.
+
+        Args:
+            json_file_paths (list): A list of paths to JSON files.
+            save (bool, optional): Whether to save the plot. Default is False.
+        """
+        if not isinstance(json_file_paths, list):
+            raise ValueError("json_file_paths should be a list of file paths.")
+
+        for json_file_path in json_file_paths:
+            if not os.path.exists(json_file_path):
+                raise FileNotFoundError(
+                    f"The file {json_file_path} does not exist.")
+
+        for json_file_path in json_file_paths:
+            with open(json_file_path, 'r') as file:
+                data = json.load(file)
+
+            scores = {}
+
+            for run in data:
+                inputs = run['inputs']
+                iteration = run['iteration']
+
+                if iteration not in scores:
+                    scores[iteration] = []
+
+                for generation in run['log']:
+                    time = generation['generation_time']
+                    scores[iteration].append(time)
+
+            max_length = max(len(fitness_values)
+                             for fitness_values in scores.values())
+            for iteration in scores:
+                last_value = scores[iteration][-1]
+                scores[iteration].extend(
+                    [last_value] * (max_length - len(scores[iteration])))
+
+            avg_time = [sum(values[i] for values in scores.values()) / len(scores)
+                        for i in range(max_length)]
+
+            plt.plot(avg_time, label=os.path.basename(json_file_path))
+
+        plt.xlabel('Generation')
+        plt.ylabel('Average Time')
+        plt.title('Average Time per Generation')
+        plt.legend()
+
+        if save:
+            self.save_file_with_name('runs_')
+        plt.show()
+
+    def plot_multiple_avg_fitness(self, json_file_paths, save=False):
+        """
+        Plot the average fitness over generations with standard deviation for multiple JSON files.
+
+        Args:
+            json_file_paths (list): A list of paths to JSON files.
+            save (bool, optional): Whether to save the plot. Default is False.
+        """
+        if not isinstance(json_file_paths, list):
+            raise ValueError("json_file_paths should be a list of file paths.")
+
+        for json_file_path in json_file_paths:
+            if not os.path.exists(json_file_path):
+                raise FileNotFoundError(
+                    f"The file {json_file_path} does not exist.")
+
+            with open(json_file_path, 'r') as file:
+                data = json.load(file)
+
+            scores = {}
+
+            for run in data:
+                inputs = run['inputs']
+                iteration = run['iteration']
+
+                if iteration not in scores:
+                    scores[iteration] = []
+
+                for generation in run['log']:
+                    print(generation)
+                    fitness = generation['best_score']
+                    scores[iteration].append(fitness)
+
+            max_length = max(len(fitness_values)
+                             for fitness_values in scores.values())
+            for iteration in scores:
+                last_value = scores[iteration][-1]
+                scores[iteration].extend(
+                    [last_value] * (max_length - len(scores[iteration])))
+
+            avg_fitness = [sum(fitness_values[i] for fitness_values in scores.values()) / len(scores)
+                           for i in range(max_length)]
+            std_dev = [np.std([values[i] for values in scores.values()])
+                       for i in range(max_length)]
+
+            plt.plot(avg_fitness, label=os.path.basename(json_file_path))
+            plt.fill_between(range(max_length),
+                             [avg_fitness[i] - std_dev[i]
+                                 for i in range(max_length)],
+                             [avg_fitness[i] + std_dev[i]
+                                 for i in range(max_length)],
+                             alpha=0.2)
+
+        plt.xlabel('Generation')
+        plt.ylabel('Fitness')
+        plt.title('Average Fitness per Generation')
+        plt.legend()
+        if save:
+            self.save_file_with_name('fitness_multiple_files_')
         plt.show()

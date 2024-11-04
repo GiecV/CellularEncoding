@@ -7,19 +7,21 @@ import json
 
 def run():
     clear_console()
-    inputs = 3
-    iterations = 10
+    inputs = [3]
+    iterations = 1
+    generations = 6
     log = []
     populations = []
 
-    log, populations = evolve_stage(
-        ins=inputs, iterations=iterations, gen=200, log=log)
+    for input in inputs:
+        log, populations = evolve_stage(
+            ins=input, iterations=iterations, gen=generations, log=log, pops=populations)
 
     save(log)
 
 
 def evolve_stage(ins, iterations, gen, log, pops=None):
-    if pops is None:
+    if pops == []:
         pops = [None] * iterations
 
     for i in range(iterations):
@@ -30,11 +32,11 @@ def evolve_stage(ins, iterations, gen, log, pops=None):
         log.append({
             'iteration': i,
             'inputs': ins,
-            'log': evolution.logs
+            'log': evolution.logs,
+            'lineage': evolution.lineage
         })
 
         pops[i] = evolution.population
-
         clear_console()
 
     return log, pops

@@ -7,7 +7,7 @@ import warnings
 from tasks.parity import compute_fitness
 
 warnings.filterwarnings("ignore")
-cpus = 128
+cpus = 12
 
 
 class Evolution:
@@ -65,7 +65,7 @@ class Evolution:
                     'best_score': best_score,
                     'generation_time': self.generation_time,
                     'individuals': [individual.json_pickle() for individual in self.population],
-                    'fitness_scores': self.fitness_scores
+                    # 'fitness_scores': self.fitness_scores
                 })
 
             print(f'{self.generation_time} s')
@@ -75,6 +75,8 @@ class Evolution:
             print('Elapsed time:', (time.time() - start_time) / 60, 'min')
             if time.time() - start_time > max_time:
                 break
+
+        self.lineage = self.get_lineage()
 
         return self.population[0], generation + 1
 
@@ -180,3 +182,26 @@ class Evolution:
                         )
                         tree.update_node(nid=node.identifier, tag=new_symbol)
         return genome
+
+    def get_lineage(self, gens_to_save=5):
+
+        def traverse_generations(data, generation_idx, individual_idx, genomes):
+
+            individual = data[generation_idx]['individuals'][individual_idx]
+            genomes.append({'generation': generation_idx,
+                            'genome': individual['genome']})
+
+            parents = individual['parents']
+            if parents is not None and generation_idx > len(data) - gens_to_save:
+                traverse_generations(
+                    data, generation_idx - 1, parents[0], genomes)
+                traverse_generations(
+                    data, generation_idx - 1, parents[1], genomes)
+
+        genomes = []
+        generations = len(self.logs)
+        traverse_generations(self.logs, generations - 1, 0, genomes)
+
+        for generation in self.logs:
+            del generation['individuals']
+        return genomes

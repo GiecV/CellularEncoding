@@ -27,7 +27,7 @@ def run():
     populations = []
 
     for i, (input, generation) in enumerate(zip(inputs, generations)):
-        stop_if_perfect = i == 0
+        # stop_if_perfect = i == 0
         log, populations, performed_generations = evolve_stage(
             ins=input, iterations=iterations, gen=generation-performed_generations[i], log=log, pops=populations, stop=stop_if_perfect)
 

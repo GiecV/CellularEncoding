@@ -19,9 +19,9 @@ def run():
         None
     """
     clear_console()
-    inputs = [3, 5]
+    inputs = [5]  # [3,5]
     iterations = 10
-    generations = [70, 150]
+    generations = [220]  # [70, 150]
     performed_generations = [0] * iterations
     log = []
     populations = []

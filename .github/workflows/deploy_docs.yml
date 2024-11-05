@@ -27,6 +27,8 @@ jobs:
         pip install scikit-learn
         pip install torch
         pip install networkx
+        pip install gym
+        pip install matplotlib
 
     - name: Build documentation
       run: |

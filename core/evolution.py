@@ -77,6 +77,7 @@ class Evolution:
         Returns:
             list: A list containing the initialized individuals in the population.
         """
+        print('Initializing population...')
         return [self.create_individual() for _ in range(self.population_size)]
 
     def create_individual(self):

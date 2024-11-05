@@ -6,10 +6,8 @@
 Cellular Encoding documentation
 ===============================
 
-Add your content using ``reStructuredText`` syntax. See the
-`reStructuredText <https://www.sphinx-doc.org/en/master/usage/restructuredtext/index.html>`_
-documentation for details.
-
+Welcome to Cellular Encoding's documentation. 
+This documentation is intended to provide a comprehensive guide to the Cellular Encoding package.
 
 .. toctree::
    :maxdepth: 2

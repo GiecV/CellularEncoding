@@ -1,4 +1,4 @@
-utils package
+Utilities package
 =============
 
 Submodules

@@ -5,6 +5,19 @@ import json
 
 
 def run():
+    """
+    Execute the evolution stages for specified input and generation configurations.
+
+    This function clears the console, sets up parameters for multiple evolution stages, and iteratively 
+    calls the `evolve_stage` function for different input and generation combinations. It logs the results 
+    of each evolution stage and saves the final log.
+
+    Args:
+        None
+
+    Returns:
+        None
+    """
     clear_console()
     inputs = [3, 5]
     iterations = 10
@@ -20,6 +33,23 @@ def run():
 
 
 def evolve_stage(ins, iterations, gen, log, pops=None):
+    """
+    Conduct a series of evolution stages for a specified number of iterations.
+
+    This function initializes the evolution process for a given number of individuals and generations, 
+    creating an instance of the Evolution class for each individual. It logs the results of each iteration 
+    and updates the population for future iterations.
+
+    Args:
+        ins (int): The number of inputs for the evolution process.
+        iterations (int): The number of iterations to perform.
+        gen (int): The number of generations for each evolution instance.
+        log (list): A list to store logs of the evolution process.
+        pops (list, optional): An optional list of populations for the iterations. Defaults to None.
+
+    Returns:
+        tuple: A tuple containing the updated log and population lists.
+    """
     if pops == []:
         pops = [None] * iterations
 
@@ -42,6 +72,19 @@ def evolve_stage(ins, iterations, gen, log, pops=None):
 
 
 def save(item):
+    """
+    Save the provided item to a JSON file with a timestamped filename.
+
+    This function creates a directory for logs if it does not already exist and writes the given item 
+    to a JSON file, naming the file with the current timestamp. This allows for organized storage of 
+    logs over time.
+
+    Args:
+        item: The data to be saved in JSON format.
+
+    Returns:
+        None
+    """
     timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
     log_filename = os.path.join('logs', f'log_{timestamp}.json')
     os.makedirs('logs', exist_ok=True)
@@ -50,6 +93,18 @@ def save(item):
 
 
 def clear_console():
+    """
+    Clear the console screen based on the operating system.
+
+    This function detects the operating system type and executes the appropriate command to clear 
+    the console screen. It helps maintain a clean output during the execution of programs.
+
+    Args:
+        None
+
+    Returns:
+        None
+    """
     if os.name == 'posix':
         os.system('clear')
     elif os.name == 'nt':

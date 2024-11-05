@@ -4,10 +4,13 @@ from treelib import Tree
 from core.genome import Genome
 from concurrent.futures import ProcessPoolExecutor
 import warnings
+import torch
+import os
 from tasks.parity import compute_fitness
 
 warnings.filterwarnings("ignore")
-cpus = 128
+cpus = os.cpu_count()
+torch.set_num_threads(1)
 
 
 class Evolution:
@@ -102,7 +105,7 @@ class Evolution:
 
         return genome
 
-    def evolve(self, info=True, max_time=2100):
+    def evolve(self, info=True, max_time=2100, stop=False):
         """
         Evolve the population over a specified number of generations.
 
@@ -145,8 +148,9 @@ class Evolution:
 
             print(f'{self.generation_time} s')
 
-            # if self.fitness_scores[0] == 1:
-            #     break
+            if stop and self.fitness_scores[0] == 1:
+                break
+
             print('Elapsed time:', (time.time() - start_time) / 60, 'min')
             if time.time() - start_time > max_time:
                 break
@@ -169,6 +173,7 @@ class Evolution:
         Returns:
             list: A list of mutated offspring generated from the current population.
         """
+        start_time = time.time()
         offspring = []
         for parent1 in self.population:
             parent2 = random.choice(self.population)
@@ -180,7 +185,10 @@ class Evolution:
             child1.update_ids()
             child2.update_ids()
             offspring.extend((child1, child2))
-        return [self.mutate(individual) for individual in offspring]
+
+        population = [self.mutate(individual) for individual in offspring]
+        # print('Evolution time:', time.time() - start_time)
+        return population
 
     def select_best(self, population):
         """
@@ -196,6 +204,7 @@ class Evolution:
         Returns:
             tuple: A tuple containing two lists: the best individuals and their corresponding fitness scores.
         """
+        start_time = time.time()
         ns = [self.inputs for _ in range(len(population))]
         with ProcessPoolExecutor(cpus) as executor:
             fitness_list = list(executor.map(compute_fitness, population, ns))
@@ -207,6 +216,7 @@ class Evolution:
             fitness for _, fitness in individuals_and_fitness[:self.population_size]]
 
         self.fitness_history.append(best_fitness_scores[0])
+        # print('Selection time:', time.time() - start_time)
         return best_individuals, best_fitness_scores
 
     def edit_population_size(self, acceptable_time=30):

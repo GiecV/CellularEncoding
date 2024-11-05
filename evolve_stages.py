@@ -22,17 +22,19 @@ def run():
     inputs = [3, 5]
     iterations = 10
     generations = [70, 150]
+    performed_generations = [0] * iterations
     log = []
     populations = []
 
-    for input, generation in zip(inputs, generations):
-        log, populations = evolve_stage(
-            ins=input, iterations=iterations, gen=generation, log=log, pops=populations)
+    for i, (input, generation) in enumerate(zip(inputs, generations)):
+        stop_if_perfect = i == 0
+        log, populations, performed_generations = evolve_stage(
+            ins=input, iterations=iterations, gen=generation-performed_generations[i], log=log, pops=populations, stop=stop_if_perfect)
 
     save(log)
 
 
-def evolve_stage(ins, iterations, gen, log, pops=None):
+def evolve_stage(ins, iterations, gen, log, pops=None, stop=False):
     """
     Conduct a series of evolution stages for a specified number of iterations.
 
@@ -53,10 +55,12 @@ def evolve_stage(ins, iterations, gen, log, pops=None):
     if pops == []:
         pops = [None] * iterations
 
+    performed_generations = []
+
     for i in range(iterations):
         print(f'Individual {i + 1} with {ins} inputs:')
         evolution = Evolution(inputs=ins, population=pops[i], generations=gen)
-        best_individual = evolution.evolve(max_time=2400)
+        best_individual = evolution.evolve(max_time=2400, stop=stop)
 
         log.append({
             'iteration': i,
@@ -65,10 +69,11 @@ def evolve_stage(ins, iterations, gen, log, pops=None):
             'lineage': evolution.lineage
         })
 
+        performed_generations.append(len(evolution.logs))
         pops[i] = evolution.population
         clear_console()
 
-    return log, pops
+    return log, pops, performed_generations
 
 
 def save(item):

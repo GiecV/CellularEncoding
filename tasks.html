@@ -48,22 +48,9 @@
 <li class="toctree-l2"><a class="reference internal" href="utils.html">utils package</a></li>
 <li class="toctree-l2 current"><a class="current reference internal" href="#">tasks package</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#submodules">Submodules</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#module-tasks.cartpole">tasks.cartpole module</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#tasks.cartpole.compute_fitness"><code class="docutils literal notranslate"><span class="pre">compute_fitness()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#tasks.cartpole.compute_fitness_growth_penalty"><code class="docutils literal notranslate"><span class="pre">compute_fitness_growth_penalty()</span></code></a></li>
-</ul>
-</li>
-<li class="toctree-l3"><a class="reference internal" href="#module-tasks.parity">tasks.parity module</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#tasks.parity.compute_fitness"><code class="docutils literal notranslate"><span class="pre">compute_fitness()</span></code></a></li>
-</ul>
-</li>
-<li class="toctree-l3"><a class="reference internal" href="#module-tasks.xor_gate">tasks.xor_gate module</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#tasks.xor_gate.compute_fitness"><code class="docutils literal notranslate"><span class="pre">compute_fitness()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#tasks.xor_gate.compute_fitness_information_formula"><code class="docutils literal notranslate"><span class="pre">compute_fitness_information_formula()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#tasks.xor_gate.compute_fitness_target"><code class="docutils literal notranslate"><span class="pre">compute_fitness_target()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#tasks.xor_gate.target_function"><code class="docutils literal notranslate"><span class="pre">target_function()</span></code></a></li>
-</ul>
-</li>
+<li class="toctree-l3"><a class="reference internal" href="#tasks-cartpole-module">tasks.cartpole module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#tasks-parity-module">tasks.parity module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#tasks-xor-gate-module">tasks.xor_gate module</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#module-tasks">Module contents</a></li>
 </ul>
 </li>
@@ -101,145 +88,14 @@
 <section id="submodules">
 <h2>Submodules<a class="headerlink" href="#submodules" title="Link to this heading"></a></h2>
 </section>
-<section id="module-tasks.cartpole">
-<span id="tasks-cartpole-module"></span><h2>tasks.cartpole module<a class="headerlink" href="#module-tasks.cartpole" title="Link to this heading"></a></h2>
-<dl class="py function">
-<dt class="sig sig-object py" id="tasks.cartpole.compute_fitness">
-<span class="sig-prename descclassname"><span class="pre">tasks.cartpole.</span></span><span class="sig-name descname"><span class="pre">compute_fitness</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">individual</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/tasks/cartpole.html#compute_fitness"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tasks.cartpole.compute_fitness" title="Link to this definition"></a></dt>
-<dd><p>Compute the fitness of an individual in the CartPole environment.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>individual</strong> – The individual whose fitness is to be computed.</p>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>The mean reward obtained over a number of trials.</p>
-</dd>
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>float</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="tasks.cartpole.compute_fitness_growth_penalty">
-<span class="sig-prename descclassname"><span class="pre">tasks.cartpole.</span></span><span class="sig-name descname"><span class="pre">compute_fitness_growth_penalty</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">individual</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">penalty</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/tasks/cartpole.html#compute_fitness_growth_penalty"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tasks.cartpole.compute_fitness_growth_penalty" title="Link to this definition"></a></dt>
-<dd><p>Compute the fitness of an individual with a growth penalty.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>individual</strong> – The individual whose fitness is to be computed.</p></li>
-<li><p><strong>penalty</strong> (<em>float</em><em>, </em><em>optional</em>) – The penalty factor for the number of nodes. Default is 0.</p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>The penalized fitness value.</p>
-</dd>
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>float</p>
-</dd>
-</dl>
-</dd></dl>
-
+<section id="tasks-cartpole-module">
+<h2>tasks.cartpole module<a class="headerlink" href="#tasks-cartpole-module" title="Link to this heading"></a></h2>
 </section>
-<section id="module-tasks.parity">
-<span id="tasks-parity-module"></span><h2>tasks.parity module<a class="headerlink" href="#module-tasks.parity" title="Link to this heading"></a></h2>
-<dl class="py function">
-<dt class="sig sig-object py" id="tasks.parity.compute_fitness">
-<span class="sig-prename descclassname"><span class="pre">tasks.parity.</span></span><span class="sig-name descname"><span class="pre">compute_fitness</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">individual</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">2</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/tasks/parity.html#compute_fitness"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tasks.parity.compute_fitness" title="Link to this definition"></a></dt>
-<dd><p>Compute the fitness of an individual in the parity problem.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>individual</strong> – The individual whose fitness is to be computed.</p></li>
-<li><p><strong>n</strong> (<em>int</em><em>, </em><em>optional</em>) – The number of binary inputs. Default is 2.</p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>The normalized mutual information score between the outputs and the targets.</p>
-</dd>
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>float</p>
-</dd>
-</dl>
-</dd></dl>
-
+<section id="tasks-parity-module">
+<h2>tasks.parity module<a class="headerlink" href="#tasks-parity-module" title="Link to this heading"></a></h2>
 </section>
-<section id="module-tasks.xor_gate">
-<span id="tasks-xor-gate-module"></span><h2>tasks.xor_gate module<a class="headerlink" href="#module-tasks.xor_gate" title="Link to this heading"></a></h2>
-<dl class="py function">
-<dt class="sig sig-object py" id="tasks.xor_gate.compute_fitness">
-<span class="sig-prename descclassname"><span class="pre">tasks.xor_gate.</span></span><span class="sig-name descname"><span class="pre">compute_fitness</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">individual</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/tasks/xor_gate.html#compute_fitness"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tasks.xor_gate.compute_fitness" title="Link to this definition"></a></dt>
-<dd><p>Compute the fitness of an individual for the XOR problem.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>individual</strong> – The individual whose fitness is to be computed.</p>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>The fitness value, which is the proportion of correct outputs.</p>
-</dd>
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>float</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="tasks.xor_gate.compute_fitness_information_formula">
-<span class="sig-prename descclassname"><span class="pre">tasks.xor_gate.</span></span><span class="sig-name descname"><span class="pre">compute_fitness_information_formula</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">individual</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/tasks/xor_gate.html#compute_fitness_information_formula"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tasks.xor_gate.compute_fitness_information_formula" title="Link to this definition"></a></dt>
-<dd><p>Compute the fitness of an individual using an information-theoretic formula.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>individual</strong> – The individual whose fitness is to be computed.</p>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>The fitness value based on mutual information and neural network complexity.</p>
-</dd>
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>float</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="tasks.xor_gate.compute_fitness_target">
-<span class="sig-prename descclassname"><span class="pre">tasks.xor_gate.</span></span><span class="sig-name descname"><span class="pre">compute_fitness_target</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">individual</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">print_info</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/tasks/xor_gate.html#compute_fitness_target"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tasks.xor_gate.compute_fitness_target" title="Link to this definition"></a></dt>
-<dd><p>Compute the fitness of an individual with an option to print detailed information.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>individual</strong> – The individual whose fitness is to be computed.</p></li>
-<li><p><strong>print_info</strong> (<em>bool</em><em>, </em><em>optional</em>) – Whether to print detailed information. Default is False.</p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>The fitness value.</p>
-</dd>
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>float</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="tasks.xor_gate.target_function">
-<span class="sig-prename descclassname"><span class="pre">tasks.xor_gate.</span></span><span class="sig-name descname"><span class="pre">target_function</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/tasks/xor_gate.html#target_function"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tasks.xor_gate.target_function" title="Link to this definition"></a></dt>
-<dd><p>Compute the XOR of two binary inputs.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>x</strong> (<em>int</em>) – The first binary input.</p></li>
-<li><p><strong>y</strong> (<em>int</em>) – The second binary input.</p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>The XOR of the inputs.</p>
-</dd>
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>int</p>
-</dd>
-</dl>
-</dd></dl>
-
+<section id="tasks-xor-gate-module">
+<h2>tasks.xor_gate module<a class="headerlink" href="#tasks-xor-gate-module" title="Link to this heading"></a></h2>
 </section>
 <section id="module-tasks">
 <span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-tasks" title="Link to this heading"></a></h2>

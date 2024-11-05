@@ -13,7 +13,8 @@ import numpy as np
 
 class Visualizer:
 
-    def __init__(self, inputs=2, outputs=1):
+    @classmethod
+    def __init__(cls, inputs=2, outputs=1):
         """
         Initialize the Visualizer with the number of inputs and outputs.
 
@@ -21,10 +22,11 @@ class Visualizer:
             inputs (int, optional): The number of input nodes. Default is 2.
             outputs (int, optional): The number of output nodes. Default is 1.
         """
-        self.inputs = inputs
-        self.outputs = outputs
+        cls.inputs = inputs
+        cls.outputs = outputs
 
-    def _calculate_node_positions(self, structure):
+    @classmethod
+    def _calculate_node_positions(cls, structure):
         """
         Calculate the positions of nodes in the neural network graph.
 
@@ -63,7 +65,8 @@ class Visualizer:
 
         return pos
 
-    def print_innovative_networks(self, innovative_individuals, save=False):
+    @classmethod
+    def print_innovative_networks(cls, innovative_individuals, save=False):
         """
         Print and optionally save the innovative neural networks.
 
@@ -80,11 +83,10 @@ class Visualizer:
 
         for idx, (individual, fitness_score) in enumerate(innovative_individuals):
             phenotype = Phenotype(individual)
-            nn = NNFromGraph(phenotype, inputs=self.inputs,
-                             outputs=self.outputs)
+            nn = NNFromGraph(phenotype, inputs=cls.inputs, outputs=cls.outputs)
 
             # Neural network plot (col 0)
-            pos = self._calculate_node_positions(nn.phenotype.structure)
+            pos = cls._calculate_node_positions(nn.phenotype.structure)
             node_labels = {node: f"{node}[{nn.phenotype.structure.nodes[node]['threshold']}]"
                            for node in nn.phenotype.structure.nodes}
 
@@ -105,7 +107,7 @@ class Visualizer:
                 node_labels = {}
 
                 # Convert treelib tree to NetworkX graph
-                tree_graph = self.treelib_to_nx(tree, node_labels)
+                tree_graph = cls.treelib_to_nx(tree, node_labels)
 
                 # Layout for tree graph
                 tree_pos = nx.bfs_layout(
@@ -122,9 +124,10 @@ class Visualizer:
         plt.tight_layout()
         plt.subplots_adjust(hspace=0.8)
         if save:
-            self.save_file_with_name('innovative_networks_')
+            cls.save_file_with_name('innovative_networks_')
         plt.show()
 
+    @classmethod
     def treelib_to_nx(self, tree, node_labels):
         """
         Convert a tree structure from treelib to a NetworkX directed graph.
@@ -155,7 +158,8 @@ class Visualizer:
             graph.add_node(root_node.identifier)
         return graph
 
-    def print_population(self, population):
+    @classmethod
+    def print_population(cls, population):
         """
         Print the details of each individual in the population.
 
@@ -165,7 +169,8 @@ class Visualizer:
         for individual in population:
             individual.print()
 
-    def plot_fitness_history(self, history, save=False):
+    @classmethod
+    def plot_fitness_history(cls, history, save=False):
         """
         Plot the fitness history over generations.
 
@@ -180,10 +185,11 @@ class Visualizer:
         plt.title('Fitness History Over Generations')
         plt.grid(True)
         if save:
-            self.save_file_with_name('fitness_history_')
+            cls.save_file_with_name('fitness_history_')
         plt.show()
 
-    def print_phenotype(self, phenotype, save=False):
+    @classmethod
+    def print_phenotype(cls, phenotype, save=False):
         """
         Print and optionally save the phenotype structure.
 
@@ -192,7 +198,7 @@ class Visualizer:
             save (bool, optional): Whether to save the plot. Default is False.
         """
         try:
-            pos = self._calculate_node_positions(phenotype.structure)
+            pos = cls._calculate_node_positions(phenotype.structure)
 
             node_labels = {node: f"{node}[{phenotype.structure.nodes[node]['threshold']}]"
                            for node in phenotype.structure.nodes}
@@ -212,13 +218,14 @@ class Visualizer:
             nx.draw_networkx_edge_labels(
                 phenotype.structure, pos, edge_labels=labels)
             if save:
-                self.save_file_with_name('phenotype_')
+                cls.save_file_with_name('phenotype_')
             plt.show()
         except Exception:
             print("Cannot set positions")
-            self.print_no_position(phenotype)
+            cls.print_no_position(phenotype)
 
-    def save_file_with_name(self, name):
+    @classmethod
+    def save_file_with_name(cls, name):
         """
         Save the current plot with a given name.
 
@@ -233,7 +240,8 @@ class Visualizer:
         nx.draw(phenotype.structure, with_labels=True)
         plt.show()
 
-    def plot_all_runs(self, json_file_path, save=False):
+    @classmethod
+    def plot_all_runs(cls, json_file_path, save=False):
         """
         Plot the fitness of all runs from a JSON file.
 
@@ -274,10 +282,11 @@ class Visualizer:
         plt.legend()
 
         if save:
-            self.save_file_with_name('runs_')
+            cls.save_file_with_name('runs_')
         plt.show()
 
-    def print_lineage(self, json_path, save=False):
+    @classmethod
+    def print_lineage(cls, json_path, save=False):
         """
         Print and optionally save the innovative neural networks.
 
@@ -289,6 +298,8 @@ class Visualizer:
         with open(json_path, 'r') as file:
             json_file = json.load(file)
 
+        cols = 4  # 1 for NN + 3 for trees
+
         for run in json_file:
             json_individuals = run['lineage']
 
@@ -299,19 +310,16 @@ class Visualizer:
 
             num_individuals = len(json_individuals)
             rows = num_individuals
-            cols = 4  # 1 for NN + 3 for trees
-
             fig = plt.figure(figsize=(13, rows * 6))
             gs = GridSpec(rows, cols, figure=fig)
 
             for idx, (individual, generation) in enumerate(json_individuals):
                 phenotype = Phenotype(individual)
-                nn = NNFromGraph(phenotype, inputs=self.inputs,
-                                 outputs=self.outputs)
+                nn = NNFromGraph(phenotype, inputs=cls.inputs,
+                                 outputs=cls.outputs)
 
                 # Neural network plot (col 0)
-                pos = self._calculate_node_positions(
-                    nn.phenotype.structure)
+                pos = cls._calculate_node_positions(nn.phenotype.structure)
                 node_labels = {node: f"{node}[{nn.phenotype.structure.nodes[node]['threshold']}]"
                                for node in nn.phenotype.structure.nodes}
 
@@ -332,7 +340,7 @@ class Visualizer:
                     node_labels = {}
 
                     # Convert treelib tree to NetworkX graph
-                    tree_graph = self.treelib_to_nx(tree, node_labels)
+                    tree_graph = cls.treelib_to_nx(tree, node_labels)
 
                     # Layout for tree graph
                     tree_pos = nx.bfs_layout(
@@ -349,10 +357,11 @@ class Visualizer:
         plt.tight_layout()
         plt.subplots_adjust(hspace=0.8)
         if save:
-            self.save_file_with_name('innovative_networks_')
+            cls.save_file_with_name('innovative_networks_')
         plt.show()
 
-    def plot_times(self, json_file_paths, save=False):
+    @classmethod
+    def plot_times(cls, json_file_paths, save=False):
         """
         Plot the time taken for each generation for multiple JSON files.
 
@@ -411,10 +420,11 @@ class Visualizer:
         plt.legend()
 
         if save:
-            self.save_file_with_name('runs_')
+            cls.save_file_with_name('runs_')
         plt.show()
 
-    def plot_avg_fitness(self, json_file_paths, save=False):
+    @classmethod
+    def plot_avg_fitness(cls, json_file_paths, save=False):
         """
         Plot the average fitness over generations with standard deviation for multiple JSON files.
 
@@ -471,5 +481,5 @@ class Visualizer:
         plt.title('Average Fitness per Generation')
         plt.legend()
         if save:
-            self.save_file_with_name('fitness_multiple_files_')
+            cls.save_file_with_name('fitness_multiple_files_')
         plt.show()

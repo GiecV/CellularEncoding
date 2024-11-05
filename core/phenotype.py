@@ -451,8 +451,13 @@ class Phenotype:
             raise ValueError("Structure already expanded")
 
         else:
-            predecessors = list(self.structure.predecessors("O"))
-            successors = list(self.structure.successors("I"))
+            predecessors = self.structure.predecessors("O")
+            successors = self.structure.successors("I")
+
+            # if not isinstance(predecessors, list):
+            #     predecessors = list(predecessors)
+            # if not isinstance(successors, list):
+            #     successors = list(successors)
 
             for i in range(inputs):
                 node_name = f"I{i}"
@@ -474,7 +479,7 @@ class Phenotype:
             self.structure.remove_node("O")
             self.structure.remove_node("I")
 
-            while self.development_finished() == False:
+            while not self.development_finished():
                 self.develop()
 
             predecessors = list(self.structure.predecessors("O0"))

@@ -88,6 +88,7 @@
  | <a href="#S"><strong>S</strong></a>
  | <a href="#T"><strong>T</strong></a>
  | <a href="#U"><strong>U</strong></a>
+ | <a href="#V"><strong>V</strong></a>
  
 </div>
 <h2 id="A">A</h2>
@@ -111,12 +112,16 @@
 </li>
       <li><a href="core.html#core.phenotype.Phenotype.change_weight">change_weight() (core.phenotype.Phenotype method)</a>
 </li>
-      <li><a href="tasks.html#tasks.parity.compute_fitness">compute_fitness() (in module tasks.parity)</a>
+      <li><a href="tasks.html#tasks.cartpole.compute_fitness">compute_fitness() (in module tasks.cartpole)</a>
 
       <ul>
+        <li><a href="tasks.html#tasks.parity.compute_fitness">(in module tasks.parity)</a>
+</li>
         <li><a href="tasks.html#tasks.xor_gate.compute_fitness">(in module tasks.xor_gate)</a>
 </li>
       </ul></li>
+      <li><a href="tasks.html#tasks.cartpole.compute_fitness_growth_penalty">compute_fitness_growth_penalty() (in module tasks.cartpole)</a>
+</li>
       <li><a href="tasks.html#tasks.xor_gate.compute_fitness_information_formula">compute_fitness_information_formula() (in module tasks.xor_gate)</a>
 </li>
       <li><a href="tasks.html#tasks.xor_gate.compute_fitness_target">compute_fitness_target() (in module tasks.xor_gate)</a>
@@ -318,6 +323,8 @@
 </li>
         <li><a href="tasks.html#module-tasks">tasks</a>
 </li>
+        <li><a href="tasks.html#module-tasks.cartpole">tasks.cartpole</a>
+</li>
         <li><a href="tasks.html#module-tasks.parity">tasks.parity</a>
 </li>
         <li><a href="tasks.html#module-tasks.xor_gate">tasks.xor_gate</a>
@@ -325,6 +332,8 @@
         <li><a href="utils.html#module-utils">utils</a>
 </li>
         <li><a href="utils.html#module-utils.counter">utils.counter</a>
+</li>
+        <li><a href="utils.html#module-utils.visualizer">utils.visualizer</a>
 </li>
       </ul></li>
   </ul></td>
@@ -361,11 +370,29 @@
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="core.html#core.phenotype.Phenotype.perform_operation">perform_operation() (core.phenotype.Phenotype method)</a>
 </li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="core.html#core.phenotype.Phenotype">Phenotype (class in core.phenotype)</a>
 </li>
+      <li><a href="utils.html#utils.visualizer.Visualizer.plot_all_runs">plot_all_runs() (utils.visualizer.Visualizer class method)</a>
+</li>
+      <li><a href="utils.html#utils.visualizer.Visualizer.plot_avg_fitness">plot_avg_fitness() (utils.visualizer.Visualizer class method)</a>
+</li>
+      <li><a href="utils.html#utils.visualizer.Visualizer.plot_fitness_history">plot_fitness_history() (utils.visualizer.Visualizer class method)</a>
+</li>
+      <li><a href="utils.html#utils.visualizer.Visualizer.plot_times">plot_times() (utils.visualizer.Visualizer class method)</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="core.html#core.genome.Genome.print">print() (core.genome.Genome method)</a>
+</li>
+      <li><a href="utils.html#utils.visualizer.Visualizer.print_innovative_networks">print_innovative_networks() (utils.visualizer.Visualizer class method)</a>
+</li>
+      <li><a href="utils.html#utils.visualizer.Visualizer.print_lineage">print_lineage() (utils.visualizer.Visualizer class method)</a>
+</li>
+      <li><a href="utils.html#utils.visualizer.Visualizer.print_no_position">print_no_position() (utils.visualizer.Visualizer method)</a>
+</li>
+      <li><a href="utils.html#utils.visualizer.Visualizer.print_phenotype">print_phenotype() (utils.visualizer.Visualizer class method)</a>
+</li>
+      <li><a href="utils.html#utils.visualizer.Visualizer.print_population">print_population() (utils.visualizer.Visualizer class method)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -381,6 +408,8 @@
 <h2 id="S">S</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="utils.html#utils.visualizer.Visualizer.save_file_with_name">save_file_with_name() (utils.visualizer.Visualizer class method)</a>
+</li>
       <li><a href="core.html#core.evolution.Evolution.select_best">select_best() (core.evolution.Evolution method)</a>
 </li>
       <li><a href="core.html#core.phenotype.Phenotype.split">split() (core.phenotype.Phenotype method)</a>
@@ -413,14 +442,21 @@
 </li>
       </ul></li>
       <li>
+    tasks.cartpole
+
+      <ul>
+        <li><a href="tasks.html#module-tasks.cartpole">module</a>
+</li>
+      </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li>
     tasks.parity
 
       <ul>
         <li><a href="tasks.html#module-tasks.parity">module</a>
 </li>
       </ul></li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li>
     tasks.xor_gate
 
@@ -429,6 +465,8 @@
 </li>
       </ul></li>
       <li><a href="core.html#core.genome.Genome.TERMINAL_SYMBOLS">TERMINAL_SYMBOLS (core.genome.Genome attribute)</a>
+</li>
+      <li><a href="utils.html#utils.visualizer.Visualizer.treelib_to_nx">treelib_to_nx() (utils.visualizer.Visualizer class method)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -454,6 +492,21 @@
         <li><a href="utils.html#module-utils.counter">module</a>
 </li>
       </ul></li>
+      <li>
+    utils.visualizer
+
+      <ul>
+        <li><a href="utils.html#module-utils.visualizer">module</a>
+</li>
+      </ul></li>
+  </ul></td>
+</tr></table>
+
+<h2 id="V">V</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="utils.html#utils.visualizer.Visualizer">Visualizer (class in utils.visualizer)</a>
+</li>
   </ul></td>
 </tr></table>
 

@@ -52,7 +52,10 @@
 <li class="toctree-l4"><a class="reference internal" href="#utils.counter.GlobalCounter"><code class="docutils literal notranslate"><span class="pre">GlobalCounter</span></code></a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="#utils-visualizer-module">utils.visualizer module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#module-utils.visualizer">utils.visualizer module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#utils.visualizer.Visualizer"><code class="docutils literal notranslate"><span class="pre">Visualizer</span></code></a></li>
+</ul>
+</li>
 <li class="toctree-l3"><a class="reference internal" href="#module-utils">Module contents</a></li>
 </ul>
 </li>
@@ -128,8 +131,162 @@
 </dd></dl>
 
 </section>
-<section id="utils-visualizer-module">
-<h2>utils.visualizer module<a class="headerlink" href="#utils-visualizer-module" title="Link to this heading"></a></h2>
+<section id="module-utils.visualizer">
+<span id="utils-visualizer-module"></span><h2>utils.visualizer module<a class="headerlink" href="#module-utils.visualizer" title="Link to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="utils.visualizer.Visualizer">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">utils.visualizer.</span></span><span class="sig-name descname"><span class="pre">Visualizer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">inputs</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">outputs</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/utils/visualizer.html#Visualizer"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#utils.visualizer.Visualizer" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="utils.visualizer.Visualizer.plot_all_runs">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">plot_all_runs</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">json_file_path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">save</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/utils/visualizer.html#Visualizer.plot_all_runs"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#utils.visualizer.Visualizer.plot_all_runs" title="Link to this definition"></a></dt>
+<dd><p>Plot the fitness of all runs from a JSON file.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>json_file_path</strong> (<em>str</em>) – The path to the JSON file containing the run data.</p></li>
+<li><p><strong>save</strong> (<em>bool</em><em>, </em><em>optional</em>) – Whether to save the plot. Default is False.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>FileNotFoundError</strong> – If the JSON file does not exist.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="utils.visualizer.Visualizer.plot_avg_fitness">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">plot_avg_fitness</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">json_file_paths</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">save</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/utils/visualizer.html#Visualizer.plot_avg_fitness"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#utils.visualizer.Visualizer.plot_avg_fitness" title="Link to this definition"></a></dt>
+<dd><p>Plot the average fitness over generations with standard deviation for multiple JSON files.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>json_file_paths</strong> (<em>list</em>) – A list of paths to JSON files.</p></li>
+<li><p><strong>save</strong> (<em>bool</em><em>, </em><em>optional</em>) – Whether to save the plot. Default is False.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="utils.visualizer.Visualizer.plot_fitness_history">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">plot_fitness_history</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">history</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">save</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/utils/visualizer.html#Visualizer.plot_fitness_history"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#utils.visualizer.Visualizer.plot_fitness_history" title="Link to this definition"></a></dt>
+<dd><p>Plot the fitness history over generations.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>history</strong> (<em>list</em>) – A list of fitness values over generations.</p></li>
+<li><p><strong>save</strong> (<em>bool</em><em>, </em><em>optional</em>) – Whether to save the plot. Default is False.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="utils.visualizer.Visualizer.plot_times">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">plot_times</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">json_file_paths</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">save</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/utils/visualizer.html#Visualizer.plot_times"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#utils.visualizer.Visualizer.plot_times" title="Link to this definition"></a></dt>
+<dd><p>Plot the time taken for each generation for multiple JSON files.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>json_file_paths</strong> (<em>list</em>) – A list of paths to JSON files.</p></li>
+<li><p><strong>save</strong> (<em>bool</em><em>, </em><em>optional</em>) – Whether to save the plot. Default is False.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="utils.visualizer.Visualizer.print_innovative_networks">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">print_innovative_networks</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">innovative_individuals</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">save</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/utils/visualizer.html#Visualizer.print_innovative_networks"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#utils.visualizer.Visualizer.print_innovative_networks" title="Link to this definition"></a></dt>
+<dd><p>Print and optionally save the innovative neural networks.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>innovative_individuals</strong> (<em>list</em>) – A list of innovative individuals.</p></li>
+<li><p><strong>save</strong> (<em>bool</em><em>, </em><em>optional</em>) – Whether to save the plots. Default is False.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="utils.visualizer.Visualizer.print_lineage">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">print_lineage</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">json_path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">save</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/utils/visualizer.html#Visualizer.print_lineage"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#utils.visualizer.Visualizer.print_lineage" title="Link to this definition"></a></dt>
+<dd><p>Print and optionally save the innovative neural networks.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>innovative_individuals</strong> (<em>list</em>) – A list of innovative individuals.</p></li>
+<li><p><strong>save</strong> (<em>bool</em><em>, </em><em>optional</em>) – Whether to save the plots. Default is False.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="utils.visualizer.Visualizer.print_no_position">
+<span class="sig-name descname"><span class="pre">print_no_position</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">phenotype</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/utils/visualizer.html#Visualizer.print_no_position"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#utils.visualizer.Visualizer.print_no_position" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="utils.visualizer.Visualizer.print_phenotype">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">print_phenotype</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">phenotype</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">save</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/utils/visualizer.html#Visualizer.print_phenotype"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#utils.visualizer.Visualizer.print_phenotype" title="Link to this definition"></a></dt>
+<dd><p>Print and optionally save the phenotype structure.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>phenotype</strong> (<a class="reference internal" href="core.html#core.phenotype.Phenotype" title="core.phenotype.Phenotype"><em>Phenotype</em></a>) – The phenotype to print.</p></li>
+<li><p><strong>save</strong> (<em>bool</em><em>, </em><em>optional</em>) – Whether to save the plot. Default is False.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="utils.visualizer.Visualizer.print_population">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">print_population</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">population</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/utils/visualizer.html#Visualizer.print_population"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#utils.visualizer.Visualizer.print_population" title="Link to this definition"></a></dt>
+<dd><p>Print the details of each individual in the population.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>population</strong> (<em>list</em>) – A list of individuals in the population.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="utils.visualizer.Visualizer.save_file_with_name">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">save_file_with_name</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/utils/visualizer.html#Visualizer.save_file_with_name"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#utils.visualizer.Visualizer.save_file_with_name" title="Link to this definition"></a></dt>
+<dd><p>Save the current plot with a given name.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>name</strong> (<em>str</em>) – The base name for the file to save.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="utils.visualizer.Visualizer.treelib_to_nx">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">treelib_to_nx</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tree</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">node_labels</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/utils/visualizer.html#Visualizer.treelib_to_nx"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#utils.visualizer.Visualizer.treelib_to_nx" title="Link to this definition"></a></dt>
+<dd><p>Convert a tree structure from treelib to a NetworkX directed graph.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>tree</strong> (<em>treelib.Tree</em>) – The tree structure to convert.</p></li>
+<li><p><strong>node_labels</strong> (<em>dict</em>) – A dictionary to store node labels.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The converted directed graph.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>networkx.DiGraph</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
 </section>
 <section id="module-utils">
 <span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-utils" title="Link to this heading"></a></h2>

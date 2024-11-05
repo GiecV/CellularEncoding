@@ -33,7 +33,7 @@ This work is heavily inspired by the following foundational papers:
 
 ## Documentation
 
-For detailed documentation, please refer to the [documentation.md](documentation.md) file.
+For detailed documentation, please refer to the [documentation site on Github Pages](https://giecv.github.io/cellularencoding/)
 
 ## Acknowledgments
 

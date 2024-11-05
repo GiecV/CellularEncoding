@@ -23,7 +23,8 @@ class Genome:
         """
         Initializes a genome with a specified number of trees or uses provided trees.
 
-        This constructor sets up the genome's tree structure. If no trees are provided, it creates a default set of trees, each initialized with a single gene node.
+        This constructor sets up the genome's tree structure. 
+        If no trees are provided, it creates a default set of trees, each initialized with a single gene node.
 
         Args:
             trees (list, optional): A list of trees to initialize the genome with. Defaults to None.
@@ -106,7 +107,7 @@ class Genome:
         Prints the structure of the genome's trees at a specified level or all levels.
 
         This method displays the tree structures contained within the genome. 
-        If a specific level is provided, it prints only that level; otherwise, it prints all levels of trees.
+        If a specific level is provided, it prints only that level; otherwise, it prints all of them.
 
         Args:
             level (int, optional): The level of the tree to print. If None, all levels are printed. Defaults to None.
@@ -216,7 +217,7 @@ class Genome:
             self: The instance of the class.
 
         Returns:
-            The trees associated with the genome.
+            list: The trees associated with the genome.
         """
         return self._trees[level]
 
@@ -235,23 +236,6 @@ class Genome:
             node_ids = [node.identifier for node in tree.all_nodes_itr()]
             for node_id in node_ids:
                 tree.update_node(node_id, identifier=GlobalCounter.next())
-
-    def json(self):
-        """
-        Converts the genome structure into a JSON-serializable format.
-
-        This method prepares the genome data for serialization by converting each tree into a JSON representation while excluding detailed node data. 
-        It also includes the parent information, making it suitable for storage or transmission in a structured format.
-
-        Returns:
-            dict: A dictionary containing the JSON representation of the genome and parent information.
-
-        """
-
-        return {
-            "genome": [tree.to_json(with_data=False) for tree in self._trees],
-            "parents": self.parents
-        }
 
     def json_pickle(self):
         """

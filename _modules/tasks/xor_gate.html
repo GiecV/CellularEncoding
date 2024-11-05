@@ -1,0 +1,262 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>tasks.xor_gate &mdash; Cellular Encoding 0.1.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../_static/documentation_options.js?v=01f34227"></script>
+      <script src="../../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            Cellular Encoding
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../modules.html">core</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">Cellular Encoding</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">tasks.xor_gate</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for tasks.xor_gate</h1><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">sklearn.metrics</span> <span class="kn">import</span> <span class="n">mutual_info_score</span>
+<span class="kn">from</span> <span class="nn">core.genome</span> <span class="kn">import</span> <span class="n">Genome</span>
+<span class="kn">from</span> <span class="nn">core.phenotype</span> <span class="kn">import</span> <span class="n">Phenotype</span>
+<span class="kn">from</span> <span class="nn">core.neural_network_from_graph</span> <span class="kn">import</span> <span class="n">NNFromGraph</span>
+<span class="kn">import</span> <span class="nn">torch</span>
+
+
+<div class="viewcode-block" id="target_function">
+<a class="viewcode-back" href="../../tasks.html#tasks.xor_gate.target_function">[docs]</a>
+<span class="k">def</span> <span class="nf">target_function</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Compute the XOR of two binary inputs.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        x (int): The first binary input.</span>
+<span class="sd">        y (int): The second binary input.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        int: The XOR of the inputs.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">x</span> <span class="o">^</span> <span class="n">y</span></div>
+
+
+
+<div class="viewcode-block" id="compute_fitness">
+<a class="viewcode-back" href="../../tasks.html#tasks.xor_gate.compute_fitness">[docs]</a>
+<span class="k">def</span> <span class="nf">compute_fitness</span><span class="p">(</span><span class="n">individual</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Compute the fitness of an individual for the XOR problem.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        individual: The individual whose fitness is to be computed.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        float: The fitness value, which is the proportion of correct outputs.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">p</span> <span class="o">=</span> <span class="n">Phenotype</span><span class="p">(</span><span class="n">individual</span><span class="p">)</span>
+    <span class="n">nn</span> <span class="o">=</span> <span class="n">NNFromGraph</span><span class="p">(</span><span class="n">p</span><span class="p">)</span>
+    <span class="n">inputs</span> <span class="o">=</span> <span class="p">[[</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">]</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span> <span class="k">for</span> <span class="n">y</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">2</span><span class="p">)]</span>
+    <span class="n">targets</span> <span class="o">=</span> <span class="p">[</span><span class="n">target_function</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="ow">in</span> <span class="n">inputs</span><span class="p">]</span>
+    <span class="n">outputs</span> <span class="o">=</span> <span class="p">[</span><span class="n">nn</span><span class="o">.</span><span class="n">forward</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">([</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">])</span><span class="o">.</span><span class="n">float</span><span class="p">())</span><span class="o">.</span><span class="n">item</span><span class="p">()</span> <span class="k">for</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="ow">in</span> <span class="n">inputs</span><span class="p">]</span>
+
+    <span class="n">fitness_outputs</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="n">outputs</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">==</span> <span class="n">targets</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">outputs</span><span class="p">)))</span>
+    <span class="k">return</span> <span class="n">fitness_outputs</span> <span class="o">/</span> <span class="mi">4</span></div>
+
+
+
+<div class="viewcode-block" id="compute_fitness_information_formula">
+<a class="viewcode-back" href="../../tasks.html#tasks.xor_gate.compute_fitness_information_formula">[docs]</a>
+<span class="k">def</span> <span class="nf">compute_fitness_information_formula</span><span class="p">(</span><span class="n">individual</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Compute the fitness of an individual using an information-theoretic formula.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        individual: The individual whose fitness is to be computed.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        float: The fitness value based on mutual information and neural network complexity.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">p</span> <span class="o">=</span> <span class="n">Phenotype</span><span class="p">(</span><span class="n">individual</span><span class="p">)</span>
+    <span class="n">nn</span> <span class="o">=</span> <span class="n">NNFromGraph</span><span class="p">(</span><span class="n">p</span><span class="p">)</span>
+
+    <span class="n">inputs</span> <span class="o">=</span> <span class="p">[[</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">]</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span> <span class="k">for</span> <span class="n">y</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">2</span><span class="p">)]</span>
+    <span class="n">targets</span> <span class="o">=</span> <span class="p">[</span><span class="n">target_function</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="ow">in</span> <span class="n">inputs</span><span class="p">]</span>
+    <span class="n">outputs</span> <span class="o">=</span> <span class="p">[</span><span class="n">nn</span><span class="o">.</span><span class="n">forward</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span>
+        <span class="p">[</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">])</span><span class="o">.</span><span class="n">float</span><span class="p">())</span><span class="o">.</span><span class="n">item</span><span class="p">()</span> <span class="k">for</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="ow">in</span> <span class="n">inputs</span><span class="p">]</span>
+
+    <span class="n">outputs</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span> <span class="k">if</span> <span class="n">x</span> <span class="o">&gt;</span> <span class="mf">0.5</span> <span class="k">else</span> <span class="mi">0</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">outputs</span><span class="p">]</span>
+
+    <span class="n">mutual_info</span> <span class="o">=</span> <span class="n">mutual_info_score</span><span class="p">(</span><span class="n">targets</span><span class="p">,</span> <span class="n">outputs</span><span class="p">)</span>
+    <span class="n">target_info</span> <span class="o">=</span> <span class="n">mutual_info_score</span><span class="p">(</span><span class="n">targets</span><span class="p">,</span> <span class="n">targets</span><span class="p">)</span>
+
+    <span class="n">fitness</span> <span class="o">=</span> <span class="mf">0.85</span> <span class="o">*</span> <span class="n">mutual_info</span> <span class="o">/</span> <span class="n">target_info</span> <span class="o">+</span> <span class="mf">0.15</span> <span class="o">*</span> <span class="n">nn</span><span class="o">.</span><span class="n">t</span>
+    <span class="n">fitness</span> <span class="o">=</span> <span class="n">individual</span><span class="o">.</span><span class="n">t</span>
+    <span class="k">return</span> <span class="n">fitness</span></div>
+
+
+
+<div class="viewcode-block" id="compute_fitness_target">
+<a class="viewcode-back" href="../../tasks.html#tasks.xor_gate.compute_fitness_target">[docs]</a>
+<span class="k">def</span> <span class="nf">compute_fitness_target</span><span class="p">(</span><span class="n">individual</span><span class="p">,</span> <span class="n">print_info</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Compute the fitness of an individual with an option to print detailed information.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        individual: The individual whose fitness is to be computed.</span>
+<span class="sd">        print_info (bool, optional): Whether to print detailed information. Default is False.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        float: The fitness value.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">target</span> <span class="o">=</span> <span class="n">Genome</span><span class="p">()</span>
+    <span class="n">root</span> <span class="o">=</span> <span class="n">target</span><span class="o">.</span><span class="n">get_tree</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">root</span>
+    <span class="n">target</span><span class="o">.</span><span class="n">change_symbol</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">root</span> <span class="o">+</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">&#39;s&#39;</span><span class="p">)</span>
+    <span class="n">target</span><span class="o">.</span><span class="n">change_symbol</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">root</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;p&#39;</span><span class="p">)</span>
+    <span class="n">target</span><span class="o">.</span><span class="n">change_symbol</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">root</span> <span class="o">+</span> <span class="mi">2</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">)</span>
+    <span class="n">target</span><span class="o">.</span><span class="n">change_symbol</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">root</span> <span class="o">+</span> <span class="mi">3</span><span class="p">,</span> <span class="s1">&#39;t&#39;</span><span class="p">)</span>
+    <span class="n">target</span><span class="o">.</span><span class="n">change_symbol</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">root</span> <span class="o">+</span> <span class="mi">5</span><span class="p">,</span> <span class="s1">&#39;-&#39;</span><span class="p">)</span>
+    <span class="n">target_nodes</span> <span class="o">=</span> <span class="p">[</span><span class="n">node</span><span class="o">.</span><span class="n">tag</span> <span class="k">for</span> <span class="n">node</span> <span class="ow">in</span> <span class="n">target</span><span class="o">.</span><span class="n">get_tree</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">all_nodes_itr</span><span class="p">()]</span>
+
+    <span class="n">common_tags</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">common_successors</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">individual_tree</span> <span class="o">=</span> <span class="n">individual</span><span class="o">.</span><span class="n">get_tree</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+    <span class="n">target_tree</span> <span class="o">=</span> <span class="n">target</span><span class="o">.</span><span class="n">get_tree</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">individual</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">individual</span> <span class="o">=</span> <span class="n">target</span>
+
+    <span class="n">depth1</span> <span class="o">=</span> <span class="n">individual_tree</span><span class="o">.</span><span class="n">depth</span><span class="p">()</span>
+    <span class="n">depth2</span> <span class="o">=</span> <span class="n">target_tree</span><span class="o">.</span><span class="n">depth</span><span class="p">()</span>
+
+    <span class="n">n_nodes1</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">individual_tree</span><span class="o">.</span><span class="n">all_nodes_itr</span><span class="p">()))</span>
+    <span class="n">n_nodes2</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">target_tree</span><span class="o">.</span><span class="n">all_nodes_itr</span><span class="p">()))</span>
+
+    <span class="n">tags1</span> <span class="o">=</span> <span class="p">[</span><span class="n">node</span><span class="o">.</span><span class="n">tag</span> <span class="k">for</span> <span class="n">node</span> <span class="ow">in</span> <span class="n">individual_tree</span><span class="o">.</span><span class="n">all_nodes</span><span class="p">()]</span>
+    <span class="n">tags2</span> <span class="o">=</span> <span class="p">[</span><span class="n">node</span><span class="o">.</span><span class="n">tag</span> <span class="k">for</span> <span class="n">node</span> <span class="ow">in</span> <span class="n">target_tree</span><span class="o">.</span><span class="n">all_nodes</span><span class="p">()]</span>
+    <span class="n">tag_difference</span> <span class="o">=</span> <span class="nb">abs</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">tags1</span><span class="p">)</span> <span class="o">-</span> <span class="nb">len</span><span class="p">(</span><span class="n">tags2</span><span class="p">))</span>
+    <span class="n">target_tags</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">tags2</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">tag</span> <span class="ow">in</span> <span class="n">tags1</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">tag</span> <span class="ow">in</span> <span class="n">tags2</span><span class="p">:</span>
+            <span class="n">tags2</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">tag</span><span class="p">)</span>
+            <span class="n">common_tags</span> <span class="o">+=</span> <span class="mi">1</span>
+
+    <span class="n">successors1</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">node</span> <span class="ow">in</span> <span class="n">individual_tree</span><span class="o">.</span><span class="n">all_nodes_itr</span><span class="p">():</span>
+        <span class="n">successors</span> <span class="o">=</span> <span class="n">node</span><span class="o">.</span><span class="n">successors</span><span class="p">(</span><span class="n">individual_tree</span><span class="o">.</span><span class="n">identifier</span><span class="p">)</span>
+        <span class="n">successors_of_node</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="n">individual_tree</span><span class="o">.</span><span class="n">get_node</span><span class="p">(</span><span class="n">successor</span><span class="p">)</span><span class="o">.</span><span class="n">tag</span> <span class="k">for</span> <span class="n">successor</span> <span class="ow">in</span> <span class="n">successors</span>
+        <span class="p">]</span>
+        <span class="n">successors1</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">successors_of_node</span><span class="p">)</span>
+    <span class="n">successors2</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">node</span> <span class="ow">in</span> <span class="n">target_tree</span><span class="o">.</span><span class="n">all_nodes_itr</span><span class="p">():</span>
+        <span class="n">successors</span> <span class="o">=</span> <span class="n">node</span><span class="o">.</span><span class="n">successors</span><span class="p">(</span><span class="n">target_tree</span><span class="o">.</span><span class="n">identifier</span><span class="p">)</span>
+        <span class="n">successors_of_node</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="n">target_tree</span><span class="o">.</span><span class="n">get_node</span><span class="p">(</span><span class="n">successor</span><span class="p">)</span><span class="o">.</span><span class="n">tag</span> <span class="k">for</span> <span class="n">successor</span> <span class="ow">in</span> <span class="n">successors</span>
+        <span class="p">]</span>
+        <span class="n">successors2</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">successors_of_node</span><span class="p">)</span>
+
+    <span class="n">successors_difference</span> <span class="o">=</span> <span class="nb">abs</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">successors1</span><span class="p">)</span> <span class="o">-</span> <span class="nb">len</span><span class="p">(</span><span class="n">successors2</span><span class="p">))</span>
+    <span class="n">target_successors</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">successors2</span><span class="p">)</span>
+
+    <span class="k">for</span> <span class="n">successor</span> <span class="ow">in</span> <span class="n">successors1</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">successor</span> <span class="ow">in</span> <span class="n">successors2</span><span class="p">:</span>
+            <span class="n">successors2</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">successor</span><span class="p">)</span>
+            <span class="n">common_successors</span> <span class="o">+=</span> <span class="mi">1</span>
+
+    <span class="n">depth_similarity</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">-</span> <span class="nb">abs</span><span class="p">(</span><span class="n">depth1</span> <span class="o">-</span> <span class="n">depth2</span><span class="p">)</span> <span class="o">/</span> <span class="nb">max</span><span class="p">(</span><span class="n">depth1</span><span class="p">,</span> <span class="n">depth2</span><span class="p">)</span>
+    <span class="n">nodes_similarity</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">-</span> <span class="nb">abs</span><span class="p">(</span><span class="n">n_nodes1</span> <span class="o">-</span> <span class="n">n_nodes2</span><span class="p">)</span> <span class="o">/</span> <span class="nb">max</span><span class="p">(</span><span class="n">n_nodes1</span><span class="p">,</span> <span class="n">n_nodes2</span><span class="p">)</span>
+    <span class="n">tags_similarity</span> <span class="o">=</span> <span class="p">(</span><span class="n">common_tags</span> <span class="o">-</span> <span class="n">tag_difference</span><span class="p">)</span> <span class="o">/</span> <span class="n">target_tags</span>
+    <span class="n">successors_similarity</span> <span class="o">=</span> <span class="p">(</span><span class="n">common_successors</span> <span class="o">-</span> <span class="n">successors_difference</span><span class="p">)</span> <span class="o">/</span> <span class="n">target_successors</span>
+    <span class="n">fitness</span> <span class="o">=</span> <span class="p">(</span><span class="n">depth_similarity</span> <span class="o">+</span> <span class="n">nodes_similarity</span> <span class="o">+</span> <span class="n">tags_similarity</span> <span class="o">+</span> <span class="n">successors_similarity</span><span class="p">)</span> <span class="o">/</span> <span class="mi">4</span>
+
+    <span class="k">if</span> <span class="n">print_info</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Depth similarity: </span><span class="si">{</span><span class="n">depth_similarity</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Nodes similarity: </span><span class="si">{</span><span class="n">nodes_similarity</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Tags similarity: </span><span class="si">{</span><span class="n">tags_similarity</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Successors similarity: </span><span class="si">{</span><span class="n">successors_similarity</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Fitness: </span><span class="si">{</span><span class="n">fitness</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">fitness</span></div>
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, Giacomo Vassallo.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

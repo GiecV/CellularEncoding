@@ -286,6 +286,51 @@ class Visualizer:
         plt.show()
 
     @classmethod
+    def plot_all_times(cls, json_file_path, save=False):
+        """
+        Plot the fitness of all runs from a JSON file.
+
+        Args:
+            json_file_path (str): The path to the JSON file containing the run data.
+            save (bool, optional): Whether to save the plot. Default is False.
+
+        Raises:
+            FileNotFoundError: If the JSON file does not exist.
+        """
+        if not os.path.exists(json_file_path):
+            raise FileNotFoundError(
+                f"The file {json_file_path} does not exist.")
+
+        with open(json_file_path, 'r') as file:
+            data = json.load(file)
+
+            scores = {}
+
+            for run in data:
+                inputs = run['inputs']
+                iteration = run['iteration']
+
+                if iteration not in scores:
+                    scores[iteration] = []
+
+                for generation in run['log']:
+
+                    fitness = generation['generation_time']
+                    scores[iteration].append(fitness)
+
+        for iteration, fitness_values in scores.items():
+            plt.plot(fitness_values, label=f'Run {iteration}')
+
+        plt.xlabel('Generation')
+        plt.ylabel('Fitness')
+        plt.title('Average Time, 10 Runs')
+        plt.legend()
+
+        if save:
+            cls.save_file_with_name('runs_')
+        plt.show()
+
+    @classmethod
     def print_lineage(cls, json_path, save=False):
         """
         Print and optionally save the innovative neural networks.
@@ -397,7 +442,7 @@ class Visualizer:
             max_length = max(len(fitness_values)
                              for fitness_values in scores.values())
             for iteration in scores:
-                last_value = scores[iteration][-1]
+                last_value = sum(scores[iteration][-5:]) / 5
                 scores[iteration].extend(
                     [last_value] * (max_length - len(scores[iteration])))
 
@@ -414,6 +459,8 @@ class Visualizer:
                                  for i in range(max_length)],
                              alpha=0.2)
 
+        plt.xlim(0, max_length)
+        plt.ylim(0, 80)
         plt.xlabel('Generation')
         plt.ylabel('Average Time')
         plt.title('Average Time per Generation')
@@ -476,6 +523,8 @@ class Visualizer:
                                  for i in range(max_length)],
                              alpha=0.2)
 
+        plt.xlim(0, max_length)
+        plt.ylim(0, 1)
         plt.xlabel('Generation')
         plt.ylabel('Fitness')
         plt.title('Average Fitness per Generation')

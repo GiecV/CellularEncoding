@@ -1,46 +1,67 @@
 # Cellular Encoding Project
 
-This repository contains the work I completed during my internship at the Creative AI Lab, IT University of Copenhagen. The project focuses on **cellular encoding**, a fascinating technique for evolving neural networks, inspired by biological developmental processes.
+Welcome to the **Cellular Encoding Project**, a deep dive into evolutionary computation and neural architecture synthesis. This repository showcases work conducted during my internship at the Creative AI Lab, IT University of Copenhagen, where I explored **cellular encoding** — a fascinating method that leverages genetic principles to automatically develop neural network architectures.
 
-## Project Overview
+## 🚀 Project Overview
 
-The goal of this project is to explore and extend the concept of cellular encoding for evolving modular neural networks. The method allows for the **automatic synthesis of neural network architectures** using a cell rewriting process, much like how cells differentiate and develop in biological organisms.
+This project extends the boundaries of **cellular encoding**, allowing us to evolve modular neural networks that can adapt and scale, inspired by biological processes of cell differentiation and development. Through cellular encoding, we’re not just training a fixed neural network; we’re evolving its structure dynamically, mimicking how organisms grow and adapt in nature.
 
-### How Cellular Encoding Works
+Key objectives of this project include:
 
-In cellular encoding, a **tree of operations** is used to define how the neural network grows and evolves. Each node in the tree represents an operation, such as a neuron splitting into two or modifying its weights. These operations mimic biological cell division, allowing the structure of the neural network to develop iteratively.
+- **Automatic Synthesis of Neural Networks**: Generate network architectures that evolve and improve autonomously, adapting to the tasks they need to solve.
+- **Modularity and Scalability**: Develop neural networks that can grow more complex as the problem demands, a key advantage in handling complex, variable environments.
 
-1. **Tree Representation:** The cellular encoding process starts with a tree, where each node corresponds to a growth or modification operation on a neuron.
-2. **Neuron Splitting/Modification:** Each operation allows neurons to either split into multiple neurons or update their weights based on predefined rules.
-3. **Tree to Graph Conversion:** Once the tree has defined the growth of the network, it is transformed into a graph, where nodes represent neurons and edges represent synapses.
-4. **Graph to Neural Network:** this graph is converted into a functional neural network capable of performing tasks.
+### 🔬 How Cellular Encoding Works
 
-Currently, this network is being tested on simple tasks, such as balancing a pole in the **CartPole-v1 environment** from OpenAI's Gym, XOR, N-parity
+Cellular encoding is an elegant process that uses **evolutionary algorithms** to grow neural networks from a simple set of rules. Here's how it works:
 
-## Inspiration
+1. **Tree Representation**: Cellular encoding begins with a tree of operations. Each node represents a specific transformation, like splitting neurons or modifying weights. This tree structure lets us evolve complex architectures in a controlled, scalable way.
+   
+2. **Neuron Splitting and Modification**: Through each node operation, neurons split or alter their characteristics, echoing the biological processes of cell division and differentiation.
 
-This work is heavily inspired by the following foundational papers:
+3. **Genetic Evolution**: Using genetic algorithms, we evolve these trees across generations. The fittest architectures — those that solve tasks effectively — are selected and evolved, creating increasingly optimized neural networks.
 
-- Gruau, F. (1994). *Automatic definition of modular neural networks*. Adaptive Behavior, 3(2), 151–183.
-- Gruau, F. (1992). *Genetic synthesis of Boolean neural networks with a cell rewriting developmental process*. COGANN-92: International Workshop on Combinations of Genetic Algorithms and Neural Networks, pp. 55-74, doi: [10.1109/COGANN.1992.273948](https://doi.org/10.1109/COGANN.1992.273948).
+This process embodies the principles of natural selection, allowing neural networks to "grow" and adapt iteratively to meet the demands of various tasks.
 
-## Technologies
+## 🌱 Inspiration
 
-- Neural Networks
-- Genetic Algorithms
-- Cellular Encoding
-- OpenAI Gym (CartPole-v1)
+This project draws inspiration from seminal research on cellular encoding and developmental neural networks. Notably:
 
-## Documentation
+- Gruau, F. (1994). *Automatic Definition of Modular Neural Networks*. Adaptive Behavior, 3(2), 151–183.
+- Gruau, F. (1992). *Genetic Synthesis of Boolean Neural Networks with a Cell Rewriting Developmental Process*. COGANN-92, 55-74. [Read here](https://doi.org/10.1109/COGANN.1992.273948).
 
-For detailed documentation, please refer to the [documentation site on Github Pages](https://giecv.github.io/CellularEncoding/)
+These papers provide the theoretical backbone for cellular encoding, demonstrating its potential in creating scalable, adaptable neural networks.
 
-## Acknowledgments
+## 🛠️ Technologies
 
-I would like to thank the Creative AI Lab at ITU Copenhagen for their support and guidance throughout this project.
+The Cellular Encoding Project utilizes a variety of technologies to support the efficient evolution and analysis of neural networks:
+
+- **Neural Networks**: The core of the project, leveraging neural networks as the building blocks for evolutionary structures.
+  
+- **Genetic Algorithms**: Driving the evolutionary process, with selection, crossover, and mutation fostering adaptability and improvement over generations.
+
+- **Parallel Processing**: To make full use of available computational resources, we leverage parallel processing using Python’s `multiprocessing` library, allowing the evolutionary process to scale efficiently on both local and remote systems.
+
+- **Visualization (Matplotlib)**: Visualizations are key for understanding network growth and performance metrics. The project uses `Matplotlib` to provide graphical insights into the evolutionary process and the structure of generated networks.
+
+- **Logging with JSON**: For a transparent record of the evolutionary process, the project logs all key metrics, configurations, and outcomes in structured JSON format, making it easy to analyze or replicate experiments.
+
+- **Documentation with Sphinx**: The documentation for the Cellular Encoding Project is built with `Sphinx`, ensuring that all modules and functionalities are well-documented and accessible on [GitHub Pages](https://giecv.github.io/CellularEncoding/).
+
+- **OpenAI Gym for Reinforcement Learning Tasks**: `Gym` provides a range of environments that can be used to test the effectiveness of evolved neural networks, especially for reinforcement learning tasks. This allows the project to evaluate how well cellular encoding performs on dynamic, real-world scenarios.
+
+## 📄 Documentation
+
+Explore the [documentation site on GitHub Pages](https://giecv.github.io/CellularEncoding/), which provides:
+
+- **Core Modules**: Detailed breakdowns of the main components.
+- **Task Modules**: Descriptions of task environments used for testing and validation.
+- **Utilities**: Tools developed for the project, including visualizations for better analysis and understanding.
+
+## 🙏 Acknowledgments
+
+A special thanks to the **Creative AI Lab** at ITU Copenhagen and my mentors for their guidance and support. This project wouldn’t have been possible without the insights and feedback from my colleagues and mentors.
 
 ---
 
-Stay tuned for updates and improvements!
-
-Giacomo
+Stay tuned for ongoing improvements and new applications of cellular encoding. This project is a step toward making neural networks that don’t just learn — they evolve.

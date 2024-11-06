@@ -155,6 +155,23 @@
 </dd></dl>
 
 <dl class="py method">
+<dt class="sig sig-object py" id="utils.visualizer.Visualizer.plot_all_times">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">plot_all_times</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">json_file_path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">save</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/utils/visualizer.html#Visualizer.plot_all_times"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#utils.visualizer.Visualizer.plot_all_times" title="Link to this definition"></a></dt>
+<dd><p>Plot the fitness of all runs from a JSON file.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>json_file_path</strong> (<em>str</em>) – The path to the JSON file containing the run data.</p></li>
+<li><p><strong>save</strong> (<em>bool</em><em>, </em><em>optional</em>) – Whether to save the plot. Default is False.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>FileNotFoundError</strong> – If the JSON file does not exist.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
 <dt class="sig sig-object py" id="utils.visualizer.Visualizer.plot_avg_fitness">
 <em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">plot_avg_fitness</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">json_file_paths</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">save</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/utils/visualizer.html#Visualizer.plot_avg_fitness"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#utils.visualizer.Visualizer.plot_avg_fitness" title="Link to this definition"></a></dt>
 <dd><p>Plot the average fitness over generations with standard deviation for multiple JSON files.</p>

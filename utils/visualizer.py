@@ -278,7 +278,7 @@ class Visualizer:
 
         plt.xlabel('Generation')
         plt.ylabel('Fitness')
-        plt.title('Average Fitness, 10 Runs')
+        plt.title('Fitness, 10 Runs')
         plt.legend()
 
         if save:
@@ -322,8 +322,8 @@ class Visualizer:
             plt.plot(fitness_values, label=f'Run {iteration}')
 
         plt.xlabel('Generation')
-        plt.ylabel('Fitness')
-        plt.title('Average Time, 10 Runs')
+        plt.ylabel('Time (s)')
+        plt.title('Time, 10 Runs')
         plt.legend()
 
         if save:
@@ -331,7 +331,7 @@ class Visualizer:
         plt.show()
 
     @classmethod
-    def print_lineage(cls, json_path, save=False):
+    def save_lineage(cls, json_path, show=False):
         """
         Print and optionally save the innovative neural networks.
 
@@ -360,8 +360,8 @@ class Visualizer:
 
             for idx, (individual, generation) in enumerate(json_individuals):
                 phenotype = Phenotype(individual)
-                nn = NNFromGraph(phenotype, inputs=cls.inputs,
-                                 outputs=cls.outputs)
+                nn = NNFromGraph(phenotype, inputs=run['inputs'],
+                                 outputs=1)
 
                 # Neural network plot (col 0)
                 pos = cls._calculate_node_positions(nn.phenotype.structure)
@@ -399,11 +399,11 @@ class Visualizer:
                             font_size=10, font_weight="bold", arrows=False, ax=ax_tree)
                     ax_tree.set_title(f'Tree {tree_idx + 1}', fontsize=12)
 
-        plt.tight_layout()
-        plt.subplots_adjust(hspace=0.8)
-        if save:
+            plt.tight_layout()
+            plt.subplots_adjust(hspace=0.8)
             cls.save_file_with_name('innovative_networks_')
-        plt.show()
+            if show:
+                plt.show()
 
     @classmethod
     def plot_times(cls, json_file_paths, save=False):
@@ -462,7 +462,7 @@ class Visualizer:
         plt.xlim(0, max_length)
         plt.ylim(0, 80)
         plt.xlabel('Generation')
-        plt.ylabel('Average Time')
+        plt.ylabel('Average Time (s)')
         plt.title('Average Time per Generation')
         plt.legend()
 
@@ -523,8 +523,6 @@ class Visualizer:
                                  for i in range(max_length)],
                              alpha=0.2)
 
-        plt.xlim(0, max_length)
-        plt.ylim(0, 1)
         plt.xlabel('Generation')
         plt.ylabel('Fitness')
         plt.title('Average Fitness per Generation')

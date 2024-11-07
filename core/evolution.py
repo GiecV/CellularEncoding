@@ -207,6 +207,9 @@ class Evolution:
         ns = [self.inputs for _ in range(len(population))]
         with ProcessPoolExecutor(cpus) as executor:
             fitness_list = list(executor.map(compute_fitness, population, ns))
+            # fitness_list = list(executor.map(
+            #     self.random_number, population, ns))
+        # print('Selection time:', time.time() - start_time)
         individuals_and_fitness = sorted(
             zip(population, fitness_list), key=lambda x: x[1], reverse=True)
         best_individuals = [individual for individual,
@@ -215,7 +218,6 @@ class Evolution:
             fitness for _, fitness in individuals_and_fitness[:self.population_size]]
 
         self.fitness_history.append(best_fitness_scores[0])
-        # print('Selection time:', time.time() - start_time)
         return best_individuals, best_fitness_scores
 
     def edit_population_size(self, acceptable_time=30):
@@ -379,3 +381,6 @@ class Evolution:
         for generation in self.logs:
             del generation['individuals']
         return genomes
+
+    def random_number(self, genome, n):
+        return 0

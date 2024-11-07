@@ -2,6 +2,9 @@ from core.evolution import Evolution
 import os
 from datetime import datetime
 import json
+import torch
+
+torch.set_num_threads(1)
 
 
 def run():
@@ -19,16 +22,16 @@ def run():
         None
     """
     clear_console()
-    inputs = [6]  # [3,6]
+    inputs = [2, 3, 4, 5, 6]  # [3,6]
     iterations = 10
-    generations = [400]  # [70, 330]
+    generations = [5, 50, 100, 150, 230]  # [70, 330]
     performed_generations = [0] * iterations
     log = []
     populations = []
 
     for i, (input, generation) in enumerate(zip(inputs, generations)):
-        stop_if_perfect = i == 0
-        log, populations, performed_generations = evolve_stage(
+        stop_if_perfect = i < len(inputs) - 1
+        log, populations, performed_generations[i] = evolve_stage(
             ins=input, iterations=iterations, gen=generation-performed_generations[i], log=log, pops=populations, stop=stop_if_perfect)
 
     save(log)
@@ -60,7 +63,7 @@ def evolve_stage(ins, iterations, gen, log, pops=None, stop=False):
     for i in range(iterations):
         print(f'Individual {i + 1} with {ins} inputs:')
         evolution = Evolution(inputs=ins, population=pops[i], generations=gen)
-        best_individual = evolution.evolve(max_time=4000, stop=stop)
+        best_individual = evolution.evolve(max_time=3600, stop=stop)
 
         log.append({
             'iteration': i,

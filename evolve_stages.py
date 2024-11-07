@@ -19,9 +19,9 @@ def run():
         None
     """
     clear_console()
-    inputs = [3, 6]  # [3,5]
+    inputs = [6]  # [3,6]
     iterations = 10
-    generations = [70, 330]  # [70, 150]
+    generations = [400]  # [70, 330]
     performed_generations = [0] * iterations
     log = []
     populations = []
@@ -60,7 +60,7 @@ def evolve_stage(ins, iterations, gen, log, pops=None, stop=False):
     for i in range(iterations):
         print(f'Individual {i + 1} with {ins} inputs:')
         evolution = Evolution(inputs=ins, population=pops[i], generations=gen)
-        best_individual = evolution.evolve(max_time=3600, stop=stop)
+        best_individual = evolution.evolve(max_time=4000, stop=stop)
 
         log.append({
             'iteration': i,

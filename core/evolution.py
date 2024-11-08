@@ -186,7 +186,7 @@ class Evolution:
             offspring.extend((child1, child2))
 
         population = [self.mutate(individual) for individual in offspring]
-        print('Evolution time:', time.time() - start_time)
+        # print('Evolution time:', time.time() - start_time)
         return population
 
     def select_best(self, population):
@@ -209,7 +209,7 @@ class Evolution:
             fitness_list = list(executor.map(compute_fitness, population, ns))
             # fitness_list = list(executor.map(
             #     self.random_number, population, ns))
-        print('Selection time:', time.time() - start_time)
+        # print('Selection time:', time.time() - start_time)
         individuals_and_fitness = sorted(
             zip(population, fitness_list), key=lambda x: x[1], reverse=True)
         best_individuals = [individual for individual,

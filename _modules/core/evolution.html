@@ -270,7 +270,7 @@
             <span class="n">offspring</span><span class="o">.</span><span class="n">extend</span><span class="p">((</span><span class="n">child1</span><span class="p">,</span> <span class="n">child2</span><span class="p">))</span>
 
         <span class="n">population</span> <span class="o">=</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">mutate</span><span class="p">(</span><span class="n">individual</span><span class="p">)</span> <span class="k">for</span> <span class="n">individual</span> <span class="ow">in</span> <span class="n">offspring</span><span class="p">]</span>
-        <span class="c1"># print(&#39;Evolution time:&#39;, time.time() - start_time)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Evolution time:&#39;</span><span class="p">,</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">start_time</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">population</span></div>
 
 
@@ -296,7 +296,7 @@
             <span class="c1"># fitness_list = list(executor.map(compute_fitness, population, ns))</span>
             <span class="n">fitness_list</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">executor</span><span class="o">.</span><span class="n">map</span><span class="p">(</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">random_number</span><span class="p">,</span> <span class="n">population</span><span class="p">,</span> <span class="n">ns</span><span class="p">))</span>
-        <span class="c1"># print(&#39;Selection time:&#39;, time.time() - start_time)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Selection time:&#39;</span><span class="p">,</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">start_time</span><span class="p">)</span>
         <span class="n">individuals_and_fitness</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span>
             <span class="nb">zip</span><span class="p">(</span><span class="n">population</span><span class="p">,</span> <span class="n">fitness_list</span><span class="p">),</span> <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">reverse</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
         <span class="n">best_individuals</span> <span class="o">=</span> <span class="p">[</span><span class="n">individual</span> <span class="k">for</span> <span class="n">individual</span><span class="p">,</span>

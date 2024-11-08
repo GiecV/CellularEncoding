@@ -206,9 +206,9 @@ class Evolution:
         start_time = time.time()
         ns = [self.inputs for _ in range(len(population))]
         with ProcessPoolExecutor(cpus) as executor:
-            fitness_list = list(executor.map(compute_fitness, population, ns))
-            # fitness_list = list(executor.map(
-            #     self.random_number, population, ns))
+            # fitness_list = list(executor.map(compute_fitness, population, ns))
+            fitness_list = list(executor.map(
+                self.random_number, population, ns))
         # print('Selection time:', time.time() - start_time)
         individuals_and_fitness = sorted(
             zip(population, fitness_list), key=lambda x: x[1], reverse=True)

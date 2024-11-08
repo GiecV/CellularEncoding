@@ -235,7 +235,7 @@
             <span class="k">if</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">start_time</span> <span class="o">&gt;</span> <span class="n">max_time</span><span class="p">:</span>
                 <span class="k">break</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">lineage</span> <span class="o">=</span> <span class="kc">None</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">inputs</span> <span class="o">==</span> <span class="mi">2</span> <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_lineage</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">lineage</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_lineage</span><span class="p">()</span>
 
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">population</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">generation</span> <span class="o">+</span> <span class="mi">1</span></div>
 
@@ -470,7 +470,7 @@
                             <span class="s1">&#39;genome&#39;</span><span class="p">:</span> <span class="n">individual</span><span class="p">[</span><span class="s1">&#39;genome&#39;</span><span class="p">]})</span>
 
             <span class="n">parents</span> <span class="o">=</span> <span class="n">individual</span><span class="p">[</span><span class="s1">&#39;parents&#39;</span><span class="p">]</span>
-            <span class="k">if</span> <span class="n">parents</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">generation_idx</span> <span class="o">&gt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">)</span> <span class="o">-</span> <span class="n">gens_to_save</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">parents</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">generation_idx</span> <span class="o">&gt;</span> <span class="nb">max</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">)</span> <span class="o">-</span> <span class="n">gens_to_save</span><span class="p">,</span> <span class="mi">0</span><span class="p">):</span>
                 <span class="n">traverse_generations</span><span class="p">(</span>
                     <span class="n">data</span><span class="p">,</span> <span class="n">generation_idx</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="n">parents</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">genomes</span><span class="p">)</span>
                 <span class="n">traverse_generations</span><span class="p">(</span>

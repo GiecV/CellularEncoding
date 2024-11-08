@@ -22,9 +22,9 @@ def run():
         None
     """
     clear_console()
-    inputs = [6]  # [2, 3, 4, 5, 6]  # [3,6]
+    inputs = [2, 3, 4, 5, 6]  # [3,6]
     iterations = 10
-    generations = [5]  # [5, 50, 100, 150, 230]  # [70, 330]
+    generations = [5, 50, 100, 150, 230]  # [70, 330]
     performed_generations = [0] * iterations
     log = []
     populations = []

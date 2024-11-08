@@ -154,7 +154,7 @@ class Evolution:
             if time.time() - start_time > max_time:
                 break
 
-        self.lineage = None if self.inputs == 2 else self.get_lineage()
+        self.lineage = self.get_lineage()
 
         return self.population[0], generation + 1
 
@@ -368,7 +368,7 @@ class Evolution:
                             'genome': individual['genome']})
 
             parents = individual['parents']
-            if parents is not None and generation_idx > len(data) - gens_to_save:
+            if parents is not None and generation_idx > max(len(data) - gens_to_save, 0):
                 traverse_generations(
                     data, generation_idx - 1, parents[0], genomes)
                 traverse_generations(

@@ -174,7 +174,7 @@
 <span class="sd">            Genome: The newly created individual represented as a genome.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">genome</span> <span class="o">=</span> <span class="n">Genome</span><span class="p">()</span>
-        <span class="n">symbols</span> <span class="o">=</span> <span class="n">Genome</span><span class="o">.</span><span class="n">SYMBOLS</span>
+        <span class="n">symbols</span> <span class="o">=</span> <span class="n">genome</span><span class="o">.</span><span class="n">SYMBOLS</span>
         <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">genome</span><span class="o">.</span><span class="n">get_levels</span><span class="p">()):</span>
             <span class="n">symbol</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="n">symbols</span><span class="p">)</span>
             <span class="n">root</span> <span class="o">=</span> <span class="n">genome</span><span class="o">.</span><span class="n">get_tree</span><span class="p">(</span><span class="n">n</span><span class="p">)</span><span class="o">.</span><span class="n">root</span>
@@ -232,8 +232,8 @@
                 <span class="k">break</span>
 
             <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Elapsed time:&#39;</span><span class="p">,</span> <span class="p">(</span><span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">start_time</span><span class="p">)</span> <span class="o">/</span> <span class="mi">60</span><span class="p">,</span> <span class="s1">&#39;min&#39;</span><span class="p">)</span>
-            <span class="k">if</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">start_time</span> <span class="o">&gt;</span> <span class="n">max_time</span><span class="p">:</span>
-                <span class="k">break</span>
+            <span class="c1"># if time.time() - start_time &gt; max_time:</span>
+            <span class="c1">#     break</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">lineage</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_lineage</span><span class="p">()</span>
 
@@ -433,14 +433,14 @@
             <span class="k">for</span> <span class="n">node</span> <span class="ow">in</span> <span class="n">nodes</span><span class="p">:</span>
                 <span class="k">if</span> <span class="n">random</span><span class="o">.</span><span class="n">random</span><span class="p">()</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">mutation_rate</span><span class="p">:</span>
                     <span class="k">if</span> <span class="n">node</span><span class="o">.</span><span class="n">tag</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;e&#39;</span><span class="p">,</span> <span class="s1">&#39;n&#39;</span><span class="p">]:</span>
-                        <span class="n">new_symbol</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="n">Genome</span><span class="o">.</span><span class="n">SYMBOLS</span><span class="p">)</span>
+                        <span class="n">new_symbol</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="n">genome</span><span class="o">.</span><span class="n">SYMBOLS</span><span class="p">)</span>
                         <span class="n">genome</span><span class="o">.</span><span class="n">change_symbol</span><span class="p">(</span>
                             <span class="n">level</span><span class="o">=</span><span class="n">i</span><span class="p">,</span> <span class="n">node_id</span><span class="o">=</span><span class="n">node</span><span class="o">.</span><span class="n">identifier</span><span class="p">,</span> <span class="n">symbol</span><span class="o">=</span><span class="n">new_symbol</span><span class="p">)</span>
                     <span class="k">else</span><span class="p">:</span>
                         <span class="n">new_symbol</span> <span class="o">=</span> <span class="p">(</span>
-                            <span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="n">Genome</span><span class="o">.</span><span class="n">DIVISION_SYMBOLS</span><span class="p">)</span>
-                            <span class="k">if</span> <span class="n">node</span><span class="o">.</span><span class="n">tag</span> <span class="ow">in</span> <span class="n">Genome</span><span class="o">.</span><span class="n">DIVISION_SYMBOLS</span>
-                            <span class="k">else</span> <span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="n">Genome</span><span class="o">.</span><span class="n">OPERATIONAL_SYMBOLS</span><span class="p">)</span>
+                            <span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="n">genome</span><span class="o">.</span><span class="n">DIVISION_SYMBOLS</span><span class="p">)</span>
+                            <span class="k">if</span> <span class="n">node</span><span class="o">.</span><span class="n">tag</span> <span class="ow">in</span> <span class="n">genome</span><span class="o">.</span><span class="n">DIVISION_SYMBOLS</span>
+                            <span class="k">else</span> <span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="n">genome</span><span class="o">.</span><span class="n">OPERATIONAL_SYMBOLS</span><span class="p">)</span>
                         <span class="p">)</span>
                         <span class="n">tree</span><span class="o">.</span><span class="n">update_node</span><span class="p">(</span><span class="n">nid</span><span class="o">=</span><span class="n">node</span><span class="o">.</span><span class="n">identifier</span><span class="p">,</span> <span class="n">tag</span><span class="o">=</span><span class="n">new_symbol</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">genome</span></div>

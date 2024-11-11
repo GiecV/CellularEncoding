@@ -411,36 +411,6 @@ It also updates the fitness history with the best score from the current selecti
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <p>Represents a genome consisting of multiple trees. The nodes are operations to be performed on a NN.</p>
 <p>The Genome class manages a collection of trees, allowing for operations such as symbol changes, subtree retrieval, and printing of tree structures. It provides methods to manipulate and access the genetic information represented in the trees.</p>
-<dl class="py attribute">
-<dt class="sig sig-object py" id="core.genome.Genome.DIVISION_SYMBOLS">
-<span class="sig-name descname"><span class="pre">DIVISION_SYMBOLS</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">['p',</span> <span class="pre">'s']</span></em><a class="headerlink" href="#core.genome.Genome.DIVISION_SYMBOLS" title="Link to this definition"></a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="core.genome.Genome.LEVELS">
-<span class="sig-name descname"><span class="pre">LEVELS</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">3</span></em><a class="headerlink" href="#core.genome.Genome.LEVELS" title="Link to this definition"></a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="core.genome.Genome.OPERATIONAL_SYMBOLS">
-<span class="sig-name descname"><span class="pre">OPERATIONAL_SYMBOLS</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">['w',</span> <span class="pre">'i',</span> <span class="pre">'d',</span> <span class="pre">'+',</span> <span class="pre">'-',</span> <span class="pre">'c',</span> <span class="pre">'r',</span> <span class="pre">'t']</span></em><a class="headerlink" href="#core.genome.Genome.OPERATIONAL_SYMBOLS" title="Link to this definition"></a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="core.genome.Genome.STARTING_SYMBOL">
-<span class="sig-name descname"><span class="pre">STARTING_SYMBOL</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'e'</span></em><a class="headerlink" href="#core.genome.Genome.STARTING_SYMBOL" title="Link to this definition"></a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="core.genome.Genome.SYMBOLS">
-<span class="sig-name descname"><span class="pre">SYMBOLS</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">['e',</span> <span class="pre">'n',</span> <span class="pre">'p',</span> <span class="pre">'s',</span> <span class="pre">'w',</span> <span class="pre">'i',</span> <span class="pre">'d',</span> <span class="pre">'+',</span> <span class="pre">'-',</span> <span class="pre">'c',</span> <span class="pre">'r',</span> <span class="pre">'t']</span></em><a class="headerlink" href="#core.genome.Genome.SYMBOLS" title="Link to this definition"></a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="core.genome.Genome.TERMINAL_SYMBOLS">
-<span class="sig-name descname"><span class="pre">TERMINAL_SYMBOLS</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">['e',</span> <span class="pre">'n']</span></em><a class="headerlink" href="#core.genome.Genome.TERMINAL_SYMBOLS" title="Link to this definition"></a></dt>
-<dd></dd></dl>
-
 <dl class="py method">
 <dt class="sig sig-object py" id="core.genome.Genome.change_symbol">
 <span class="sig-name descname"><span class="pre">change_symbol</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">level</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">node_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">symbol</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/core/genome.html#Genome.change_symbol"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#core.genome.Genome.change_symbol" title="Link to this definition"></a></dt>

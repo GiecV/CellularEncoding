@@ -11,14 +11,6 @@ class Genome:
     The Genome class manages a collection of trees, allowing for operations such as symbol changes, subtree retrieval, and printing of tree structures. It provides methods to manipulate and access the genetic information represented in the trees.
     """
 
-    LEVELS = 3  # How many trees to consider
-    STARTING_SYMBOL = "e"  # Each newborn gene will start with the end symbol
-    TERMINAL_SYMBOLS = ["e", "n"]
-    DIVISION_SYMBOLS = ["p", "s"]
-    OPERATIONAL_SYMBOLS = ["w", "i", "d", "+", "-", "c", "r", "t"]
-
-    SYMBOLS = TERMINAL_SYMBOLS + DIVISION_SYMBOLS + OPERATIONAL_SYMBOLS
-
     def __init__(self, trees: list = None, parents=None) -> None:
         """
         Initializes a genome with a specified number of trees or uses provided trees.
@@ -30,6 +22,16 @@ class Genome:
             trees (list, optional): A list of trees to initialize the genome with. Defaults to None.
             parents (optional): A parameter to specify parent relationships. Defaults to None.
         """
+
+        self.LEVELS = 3  # How many trees to consider
+        self.STARTING_SYMBOL = "e"  # Each newborn gene will start with the end symbol
+        self.TERMINAL_SYMBOLS = ["e", "n"]
+        self.DIVISION_SYMBOLS = ["p", "s"]
+        self.OPERATIONAL_SYMBOLS = ["w", "i", "d", "+", "-", "c", "r", "t"]
+
+        self.SYMBOLS = self.TERMINAL_SYMBOLS + \
+            self.DIVISION_SYMBOLS + self.OPERATIONAL_SYMBOLS
+
         if trees is None:
             self._trees = []
             for level in range(self.LEVELS):  # Create the trees with a single gene

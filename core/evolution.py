@@ -96,7 +96,7 @@ class Evolution:
             Genome: The newly created individual represented as a genome.
         """
         genome = Genome()
-        symbols = Genome.SYMBOLS
+        symbols = genome.SYMBOLS
         for n in range(genome.get_levels()):
             symbol = random.choice(symbols)
             root = genome.get_tree(n).root
@@ -151,8 +151,8 @@ class Evolution:
                 break
 
             print('Elapsed time:', (time.time() - start_time) / 60, 'min')
-            if time.time() - start_time > max_time:
-                break
+            # if time.time() - start_time > max_time:
+            #     break
 
         self.lineage = self.get_lineage()
 
@@ -334,14 +334,14 @@ class Evolution:
             for node in nodes:
                 if random.random() < self.mutation_rate:
                     if node.tag in ['e', 'n']:
-                        new_symbol = random.choice(Genome.SYMBOLS)
+                        new_symbol = random.choice(genome.SYMBOLS)
                         genome.change_symbol(
                             level=i, node_id=node.identifier, symbol=new_symbol)
                     else:
                         new_symbol = (
-                            random.choice(Genome.DIVISION_SYMBOLS)
-                            if node.tag in Genome.DIVISION_SYMBOLS
-                            else random.choice(Genome.OPERATIONAL_SYMBOLS)
+                            random.choice(genome.DIVISION_SYMBOLS)
+                            if node.tag in genome.DIVISION_SYMBOLS
+                            else random.choice(genome.OPERATIONAL_SYMBOLS)
                         )
                         tree.update_node(nid=node.identifier, tag=new_symbol)
         return genome

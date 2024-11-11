@@ -523,6 +523,7 @@ class Visualizer:
                                  for i in range(max_length)],
                              alpha=0.2)
 
+        plt.grid(True)
         plt.xlabel('Generation')
         plt.ylabel('Fitness')
         plt.title('Average Fitness per Generation')

@@ -24,20 +24,19 @@ def run():
     clear_console()
     inputs = [2, 3, 4, 5, 6]  # [3,6]
     iterations = 10
-    generations = [5, 50, 100, 150, 230]  # [70, 330]
-    performed_generations = [0] * iterations
+    gen_budget = [250] * iterations
     log = []
     populations = []
 
-    for i, (input, generation) in enumerate(zip(inputs, generations)):
-        stop_if_perfect = i < len(inputs) - 1
-        log, populations, performed_generations[i] = evolve_stage(
-            ins=input, iterations=iterations, gen=generation-performed_generations[i], log=log, pops=populations, stop=stop_if_perfect)
+    for i, input in enumerate(inputs):
+        log, populations, generations = evolve_stage(
+            ins=input, iterations=iterations, gen=gen_budget[i], log=log, pops=populations)
+        gen_budget[i] -= generations
 
     save(log)
 
 
-def evolve_stage(ins, iterations, gen, log, pops=None, stop=False):
+def evolve_stage(ins, iterations, gen, log, pops=None, stop=True):
     """
     Conduct a series of evolution stages for a specified number of iterations.
 

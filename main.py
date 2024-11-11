@@ -13,8 +13,8 @@ visualizer = Visualizer()
 
 # visualizer.save_lineage(paths[0], show=False)
 
-paths = ['logs/3i6i.json', 'logs/6i.json']
-# visualizer.plot_all_runs(paths[0], save=True)
-# visualizer.plot_all_times(paths[0], save=True)
+paths = ['logs/3i6i.json', 'logs/6i.json', 'logs/23456i.json']
+visualizer.plot_all_runs(paths[2], save=True)
+visualizer.plot_all_times(paths[2], save=True)
 visualizer.plot_avg_fitness(paths, save=True)
 visualizer.plot_times(paths, save=True)

@@ -531,3 +531,82 @@ class Visualizer:
         if save:
             cls.save_file_with_name('fitness_multiple_files_')
         plt.show()
+
+    @classmethod
+    def create_boxplots(cls, json_file_paths, save=False):
+        all_data = {}
+
+        for json_file_path in json_file_paths:
+            if not os.path.exists(json_file_path):
+                raise FileNotFoundError(
+                    f"The file {json_file_path} does not exist.")
+
+            with open(json_file_path, 'r') as file:
+                all_data[json_file_path] = {}
+                data = json.load(file)
+                for run in data:
+                    inputs = run['inputs']
+                    generations = len(run['log'])
+                    if inputs not in all_data[json_file_path]:
+                        all_data[json_file_path][inputs] = []
+                    all_data[json_file_path][inputs].append(generations)
+
+        color_map = {'logs/6i.json': '#f2a964', 'logs/3i6i.json': '#709ec7',
+                     'logs/23456i.json': '#7fbb74'}
+        names = ['1 stage', '2 stages', '5 stages']
+
+        # Prepare figure and axes
+        plt.figure(figsize=(10, 6))
+
+        sorted_keys = sorted(
+            {key for sub_data in all_data.values() for key in sub_data}
+        )
+
+        # Set a position counter for each bar
+        current_pos = 1  # Starting position for bar plots
+        x_positions = []
+        x_labels = []
+        offset = 0.35
+
+        for key in sorted_keys:
+            bar_count = sum(key in sub_data for sub_data in all_data.values())
+            pos_offset = -(bar_count - 1) * offset / 2
+            for file, sub_data in all_data.items():
+                if key in sub_data:
+                    values = sub_data[key]
+
+                    mean_val = np.mean(values)
+                    std_dev = np.std(values)
+
+                    plt.bar(current_pos + pos_offset, mean_val, yerr=std_dev, color=color_map[file],
+                            width=0.35, capsize=5, edgecolor='black')
+
+                    # Annotate each bar with mean ± std deviation
+                    plt.text(current_pos + pos_offset, mean_val + std_dev + 2, f"{mean_val:.1f}±{std_dev:.1f}",
+                             ha='center', va='bottom', fontsize=10, fontweight='bold', color='black')
+
+                    # Append x-axis position and corresponding key label
+            # Only label the first bar in each group
+                    if pos_offset == -(bar_count - 1) * offset / 2:
+                        x_positions.append(current_pos)
+                        x_labels.append(key)
+
+                    pos_offset += offset
+
+                    # Move to the next x position
+            current_pos += 1
+
+        plt.xticks(x_positions, x_labels)
+
+        handles = [plt.Line2D([0], [0], color=color_map[file], lw=6)
+                   for file in color_map]
+        plt.legend(handles, names, title="Files", loc="upper left")
+
+        plt.xticks(x_positions, x_labels)
+        # Custom legend and labels
+        plt.xlabel("Number of Inputs")
+        plt.ylabel("Avg Generations ± Std Dev")
+        plt.title("Average Generations to Achieve the Optimum at Each Stage")
+
+        # Show plot
+        plt.show()

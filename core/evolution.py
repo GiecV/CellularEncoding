@@ -123,6 +123,9 @@ class Evolution:
         best_score = float('-inf')
         start_time = time.time()
 
+        if self.generations <= 0:
+            return self.population[0], 0
+
         for generation in range(self.generations):
             generation_start_time = time.time()
             print(f"Generation {generation + 1}/{self.generations}")

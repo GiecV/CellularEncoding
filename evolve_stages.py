@@ -6,6 +6,10 @@ import torch
 
 torch.set_num_threads(1)
 
+inputs = [2, 3, 4, 5, 6]  # [3,6]
+iterations = 10
+gen_budget = [250] * iterations
+
 
 def run():
     """
@@ -22,21 +26,16 @@ def run():
         None
     """
     clear_console()
-    inputs = [2, 3, 4, 5, 6]  # [3,6]
-    iterations = 10
-    gen_budget = [250] * iterations
     log = []
     populations = []
 
-    for i, input in enumerate(inputs):
-        log, populations, generations = evolve_stage(
-            ins=input, iterations=iterations, gen=gen_budget[i], log=log, pops=populations)
-        gen_budget -= generations
-
+    for input in inputs:
+        log, populations = evolve_stage(
+            ins=input, iterations=iterations, log=log, pops=populations)
     save(log)
 
 
-def evolve_stage(ins, iterations, gen, log, pops=None, stop=True):
+def evolve_stage(ins, iterations, log, pops=None, stop=True):
     """
     Conduct a series of evolution stages for a specified number of iterations.
 
@@ -57,11 +56,10 @@ def evolve_stage(ins, iterations, gen, log, pops=None, stop=True):
     if pops == []:
         pops = [None] * iterations
 
-    performed_generations = []
-
     for i in range(iterations):
         print(f'Individual {i + 1} with {ins} inputs:')
-        evolution = Evolution(inputs=ins, population=pops[i], generations=gen)
+        evolution = Evolution(
+            inputs=ins, population=pops[i], generations=gen_budget[i])
         best_individual = evolution.evolve(max_time=900, stop=stop)
 
         log.append({
@@ -71,11 +69,12 @@ def evolve_stage(ins, iterations, gen, log, pops=None, stop=True):
             'lineage': evolution.lineage
         })
 
-        performed_generations.append(len(evolution.logs))
+        gen_budget[i] -= len(evolution.logs)
+        print(len(evolution.logs))
         pops[i] = evolution.population
         clear_console()
 
-    return log, pops, performed_generations
+    return log, pops
 
 
 def save(item):

@@ -31,7 +31,7 @@ def run():
     for i, input in enumerate(inputs):
         log, populations, generations = evolve_stage(
             ins=input, iterations=iterations, gen=gen_budget[i], log=log, pops=populations)
-        gen_budget[i] -= generations
+        gen_budget -= generations
 
     save(log)
 

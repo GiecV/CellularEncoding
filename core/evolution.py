@@ -104,7 +104,7 @@ class Evolution:
 
         return genome
 
-    def evolve(self, info=True, max_time=2100, stop=False):    # 2100
+    def evolve(self, info=True, max_time=2100, stop=True):    # 2100
         """
         Evolve the population over a specified number of generations.
 

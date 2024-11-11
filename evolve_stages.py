@@ -35,7 +35,7 @@ def run():
     save(log)
 
 
-def evolve_stage(ins, iterations, log, pops=None, stop=True):
+def evolve_stage(ins, iterations, log, pops=None):
     """
     Conduct a series of evolution stages for a specified number of iterations.
 
@@ -60,7 +60,7 @@ def evolve_stage(ins, iterations, log, pops=None, stop=True):
         print(f'Individual {i + 1} with {ins} inputs:')
         evolution = Evolution(
             inputs=ins, population=pops[i], generations=gen_budget[i])
-        best_individual = evolution.evolve(max_time=900, stop=stop)
+        best_individual = evolution.evolve(max_time=900)
 
         log.append({
             'iteration': i,

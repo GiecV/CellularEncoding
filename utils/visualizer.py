@@ -170,25 +170,6 @@ class Visualizer:
             individual.print()
 
     @classmethod
-    def plot_fitness_history(cls, history, save=False):
-        """
-        Plot the fitness history over generations.
-
-        Args:
-            history (list): A list of fitness values over generations.
-            save (bool, optional): Whether to save the plot. Default is False.
-        """
-        generations = list(range(1, len(history) + 1))
-        plt.plot(generations, history, marker='o')
-        plt.xlabel('Generation')
-        plt.ylabel('Fitness')
-        plt.title('Fitness History Over Generations')
-        plt.grid(True)
-        if save:
-            cls.save_file_with_name('fitness_history_')
-        plt.show()
-
-    @classmethod
     def print_phenotype(cls, phenotype, save=False):
         """
         Print and optionally save the phenotype structure.
@@ -534,6 +515,22 @@ class Visualizer:
 
     @classmethod
     def create_boxplots(cls, json_file_paths, save=False):
+        """
+        Creates boxplots to visualize the average number of generations required to achieve optimal results across different input configurations from multiple JSON files. This method aggregates data from the specified JSON files and generates a bar plot with error bars representing the standard deviation.
+
+        Args:
+            json_file_paths (list of str): A list of paths to the JSON files containing the data.
+            save (bool): If True, saves the generated plot to a file. Defaults to False.
+
+        Returns:
+            None
+
+        Raises:
+            FileNotFoundError: If any of the specified JSON files do not exist.
+
+        Examples:
+            >>> Visualizer.create_boxplots(['logs/6i.json', 'logs/36i.json'], save=True)
+        """
         all_data = {}
 
         for json_file_path in json_file_paths:
@@ -551,8 +548,8 @@ class Visualizer:
                         all_data[json_file_path][inputs] = []
                     all_data[json_file_path][inputs].append(generations)
 
-        color_map = {'logs/6i.json': '#f2a964', 'logs/36i.json': '#709ec7',
-                     'logs/23456i.json': '#7fbb74'}
+        color_map = {'logs/6i.json': '#d9e7dc', 'logs/36i.json': '#eb3e56',
+                     'logs/23456i.json': '#8296b5'}
         names = ['1 stage', '2 stages', '5 stages']
 
         # Prepare figure and axes
@@ -579,11 +576,11 @@ class Visualizer:
                     std_dev = np.std(values)
 
                     plt.bar(current_pos + pos_offset, mean_val, yerr=std_dev, color=color_map[file],
-                            width=0.35, capsize=5, edgecolor='black')
+                            width=0.3, capsize=5, edgecolor='black', zorder=3)
 
                     # Annotate each bar with mean ± std deviation
                     plt.text(current_pos + pos_offset, mean_val + std_dev + 2, f"{mean_val:.1f}±{std_dev:.1f}",
-                             ha='center', va='bottom', fontsize=10, fontweight='bold', color='black')
+                             ha='center', va='bottom', fontsize=10, fontweight='bold', color='black', zorder=4)
 
                     # Append x-axis position and corresponding key label
             # Only label the first bar in each group
@@ -600,7 +597,7 @@ class Visualizer:
 
         handles = [plt.Line2D([0], [0], color=color_map[file], lw=6)
                    for file in color_map]
-        plt.legend(handles, names, title="Files", loc="upper left")
+        plt.legend(handles, names, title="Curriculums", loc="upper left")
 
         plt.xticks(x_positions, x_labels)
         # Custom legend and labels
@@ -608,5 +605,94 @@ class Visualizer:
         plt.ylabel("Avg Generations ± Std Dev")
         plt.title("Average Generations to Achieve the Optimum at Each Stage")
 
+        plt.grid(axis='y', linestyle='-', linewidth=0.5, zorder=1)
+
         # Show plot
         plt.show()
+
+    @classmethod
+    def save_best_networks(cls, json_path, show=False):
+        """
+            Saves visual representations of the best neural networks and their associated trees from a JSON file. 
+            This method reads the JSON data, processes the neural networks and trees, and generates plots for each iteration.
+
+            Args:
+                json_path (str): The path to the JSON file containing network data.
+                show (bool): If True, displays the generated plots. Defaults to False.
+
+            Returns:
+                None
+
+            Examples:
+                >>> Visualizer.save_best_networks('path/to/json_file.json', show=True)
+        """
+        with open(json_path, 'r') as file:
+            json_file = json.load(file)
+
+            cols = 4  # 1 for NN + 3 for trees
+            individuals = {}
+
+        for run in json_file:
+            json_individual = run['lineage'][0]
+
+            genome = Genome()
+            genome.from_json_pickle(json_individual)
+            json_individual = genome
+
+            if run['iteration'] not in individuals:
+                individuals[run['iteration']] = []
+            individuals[run['iteration']].append(
+                (run['inputs'], json_individual))
+
+        num_individuals = len(individuals[0])
+        rows = num_individuals
+
+        for iteration, individuals_list in individuals.items():
+            fig = plt.figure(figsize=(13, rows * 6))
+            gs = GridSpec(rows, cols, figure=fig)
+            for idx, (ins, individual) in enumerate(individuals_list):
+                phenotype = Phenotype(individual)
+                nn = NNFromGraph(phenotype, inputs=ins,
+                                 outputs=1)
+
+                # Neural network plot (col 0)
+                pos = cls._calculate_node_positions(nn.phenotype.structure)
+                node_labels = {node: f"{node}[{nn.phenotype.structure.nodes[node]['threshold']}]"
+                               for node in nn.phenotype.structure.nodes}
+
+                ax_nn = fig.add_subplot(gs[idx, 0])
+                nx.draw(nn.phenotype.structure, pos, labels=node_labels, with_labels=True, node_size=500,
+                        node_color="skyblue", font_size=10, font_weight="bold", arrows=True, ax=ax_nn)
+                labels = nx.get_edge_attributes(
+                    nn.phenotype.structure, 'weight')
+                nx.draw_networkx_edge_labels(
+                    nn.phenotype.structure, pos, edge_labels=labels, ax=ax_nn)
+                ax_nn.set_title(f'Iteration: {iteration}', fontsize=14)
+
+                genome = individual.get_trees()  # Assuming the genome is a list of 3 trees
+                for tree_idx, tree in enumerate(genome):
+                    # tree_idx + 1 to skip the NN column
+                    ax_tree = fig.add_subplot(gs[idx, tree_idx + 1])
+
+                    node_labels = {}
+
+                    # Convert treelib tree to NetworkX graph
+                    tree_graph = cls.treelib_to_nx(tree, node_labels)
+
+                    # Layout for tree graph
+                    tree_pos = nx.bfs_layout(
+                        tree_graph, tree.root, align='horizontal')  # type: ignore
+                    max_y = max(y for x, y in tree_pos.values())
+                    tree_pos = {node: (x, max_y - y)
+                                for node, (x, y) in tree_pos.items()}
+
+                    # Plot the tree as a NetworkX graph
+                    nx.draw(tree_graph, pos=tree_pos, labels=node_labels, with_labels=True, node_size=500, node_color="lightgreen",
+                            font_size=10, font_weight="bold", arrows=False, ax=ax_tree)
+                    ax_tree.set_title(f'Tree {tree_idx + 1}', fontsize=12)
+
+            plt.tight_layout()
+            plt.subplots_adjust(hspace=0.8)
+            cls.save_file_with_name('best_networks_')
+            if show:
+                plt.show()

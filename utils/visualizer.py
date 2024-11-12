@@ -551,7 +551,7 @@ class Visualizer:
                         all_data[json_file_path][inputs] = []
                     all_data[json_file_path][inputs].append(generations)
 
-        color_map = {'logs/6i.json': '#f2a964', 'logs/3i6i.json': '#709ec7',
+        color_map = {'logs/6i.json': '#f2a964', 'logs/36i.json': '#709ec7',
                      'logs/23456i.json': '#7fbb74'}
         names = ['1 stage', '2 stages', '5 stages']
 

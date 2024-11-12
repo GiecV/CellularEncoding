@@ -22,7 +22,7 @@ class NNFromGraph(nn.Module):
         outputs (int, optional): The number of output nodes. Defaults to 1.
     """
 
-    def __init__(self, phenotype: Phenotype, depth=7, inputs=2, outputs=1):
+    def __init__(self, phenotype: Phenotype, depth: int = 7, inputs: int = 2, outputs: int = 1):
         """
         Initialize the neural network from a phenotype's graph structure.
 
@@ -64,7 +64,7 @@ class NNFromGraph(nn.Module):
                 self.output_ids.append(i)
             self.thresholds[i] = self.graph.nodes[node].get("threshold", 0.0)
 
-    def forward(self, obs):
+    def forward(self, obs: torch.Tensor) -> torch.Tensor:
         """
         Propagate the input observations through the neural network.
 

@@ -18,7 +18,7 @@ class Phenotype:
         internal_register (int): A register used for internal operations within the phenotype.
     """
 
-    def __init__(self, genome) -> None:
+    def __init__(self, genome: Genome) -> None:
         """
         Initialize a Phenotype instance with a given genome.
 

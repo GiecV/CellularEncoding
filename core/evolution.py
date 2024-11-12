@@ -37,7 +37,7 @@ class Evolution:
         lineage (list): A record of the lineage of the best individuals.
     """
 
-    def __init__(self, population_size=1000, generations=300, mutation_rate=0.05, inputs=2, population=None):
+    def __init__(self, population_size: int = 1000, generations: int = 300, mutation_rate: float = 0.05, inputs: int = 2, population: list[Genome] = None):
         """
         Initialize the Evolution class with specified parameters.
 
@@ -104,7 +104,7 @@ class Evolution:
 
         return genome
 
-    def evolve(self, info=True, max_time=2100, stop=True):    # 2100
+    def evolve(self, info: bool = True, stop: bool = True):
         """
         Evolve the population over a specified number of generations.
 
@@ -154,8 +154,6 @@ class Evolution:
                 break
 
             print('Elapsed time:', (time.time() - start_time) / 60, 'min')
-            # if time.time() - start_time > max_time:
-            #     break
 
         self.lineage = self.get_lineage()
 
@@ -192,7 +190,7 @@ class Evolution:
         # print('Evolution time:', time.time() - start_time)
         return population
 
-    def select_best(self, population):
+    def select_best(self, population: list[Genome]):
         """
         Select the best individuals from the given population based on fitness scores.
 
@@ -210,8 +208,6 @@ class Evolution:
         ns = [self.inputs for _ in range(len(population))]
         with ProcessPoolExecutor(cpus) as executor:
             fitness_list = list(executor.map(compute_fitness, population, ns))
-            # fitness_list = list(executor.map(
-            #     self.random_number, population, ns))
         # print('Selection time:', time.time() - start_time)
         individuals_and_fitness = sorted(
             zip(population, fitness_list), key=lambda x: x[1], reverse=True)
@@ -223,7 +219,7 @@ class Evolution:
         self.fitness_history.append(best_fitness_scores[0])
         return best_individuals, best_fitness_scores
 
-    def edit_population_size(self, acceptable_time=30):
+    def edit_population_size(self, acceptable_time: int = 30):
         """
         Adjust the population size based on the time taken for the last generation.
 
@@ -245,7 +241,7 @@ class Evolution:
             self.population_size = min(
                 self.max_population_size, int(self.population_size * 1.1))
 
-    def crossover(self, parent1, parent2, parents_indexes):
+    def crossover(self, parent1: Genome, parent2: Genome, parents_indexes: list[int]):
         """
         Perform crossover between two parent individuals to create two children.
 
@@ -264,7 +260,7 @@ class Evolution:
 
         return child1, child2
 
-    def get_children(self, parent1, parent2, parents_indexes):
+    def get_children(self, parent1: Genome, parent2: Genome, parents_indexes: list[int]):
         """
         Create two children from two parent individuals through genetic crossover.
 
@@ -318,7 +314,7 @@ class Evolution:
 
         return Genome(trees, parents_indexes), Genome(trees2, parents_indexes)
 
-    def mutate(self, genome):
+    def mutate(self, genome: Genome):
         """
         Apply mutations to the given genome based on a mutation rate.
 
@@ -349,7 +345,7 @@ class Evolution:
                         tree.update_node(nid=node.identifier, tag=new_symbol)
         return genome
 
-    def get_lineage(self, gens_to_save=5):
+    def get_lineage(self, gens_to_save: int = 5):
         """
         Retrieve the lineage of the best individuals over a specified number of generations.
 
@@ -364,7 +360,7 @@ class Evolution:
             list: A list of dictionaries containing the generation index and the corresponding genome of each individual.
         """
 
-        def traverse_generations(data, generation_idx, individual_idx, genomes):
+        def traverse_generations(data: dict, generation_idx: int, individual_idx: int, genomes: list):
 
             individual = data[generation_idx]['individuals'][individual_idx]
             genomes.append({'generation': generation_idx,
@@ -384,6 +380,3 @@ class Evolution:
         for generation in self.logs:
             del generation['individuals']
         return genomes
-
-    def random_number(self, genome, n):
-        return 0

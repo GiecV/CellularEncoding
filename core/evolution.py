@@ -37,7 +37,7 @@ class Evolution:
         lineage (list): A record of the lineage of the best individuals.
     """
 
-    def __init__(self, population_size: int = 1000, generations: int = 300, mutation_rate: float = 0.05, inputs: int = 2, population: list[Genome] = None):
+    def __init__(self, population_size: int = 1000, generations: int = 300, mutation_rate: float = 0.05, inputs: int = 2, population: list = None):
         """
         Initialize the Evolution class with specified parameters.
 
@@ -190,7 +190,7 @@ class Evolution:
         # print('Evolution time:', time.time() - start_time)
         return population
 
-    def select_best(self, population: list[Genome]):
+    def select_best(self, population: list):
         """
         Select the best individuals from the given population based on fitness scores.
 
@@ -241,7 +241,7 @@ class Evolution:
             self.population_size = min(
                 self.max_population_size, int(self.population_size * 1.1))
 
-    def crossover(self, parent1: Genome, parent2: Genome, parents_indexes: list[int]):
+    def crossover(self, parent1: Genome, parent2: Genome, parents_indexes: list):
         """
         Perform crossover between two parent individuals to create two children.
 
@@ -260,7 +260,7 @@ class Evolution:
 
         return child1, child2
 
-    def get_children(self, parent1: Genome, parent2: Genome, parents_indexes: list[int]):
+    def get_children(self, parent1: Genome, parent2: Genome, parents_indexes: list):
         """
         Create two children from two parent individuals through genetic crossover.
 

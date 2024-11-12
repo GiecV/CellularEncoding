@@ -11,7 +11,7 @@ class Genome:
     The Genome class manages a collection of trees, allowing for operations such as symbol changes, subtree retrieval, and printing of tree structures. It provides methods to manipulate and access the genetic information represented in the trees.
     """
 
-    def __init__(self, trees: list = None, parents: list[int] = None) -> None:
+    def __init__(self, trees: list = None, parents: list = None) -> None:
         """
         Initializes a genome with a specified number of trees or uses provided trees.
 

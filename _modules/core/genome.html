@@ -84,7 +84,7 @@
 <span class="sd">    The Genome class manages a collection of trees, allowing for operations such as symbol changes, subtree retrieval, and printing of tree structures. It provides methods to manipulate and access the genetic information represented in the trees.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">trees</span><span class="p">:</span> <span class="nb">list</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">parents</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">trees</span><span class="p">:</span> <span class="nb">list</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">parents</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Initializes a genome with a specified number of trees or uses provided trees.</span>
 
@@ -313,7 +313,7 @@
     <span class="c1"># * Get the tree at a specific level</span>
 <div class="viewcode-block" id="Genome.get_tree">
 <a class="viewcode-back" href="../../core.html#core.genome.Genome.get_tree">[docs]</a>
-    <span class="k">def</span> <span class="nf">get_tree</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">level</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">get_tree</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">level</span><span class="p">:</span> <span class="nb">int</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Retrieve the trees associated with the genome.</span>
 
@@ -372,7 +372,7 @@
 
 <div class="viewcode-block" id="Genome.from_json_pickle">
 <a class="viewcode-back" href="../../core.html#core.genome.Genome.from_json_pickle">[docs]</a>
-    <span class="k">def</span> <span class="nf">from_json_pickle</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">json_individual</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">from_json_pickle</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">json_individual</span><span class="p">:</span> <span class="nb">dict</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Deserializes the genome data from a pickled format.</span>
 

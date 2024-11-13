@@ -6,21 +6,24 @@ import pickle
 
 class Genome:
     """
-    Represents a genome consisting of multiple trees. The nodes are operations to be performed on a NN.
+    Represents a genome consisting of multiple trees. The nodes are operations to be performed on a neural network (NN).
 
-    The Genome class manages a collection of trees, allowing for operations such as symbol changes, subtree retrieval, and printing of tree structures. It provides methods to manipulate and access the genetic information represented in the trees.
+    The Genome class manages a collection of trees, allowing for operations such as symbol changes, subtree retrieval,
+    and printing of tree structures. It provides methods to manipulate and access the genetic information represented 
+    in the trees.
     """
 
     def __init__(self, trees: list = None, parents: list = None) -> None:
         """
         Initializes a genome with a specified number of trees or uses provided trees.
 
-        This constructor sets up the genome's tree structure. 
-        If no trees are provided, it creates a default set of trees, each initialized with a single gene node.
+        This constructor sets up the genome's tree structure. If no trees are provided, it creates a default set of 
+        trees, each initialized with a single gene node.
 
-        Args:
-            trees (list, optional): A list of trees to initialize the genome with. Defaults to None.
-            parents (optional): A parameter to specify parent relationships. Defaults to None.
+        :param trees: A list of trees to initialize the genome with. Defaults to None.
+        :type trees: list, optional
+        :param parents: A parameter to specify parent relationships. Defaults to None.
+        :type parents: list, optional
         """
 
         self.LEVELS = 3  # How many trees to consider
@@ -53,16 +56,18 @@ class Genome:
         """
         Changes the symbol of a specified gene and creates child nodes as necessary.
 
-        This method updates the symbol of a gene at a given level and node ID. 
-        If the new symbol is not terminal, it creates additional child nodes based on the symbol type, ensuring the tree structure remains valid.
+        This method updates the symbol of a gene at a given level and node ID. If the new symbol is not terminal, 
+        it creates additional child nodes based on the symbol type, ensuring the tree structure remains valid.
 
-        Args:
-            level (int): The level of the tree where the gene is located.
-            node_id (str): The identifier of the node whose symbol is to be changed.
-            symbol (str): The new symbol to assign to the gene.
-
-        Raises:
-            ValueError: If the provided symbol is not valid.
+        :param level: The level of the tree where the gene is located.
+        :type level: int
+        :param node_id: The identifier of the node whose symbol is to be changed.
+        :type node_id: str
+        :param symbol: The new symbol to assign to the gene.
+        :type symbol: str
+        :raises ValueError: If the provided symbol is not valid.
+        :example: 
+            >>> genome.change_symbol(0, "node0", "w")
         """
         if symbol not in self.SYMBOLS and symbol not in self.OPERATIONAL_SYMBOLS:
             raise ValueError(f"Invalid symbol: {symbol}")
@@ -91,16 +96,12 @@ class Genome:
         """
         Retrieves the symbol of a specified gene from a given tree level.
 
-        This method accesses the tree structure to obtain the symbol associated with a gene identified by its node ID at the specified level. 
-        It provides a straightforward way to query the genetic information stored in the genome.
-
-        Args:
-            level (int): The level of the tree from which to retrieve the symbol.
-            node_id (str): The identifier of the node whose symbol is to be retrieved.
-
-        Returns:
-            str: The symbol of the specified gene.
-
+        :param level: The level of the tree from which to retrieve the symbol.
+        :type level: int
+        :param node_id: The identifier of the node whose symbol is to be retrieved.
+        :type node_id: str
+        :return: The symbol of the specified gene.
+        :rtype: str
         """
         return self._trees[level].get_node(node_id).tag
 
@@ -108,12 +109,8 @@ class Genome:
         """
         Prints the structure of the genome's trees at a specified level or all levels.
 
-        This method displays the tree structures contained within the genome. 
-        If a specific level is provided, it prints only that level; otherwise, it prints all of them.
-
-        Args:
-            level (int, optional): The level of the tree to print. If None, all levels are printed. Defaults to None.
-
+        :param level: The level of the tree to print. If None, all levels are printed.
+        :type level: int, optional
         """
         if level is None:
             for tree in self._trees:
@@ -126,15 +123,10 @@ class Genome:
         """
         Retrieves the subtree of the genome starting from a specified node.
 
-        This method collects and returns the subtree from the first tree at the given node ID while including the remaining trees unchanged.
-        It allows for focused exploration of the genome structure from a specific starting point.
-
-        Args:
-            node_id (str): The identifier of the node from which to start the subtree retrieval.
-
-        Returns:
-            list: A list containing the subtree from the starting node and the other trees.
-
+        :param node_id: The identifier of the node from which to start the subtree retrieval.
+        :type node_id: str
+        :return: A list containing the subtree from the starting node and the other trees.
+        :rtype: list
         """
         trees = []
 
@@ -150,12 +142,8 @@ class Genome:
         """
         Retrieves the genome structure starting from the left child of the root node.
 
-        This method identifies the left child of the root node in the first tree and returns the subtree starting from that child. 
-        It provides a way to explore the genetic information specifically from the left branch of the genome.
-
-        Returns:
-            list: A list containing the subtree from the left child and the other trees.
-
+        :return: A list containing the subtree from the left child and the other trees.
+        :rtype: list
         """
 
         root = self._trees[0].root
@@ -167,12 +155,8 @@ class Genome:
         """
         Retrieves the genome structure starting from the right child of the root node.
 
-        This method identifies the right child of the root node in the first tree and returns the subtree starting from that child.
-        It allows for focused exploration of the genetic information specifically from the right branch of the genome.
-
-        Returns:
-            list: A list containing the subtree from the right child and the other trees.
-
+        :return: A list containing the subtree from the right child and the other trees.
+        :rtype: list
         """
         root = self._trees[0].root
 
@@ -180,18 +164,20 @@ class Genome:
         return self.get_genome_from_starting_point(right_child)
 
     def get_root_symbol(self):
+        """
+        Retrieves the symbol of the root node.
+
+        :return: The symbol of the root node in the first tree.
+        :rtype: str
+        """
         return self._trees[0].get_node(self._trees[0].root).tag
 
     def jump(self):
         """
         Cuts off the first level of the genome and adds a new tree.
 
-        This method removes the first tree from the genome and creates a new tree initialized with a starting symbol.
-        It effectively allows for a reset of the first level while retaining the remaining structure of the genome.
-
-        Returns:
-            list: A list containing the remaining trees and the newly created tree.
-
+        :return: A list containing the remaining trees and the newly created tree.
+        :rtype: list
         """
         tree = Tree()
         tree.create_node(
@@ -202,24 +188,32 @@ class Genome:
         return self._trees[1:] + [tree]
 
     def get_trees(self):
+        """
+        Retrieves the genome's tree structure.
+
+        :return: A list of all trees within the genome.
+        :rtype: list
+        """
         return self._trees
 
     def get_levels(self):
+        """
+        Retrieves the number of levels in the genome.
+
+        :return: The total number of levels in the genome.
+        :rtype: int
+        """
         return self.LEVELS
 
     # * Get the tree at a specific level
     def get_tree(self, level: int):
         """
-        Retrieve the trees associated with the genome.
+        Retrieves the tree at a specific level.
 
-        This method returns the internal representation of trees stored in the genome. 
-        It provides access to the data structure that holds the trees for further processing or analysis.
-
-        Args:
-            self: The instance of the class.
-
-        Returns:
-            list: The trees associated with the genome.
+        :param level: The level of the tree to retrieve.
+        :type level: int
+        :return: The tree at the specified level.
+        :rtype: Tree
         """
         return self._trees[level]
 
@@ -228,12 +222,11 @@ class Genome:
         """
         Updates the identifiers of all nodes in the genome's trees.
 
-        This method iterates through each tree in the genome and assigns new unique identifiers to all nodes. It ensures that each node has a fresh identifier, which can be useful for maintaining uniqueness in the genome structure.
+        This method assigns new unique identifiers to all nodes in each tree of the genome.
 
-        Returns:
-            None
+        :return: None
+        :rtype: None
         """
-
         for tree in self._trees:
             node_ids = [node.identifier for node in tree.all_nodes_itr()]
             for node_id in node_ids:
@@ -243,12 +236,12 @@ class Genome:
         """
         Serializes the genome data using pickle.
 
-        This method prepares the genome data for serialization by converting each tree into a pickled representation. It also includes the parent information, making it suitable for storage or transmission in a binary format.
-
-        Returns:
-            dict: A dictionary containing the pickled representation of the genome and parent information.
+        :return: A dictionary containing the pickled representation of the genome and parent information.
+        :rtype: dict
+        :example: 
+            >>> genome.json_pickle()
+            >>> # {'genome': ['...', '...', '...'], 'parents': None}
         """
-
         encoded_trees = [pickle.dumps(tree) for tree in self._trees]
         encoded_trees = [base64.b64encode(tree).decode(
             'utf-8') for tree in encoded_trees]
@@ -262,13 +255,12 @@ class Genome:
         """
         Deserializes the genome data from a pickled format.
 
-        This method reconstructs the genome data from a pickled representation. It converts each pickled tree back into a tree object and updates the genome's tree list.
-
-        Args:
-            json_individual (dict): A dictionary containing the pickled representation of the genome and parent information.
-
-        Returns:
-            None
+        :param json_individual: A dictionary containing the pickled representation of the genome and parent information.
+        :type json_individual: dict
+        :return: None
+        :rtype: Noneß
+        :example: 
+            >>> genome.from_json_pickle({'genome': ['...', '...', '...'], 'parents': None})
         """
         self._trees = [base64.b64decode(tree)
                        for tree in json_individual['genome']]

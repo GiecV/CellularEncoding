@@ -118,6 +118,10 @@ class Evolution:
 
         Returns:
             tuple: A tuple containing the best individual from the final population and the number of generations completed.
+
+        Examples:
+            >>> evolution = Evolution(population_size=1000, generations=300, mutation_rate=0.05, inputs=2)
+            >>> best_individual, generations_completed = evolution.evolve()
         """
 
         best_score = float('-inf')
@@ -218,28 +222,6 @@ class Evolution:
 
         self.fitness_history.append(best_fitness_scores[0])
         return best_individuals, best_fitness_scores
-
-    def edit_population_size(self, acceptable_time: int = 30):
-        """
-        Adjust the population size based on the time taken for the last generation.
-
-        This method modifies the population size to ensure efficient evolution based on the time taken 
-        for the last generation. If the generation time exceeds the acceptable limit, the population size 
-        is reduced; if it is below the limit, the population size is increased, within defined minimum 
-        and maximum bounds.
-
-        Args:
-            acceptable_time (int, optional): The threshold time for generation in seconds. Defaults to 30.
-
-        Returns:
-            None
-        """
-        if self.generation_time > acceptable_time:
-            self.population_size = max(
-                self.min_population_size, int(self.population_size * .9))
-        elif self.generation_time < acceptable_time:
-            self.population_size = min(
-                self.max_population_size, int(self.population_size * 1.1))
 
     def crossover(self, parent1: Genome, parent2: Genome, parents_indexes: list):
         """

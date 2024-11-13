@@ -82,35 +82,43 @@
 <a class="viewcode-back" href="../../core.html#core.neural_network_from_graph.NNFromGraph">[docs]</a>
 <span class="k">class</span> <span class="nc">NNFromGraph</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Neural network implementation based on a phenotype&#39;s graph structure.</span>
+<span class="sd">    A neural network model constructed from a graph representation of a phenotype.</span>
 
-<span class="sd">    This class constructs a neural network using the structure defined in a phenotype, allowing for </span>
-<span class="sd">    the propagation of inputs through the network. It initializes the network parameters and manages </span>
-<span class="sd">    the forward pass of data through the network layers.</span>
+<span class="sd">    This class creates a neural network based on a given graph structure, assigning</span>
+<span class="sd">    weights, thresholds, and other properties to the nodes and edges of the graph.</span>
+<span class="sd">    The `forward` method performs a custom feedforward pass through the network </span>
+<span class="sd">    based on the graph structure.</span>
 
-<span class="sd">    Args:</span>
-<span class="sd">        phenotype (Phenotype): The phenotype that defines the structure of the neural network.</span>
-<span class="sd">        depth (int, optional): The number of propagation layers in the network. Defaults to 7.</span>
-<span class="sd">        inputs (int, optional): The number of input nodes. Defaults to 2.</span>
-<span class="sd">        outputs (int, optional): The number of output nodes. Defaults to 1.</span>
+<span class="sd">    :param Phenotype phenotype: The phenotype object containing the graph structure.</span>
+<span class="sd">    :param int depth: The number of iterations for forward propagation (default is 7).</span>
+<span class="sd">    :param int inputs: The number of input nodes (default is 2).</span>
+<span class="sd">    :param int outputs: The number of output nodes (default is 1).</span>
+
+<span class="sd">    **Attributes:**</span>
+
+<span class="sd">    - **phenotype** (*Phenotype*): The phenotype object containing the graph structure.</span>
+<span class="sd">    - **input_ids** (*list*): List of input node indices in the graph.</span>
+<span class="sd">    - **output_ids** (*list*): List of output node indices in the graph.</span>
+<span class="sd">    - **depth** (*int*): Number of iterations for the forward propagation.</span>
+<span class="sd">    - **t** (*int*): </span>
+<span class="sd">    - **r** (*int*): </span>
+<span class="sd">    - **A** (*torch.Tensor*): Adjacency matrix of the graph.</span>
+<span class="sd">    - **W** (*torch.Tensor*): Trainable weight matrix for the graph.</span>
+<span class="sd">    - **thresholds** (*torch.Tensor*): Thresholds for each node in the graph.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">phenotype</span><span class="p">:</span> <span class="n">Phenotype</span><span class="p">,</span> <span class="n">depth</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">7</span><span class="p">,</span> <span class="n">inputs</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">2</span><span class="p">,</span> <span class="n">outputs</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Initialize the neural network from a phenotype&#39;s graph structure.</span>
+<span class="sd">        Initializes the NNFromGraph model with a phenotype and graph parameters.</span>
 
-<span class="sd">        This constructor sets up the neural network by extracting the structure from the provided phenotype,</span>
-<span class="sd">        initializing parameters, and preparing the adjacency matrix for the network. It also identifies input</span>
-<span class="sd">        and output nodes based on the phenotype&#39;s configuration.</span>
+<span class="sd">        This method sets up the model&#39;s graph structure, adjacency matrix,</span>
+<span class="sd">        weight matrix, and node thresholds.</span>
 
 <span class="sd">        Args:</span>
-<span class="sd">            phenotype (Phenotype): The phenotype that defines the structure of the neural network.</span>
-<span class="sd">            depth (int, optional): The number of propagation layers in the network. Defaults to 7.</span>
-<span class="sd">            inputs (int, optional): The number of input nodes. Defaults to 2.</span>
-<span class="sd">            outputs (int, optional): The number of output nodes. Defaults to 1.</span>
-
-<span class="sd">        Returns:</span>
-<span class="sd">            None</span>
+<span class="sd">            phenotype (Phenotype): The phenotype object containing the structure of the graph.</span>
+<span class="sd">            depth (int, optional): Number of iterations for the forward propagation. Defaults to 7.</span>
+<span class="sd">            inputs (int, optional): Number of input nodes. Defaults to 2.</span>
+<span class="sd">            outputs (int, optional): Number of output nodes. Defaults to 1.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="nb">super</span><span class="p">(</span><span class="n">NNFromGraph</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
 
@@ -141,20 +149,26 @@
 <a class="viewcode-back" href="../../core.html#core.neural_network_from_graph.NNFromGraph.forward">[docs]</a>
     <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obs</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Propagate the input observations through the neural network.</span>
+<span class="sd">        Performs the forward pass for the NNFromGraph model.</span>
 
-<span class="sd">        This method takes the input observations and processes them through the network for a specified number </span>
-<span class="sd">        of layers, applying weights and thresholds to determine the output. It raises an error if the input </span>
-<span class="sd">        observations exceed the expected size.</span>
+<span class="sd">        The forward method propagates the input tensor through the graph-based</span>
+<span class="sd">        network, updating node activations based on thresholds and adjacency</span>
+<span class="sd">        weights for each depth iteration.</span>
 
 <span class="sd">        Args:</span>
-<span class="sd">            obs: A tensor containing the input observations to be processed by the network.</span>
-
-<span class="sd">        Raises:</span>
-<span class="sd">            ValueError: If the observation size is larger than the expected input size.</span>
+<span class="sd">            obs (torch.Tensor): Input tensor with observations for each input node.</span>
 
 <span class="sd">        Returns:</span>
-<span class="sd">            Tensor: The output of the network corresponding to the specified output nodes.</span>
+<span class="sd">            torch.Tensor: Output tensor representing the activations of the output nodes.</span>
+
+<span class="sd">        Raises:</span>
+<span class="sd">            ValueError: If the observation tensor has more elements than input nodes.</span>
+
+<span class="sd">        Example:</span>
+<span class="sd">            &gt;&gt;&gt; phenotype = Phenotype()</span>
+<span class="sd">            &gt;&gt;&gt; model = NNFromGraph(phenotype)</span>
+<span class="sd">            &gt;&gt;&gt; obs = torch.tensor([1.0, 0.0])</span>
+<span class="sd">            &gt;&gt;&gt; output = model.forward(obs)</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">input_ids</span><span class="p">)</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">obs</span><span class="p">):</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;The observation is larger than the input&#39;</span><span class="p">)</span>

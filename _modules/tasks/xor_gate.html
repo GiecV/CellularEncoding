@@ -82,12 +82,15 @@
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Compute the XOR of two binary inputs.</span>
 
-<span class="sd">    Args:</span>
-<span class="sd">        x (int): The first binary input.</span>
-<span class="sd">        y (int): The second binary input.</span>
+<span class="sd">    The XOR function outputs 1 when the inputs are different, and 0 when they are the same.</span>
 
-<span class="sd">    Returns:</span>
-<span class="sd">        int: The XOR of the inputs.</span>
+<span class="sd">    :param x: The first binary input (either 0 or 1).</span>
+<span class="sd">    :type x: int</span>
+<span class="sd">    :param y: The second binary input (either 0 or 1).</span>
+<span class="sd">    :type y: int</span>
+
+<span class="sd">    :return: The XOR of the two inputs.</span>
+<span class="sd">    :rtype: int</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="n">x</span> <span class="o">^</span> <span class="n">y</span></div>
 
@@ -99,19 +102,27 @@
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Compute the fitness of an individual for the XOR problem.</span>
 
-<span class="sd">    Args:</span>
-<span class="sd">        individual: The individual whose fitness is to be computed.</span>
+<span class="sd">    The fitness is calculated by comparing the neural network&#39;s outputs with the </span>
+<span class="sd">    expected results for all possible input combinations. The fitness value is </span>
+<span class="sd">    the proportion of correct outputs for the XOR problem.</span>
 
-<span class="sd">    Returns:</span>
-<span class="sd">        float: The fitness value, which is the proportion of correct outputs.</span>
+<span class="sd">    :param individual: The individual whose fitness is to be computed. </span>
+<span class="sd">                       It is expected to be an object that can be converted </span>
+<span class="sd">                       into a `Phenotype` for neural network evaluation.</span>
+<span class="sd">    :type individual: Any (typically an individual in an evolutionary algorithm)</span>
+
+<span class="sd">    :return: The fitness value, which is the proportion of correct outputs.</span>
+<span class="sd">    :rtype: float</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">p</span> <span class="o">=</span> <span class="n">Phenotype</span><span class="p">(</span><span class="n">individual</span><span class="p">)</span>
     <span class="n">nn</span> <span class="o">=</span> <span class="n">NNFromGraph</span><span class="p">(</span><span class="n">p</span><span class="p">)</span>
     <span class="n">inputs</span> <span class="o">=</span> <span class="p">[[</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">]</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span> <span class="k">for</span> <span class="n">y</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">2</span><span class="p">)]</span>
     <span class="n">targets</span> <span class="o">=</span> <span class="p">[</span><span class="n">target_function</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="ow">in</span> <span class="n">inputs</span><span class="p">]</span>
-    <span class="n">outputs</span> <span class="o">=</span> <span class="p">[</span><span class="n">nn</span><span class="o">.</span><span class="n">forward</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">([</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">])</span><span class="o">.</span><span class="n">float</span><span class="p">())</span><span class="o">.</span><span class="n">item</span><span class="p">()</span> <span class="k">for</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="ow">in</span> <span class="n">inputs</span><span class="p">]</span>
+    <span class="n">outputs</span> <span class="o">=</span> <span class="p">[</span><span class="n">nn</span><span class="o">.</span><span class="n">forward</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">([</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">])</span><span class="o">.</span><span class="n">float</span><span class="p">())</span><span class="o">.</span><span class="n">item</span><span class="p">()</span>
+               <span class="k">for</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="ow">in</span> <span class="n">inputs</span><span class="p">]</span>
 
-    <span class="n">fitness_outputs</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="n">outputs</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">==</span> <span class="n">targets</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">outputs</span><span class="p">)))</span>
+    <span class="n">fitness_outputs</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="n">outputs</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">==</span> <span class="n">targets</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+                          <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">outputs</span><span class="p">)))</span>
     <span class="k">return</span> <span class="n">fitness_outputs</span> <span class="o">/</span> <span class="mi">4</span></div>
 
 
@@ -122,11 +133,16 @@
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Compute the fitness of an individual using an information-theoretic formula.</span>
 
-<span class="sd">    Args:</span>
-<span class="sd">        individual: The individual whose fitness is to be computed.</span>
+<span class="sd">    The fitness is based on the mutual information between the neural network&#39;s outputs </span>
+<span class="sd">    and the expected targets, with a regularization term for the complexity of the network. </span>
+<span class="sd">    This combines the accuracy of the network&#39;s predictions and its complexity to provide </span>
+<span class="sd">    a more robust measure of fitness.</span>
 
-<span class="sd">    Returns:</span>
-<span class="sd">        float: The fitness value based on mutual information and neural network complexity.</span>
+<span class="sd">    :param individual: The individual whose fitness is to be computed.</span>
+<span class="sd">    :type individual: Any (typically an individual in an evolutionary algorithm)</span>
+
+<span class="sd">    :return: The fitness value based on mutual information and neural network complexity.</span>
+<span class="sd">    :rtype: float</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">p</span> <span class="o">=</span> <span class="n">Phenotype</span><span class="p">(</span><span class="n">individual</span><span class="p">)</span>
     <span class="n">nn</span> <span class="o">=</span> <span class="n">NNFromGraph</span><span class="p">(</span><span class="n">p</span><span class="p">)</span>
@@ -153,12 +169,21 @@
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Compute the fitness of an individual with an option to print detailed information.</span>
 
-<span class="sd">    Args:</span>
-<span class="sd">        individual: The individual whose fitness is to be computed.</span>
-<span class="sd">        print_info (bool, optional): Whether to print detailed information. Default is False.</span>
+<span class="sd">    This function computes the fitness by comparing the individual’s tree structure </span>
+<span class="sd">    to a target tree structure. The fitness is based on several factors including </span>
+<span class="sd">    depth, number of nodes, common tags, and successors. The more similar the individual&#39;s </span>
+<span class="sd">    tree structure is to the target, the higher the fitness.</span>
 
-<span class="sd">    Returns:</span>
-<span class="sd">        float: The fitness value.</span>
+<span class="sd">    :param individual: The individual whose fitness is to be computed. </span>
+<span class="sd">                       It is expected to be an object that can be converted </span>
+<span class="sd">                       into a `Genome` and compared with a target genome.</span>
+<span class="sd">    :type individual: Genome</span>
+<span class="sd">    :param print_info: Whether to print detailed information about the fitness </span>
+<span class="sd">                       calculation. Default is False.</span>
+<span class="sd">    :type print_info: bool, optional</span>
+
+<span class="sd">    :return: The fitness value based on the similarity of the tree structures.</span>
+<span class="sd">    :rtype: float</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">target</span> <span class="o">=</span> <span class="n">Genome</span><span class="p">()</span>
     <span class="n">root</span> <span class="o">=</span> <span class="n">target</span><span class="o">.</span><span class="n">get_tree</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">root</span>
@@ -218,8 +243,10 @@
     <span class="n">depth_similarity</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">-</span> <span class="nb">abs</span><span class="p">(</span><span class="n">depth1</span> <span class="o">-</span> <span class="n">depth2</span><span class="p">)</span> <span class="o">/</span> <span class="nb">max</span><span class="p">(</span><span class="n">depth1</span><span class="p">,</span> <span class="n">depth2</span><span class="p">)</span>
     <span class="n">nodes_similarity</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">-</span> <span class="nb">abs</span><span class="p">(</span><span class="n">n_nodes1</span> <span class="o">-</span> <span class="n">n_nodes2</span><span class="p">)</span> <span class="o">/</span> <span class="nb">max</span><span class="p">(</span><span class="n">n_nodes1</span><span class="p">,</span> <span class="n">n_nodes2</span><span class="p">)</span>
     <span class="n">tags_similarity</span> <span class="o">=</span> <span class="p">(</span><span class="n">common_tags</span> <span class="o">-</span> <span class="n">tag_difference</span><span class="p">)</span> <span class="o">/</span> <span class="n">target_tags</span>
-    <span class="n">successors_similarity</span> <span class="o">=</span> <span class="p">(</span><span class="n">common_successors</span> <span class="o">-</span> <span class="n">successors_difference</span><span class="p">)</span> <span class="o">/</span> <span class="n">target_successors</span>
-    <span class="n">fitness</span> <span class="o">=</span> <span class="p">(</span><span class="n">depth_similarity</span> <span class="o">+</span> <span class="n">nodes_similarity</span> <span class="o">+</span> <span class="n">tags_similarity</span> <span class="o">+</span> <span class="n">successors_similarity</span><span class="p">)</span> <span class="o">/</span> <span class="mi">4</span>
+    <span class="n">successors_similarity</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="n">common_successors</span> <span class="o">-</span> <span class="n">successors_difference</span><span class="p">)</span> <span class="o">/</span> <span class="n">target_successors</span>
+    <span class="n">fitness</span> <span class="o">=</span> <span class="p">(</span><span class="n">depth_similarity</span> <span class="o">+</span> <span class="n">nodes_similarity</span> <span class="o">+</span>
+               <span class="n">tags_similarity</span> <span class="o">+</span> <span class="n">successors_similarity</span><span class="p">)</span> <span class="o">/</span> <span class="mi">4</span>
 
     <span class="k">if</span> <span class="n">print_info</span><span class="p">:</span>
         <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Depth similarity: </span><span class="si">{</span><span class="n">depth_similarity</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>

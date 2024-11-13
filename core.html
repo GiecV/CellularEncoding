@@ -108,87 +108,31 @@
 <dt class="sig sig-object py" id="core.evolution.Evolution">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">core.evolution.</span></span><span class="sig-name descname"><span class="pre">Evolution</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">population_size</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1000</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">generations</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">300</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mutation_rate</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0.05</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">inputs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">population</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/core/evolution.html#Evolution"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#core.evolution.Evolution" title="Link to this definition"></a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
-<p>Manage the evolution of a population of genomes over multiple generations.</p>
+<p>Manages the evolution of a population of genomes over multiple generations.</p>
 <p>This class implements an evolutionary algorithm that evolves a population of genomes through selection,
 crossover, and mutation. It tracks fitness scores, maintains a history of fitness, and allows for the
 generation of offspring based on the best individuals in the population.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>population_size</strong> (<em>int</em><em>, </em><em>optional</em>) – The size of the population. Defaults to 1000.</p></li>
-<li><p><strong>generations</strong> (<em>int</em><em>, </em><em>optional</em>) – The number of generations to evolve. Defaults to 300.</p></li>
-<li><p><strong>mutation_rate</strong> (<em>float</em><em>, </em><em>optional</em>) – The rate of mutation for individuals. Defaults to 0.05.</p></li>
-<li><p><strong>inputs</strong> (<em>int</em><em>, </em><em>optional</em>) – The number of inputs for the genomes. Defaults to 2.</p></li>
-<li><p><strong>population</strong> (<em>list</em><em>, </em><em>optional</em>) – An optional initial population. Defaults to None.</p></li>
+<li><p><strong>population_size</strong> – The size of the population (default is 1000).</p></li>
+<li><p><strong>generations</strong> – The number of generations to evolve (default is 300).</p></li>
+<li><p><strong>mutation_rate</strong> – The rate of mutation for individuals (default is 0.05).</p></li>
+<li><p><strong>inputs</strong> – The number of inputs for the genomes (default is 2).</p></li>
+<li><p><strong>population</strong> – An optional initial population (default is None).</p></li>
+</ul>
+</dd>
+<dt class="field-even">Variables<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>fitness_history</strong> – A history of the best fitness scores over generations.</p></li>
+<li><p><strong>innovative_individuals</strong> – A list of individuals that achieved the best fitness scores.</p></li>
+<li><p><strong>fitness_grids</strong> – A dictionary to store fitness grids.</p></li>
+<li><p><strong>fitness_scores</strong> – A list of fitness scores for the current population.</p></li>
+<li><p><strong>logs</strong> – A log of the evolution process.</p></li>
+<li><p><strong>lineage</strong> – A record of the lineage of the best individuals.</p></li>
 </ul>
 </dd>
 </dl>
-<dl class="py attribute">
-<dt class="sig sig-object py" id="core.evolution.Evolution.fitness_history">
-<span class="sig-name descname"><span class="pre">fitness_history</span></span><a class="headerlink" href="#core.evolution.Evolution.fitness_history" title="Link to this definition"></a></dt>
-<dd><p>A history of the best fitness scores over generations.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>list</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="core.evolution.Evolution.innovative_individuals">
-<span class="sig-name descname"><span class="pre">innovative_individuals</span></span><a class="headerlink" href="#core.evolution.Evolution.innovative_individuals" title="Link to this definition"></a></dt>
-<dd><p>A list of individuals that achieved the best fitness scores.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>list</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="core.evolution.Evolution.fitness_grids">
-<span class="sig-name descname"><span class="pre">fitness_grids</span></span><a class="headerlink" href="#core.evolution.Evolution.fitness_grids" title="Link to this definition"></a></dt>
-<dd><p>A dictionary to store fitness grids.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>dict</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="core.evolution.Evolution.fitness_scores">
-<span class="sig-name descname"><span class="pre">fitness_scores</span></span><a class="headerlink" href="#core.evolution.Evolution.fitness_scores" title="Link to this definition"></a></dt>
-<dd><p>A list of fitness scores for the current population.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>list</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="core.evolution.Evolution.logs">
-<span class="sig-name descname"><span class="pre">logs</span></span><a class="headerlink" href="#core.evolution.Evolution.logs" title="Link to this definition"></a></dt>
-<dd><p>A log of the evolution process.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>list</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="core.evolution.Evolution.lineage">
-<span class="sig-name descname"><span class="pre">lineage</span></span><a class="headerlink" href="#core.evolution.Evolution.lineage" title="Link to this definition"></a></dt>
-<dd><p>A record of the lineage of the best individuals.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>list</p>
-</dd>
-</dl>
-</dd></dl>
-
 <dl class="py method">
 <dt class="sig sig-object py" id="core.evolution.Evolution.create_individual">
 <span class="sig-name descname"><span class="pre">create_individual</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/core/evolution.html#Evolution.create_individual"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#core.evolution.Evolution.create_individual" title="Link to this definition"></a></dt>
@@ -196,14 +140,8 @@ generation of offspring based on the best individuals in the population.</p>
 <p>This method creates a new instance of a genome and assigns random symbols to the root nodes of each tree
 within the genome. It ensures that each individual in the population starts with a unique genetic configuration.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>self</strong> – The instance of the class.</p>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>The newly created individual represented as a genome.</p>
-</dd>
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><a class="reference internal" href="#core.genome.Genome" title="core.genome.Genome">Genome</a></p>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The newly created individual represented as a genome.</p>
 </dd>
 </dl>
 </dd></dl>
@@ -219,14 +157,11 @@ It utilizes the indices of the parents to facilitate the crossover process.</p>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>parent1</strong> – The first parent individual.</p></li>
 <li><p><strong>parent2</strong> – The second parent individual.</p></li>
-<li><p><strong>parents_indexes</strong> (<em>list</em>) – The indices of the parents in the population.</p></li>
+<li><p><strong>parents_indexes</strong> – The indices of the parents in the population.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>A tuple containing the two newly created child individuals.</p>
-</dd>
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>tuple</p>
 </dd>
 </dl>
 </dd></dl>
@@ -241,22 +176,14 @@ process and stops if the maximum allowed time is exceeded.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>info</strong> (<em>bool</em><em>, </em><em>optional</em>) – Whether to log detailed information about each generation. Defaults to True.</p></li>
-<li><p><strong>max_time</strong> (<em>int</em><em>, </em><em>optional</em>) – The maximum time allowed for the evolution process in seconds. Defaults to 2100.</p></li>
+<li><p><strong>info</strong> – Whether to log detailed information about each generation (default is True).</p></li>
+<li><p><strong>stop</strong> – Whether to stop if the best fitness score is 1 (default is True).</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>A tuple containing the best individual from the final population and the number of generations completed.</p>
 </dd>
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>tuple</p>
-</dd>
 </dl>
-<p class="rubric">Examples</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">evolution</span> <span class="o">=</span> <span class="n">Evolution</span><span class="p">(</span><span class="n">population_size</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span> <span class="n">generations</span><span class="o">=</span><span class="mi">300</span><span class="p">,</span> <span class="n">mutation_rate</span><span class="o">=</span><span class="mf">0.05</span><span class="p">,</span> <span class="n">inputs</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">best_individual</span><span class="p">,</span> <span class="n">generations_completed</span> <span class="o">=</span> <span class="n">evolution</span><span class="o">.</span><span class="n">evolve</span><span class="p">()</span>
-</pre></div>
-</div>
 </dd></dl>
 
 <dl class="py method">
@@ -271,14 +198,11 @@ inherit characteristics from both parents.</p>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>parent1</strong> – The first parent individual.</p></li>
 <li><p><strong>parent2</strong> – The second parent individual.</p></li>
-<li><p><strong>parents_indexes</strong> (<em>list</em>) – The indices of the parents in the population.</p></li>
+<li><p><strong>parents_indexes</strong> – The indices of the parents in the population.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>A tuple containing two newly created child genomes.</p>
-</dd>
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>tuple</p>
+<dd class="field-even"><p>A tuple containing the two newly created child individuals.</p>
 </dd>
 </dl>
 </dd></dl>
@@ -286,19 +210,12 @@ inherit characteristics from both parents.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="core.evolution.Evolution.get_lineage">
 <span class="sig-name descname"><span class="pre">get_lineage</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">gens_to_save</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">5</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/core/evolution.html#Evolution.get_lineage"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#core.evolution.Evolution.get_lineage" title="Link to this definition"></a></dt>
-<dd><p>Retrieve the lineage of the best individuals over a specified number of generations.</p>
-<p>This method collects and returns the genomes of the best individuals from the evolution process,
-tracing back through their parent generations. It allows for the analysis of genetic progression
-by saving a specified number of generations in the lineage.</p>
+<dd><p>Generate a lineage of the best individuals over generations.</p>
+<p>This method creates a record of the best individuals from each generation, which is useful for tracking
+the evolutionary progress and visualizing how the population has changed over time.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>gens_to_save</strong> (<em>int</em><em>, </em><em>optional</em>) – The number of generations to include in the lineage. Defaults to 5.</p>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>A list of dictionaries containing the generation index and the corresponding genome of each individual.</p>
-</dd>
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>list</p>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>A list of the best individuals from each generation.</p>
 </dd>
 </dl>
 </dd></dl>
@@ -311,14 +228,8 @@ by saving a specified number of generations in the lineage.</p>
 and applies mutation to introduce variability. The resulting offspring are returned for inclusion in the
 next generation.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>self</strong> – The instance of the class.</p>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>A list of mutated offspring generated from the current population.</p>
-</dd>
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>list</p>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>A list of mutated offspring generated from the current population.</p>
 </dd>
 </dl>
 </dd></dl>
@@ -330,14 +241,8 @@ next generation.</p>
 <p>This method generates a list of individuals for the population by calling the method to create each individual.
 It ensures that the population is ready for the evolutionary process.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>self</strong> – The instance of the class.</p>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>A list containing the initialized individuals in the population.</p>
-</dd>
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>list</p>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>A list containing the initialized individuals in the population.</p>
 </dd>
 </dl>
 </dd></dl>
@@ -345,19 +250,15 @@ It ensures that the population is ready for the evolutionary process.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="core.evolution.Evolution.mutate">
 <span class="sig-name descname"><span class="pre">mutate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">genome</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#core.genome.Genome" title="core.genome.Genome"><span class="pre">Genome</span></a></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/core/evolution.html#Evolution.mutate"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#core.evolution.Evolution.mutate" title="Link to this definition"></a></dt>
-<dd><p>Apply mutations to the given genome based on a mutation rate.</p>
-<p>This method iterates through the trees in the genome and randomly alters the symbols of nodes
-according to the specified mutation rate. It introduces genetic diversity by changing certain
-node tags to new symbols, which can be either operational or division symbols.</p>
+<dd><p>Apply mutation to an individual genome.</p>
+<p>This method introduces small random changes in the genome by modifying the genetic material of the individual.
+Mutation helps introduce genetic diversity and allows the evolutionary process to explore a larger solution space.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>genome</strong> – The genome to be mutated.</p>
+<dd class="field-odd"><p><strong>individual</strong> – The individual genome to mutate.</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>The mutated genome after applying the changes.</p>
-</dd>
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><a class="reference internal" href="#core.genome.Genome" title="core.genome.Genome">Genome</a></p>
+<dd class="field-even"><p>The mutated individual genome.</p>
 </dd>
 </dl>
 </dd></dl>
@@ -371,13 +272,10 @@ sorts them by their fitness scores, and selects the top individuals to form the 
 It also updates the fitness history with the best score from the current selection.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>population</strong> (<em>list</em>) – The population of individuals to evaluate.</p>
+<dd class="field-odd"><p><strong>population</strong> – The population of individuals to evaluate.</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>A tuple containing two lists: the best individuals and their corresponding fitness scores.</p>
-</dd>
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>tuple</p>
 </dd>
 </dl>
 </dd></dl>
@@ -432,7 +330,7 @@ it creates additional child nodes based on the symbol type, ensuring the tree st
 <dd class="field-even"><p>None</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>Noneß</p>
+<dd class="field-odd"><p>None</p>
 </dd>
 <dt class="field-even">Example<span class="colon">:</span></dt>
 <dd class="field-even"><div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">genome</span><span class="o">.</span><span class="n">from_json_pickle</span><span class="p">({</span><span class="s1">&#39;genome&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;...&#39;</span><span class="p">,</span> <span class="s1">&#39;...&#39;</span><span class="p">,</span> <span class="s1">&#39;...&#39;</span><span class="p">],</span> <span class="s1">&#39;parents&#39;</span><span class="p">:</span> <span class="kc">None</span><span class="p">})</span>
@@ -635,41 +533,61 @@ it creates additional child nodes based on the symbol type, ensuring the tree st
 <dt class="sig sig-object py" id="core.neural_network_from_graph.NNFromGraph">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">core.neural_network_from_graph.</span></span><span class="sig-name descname"><span class="pre">NNFromGraph</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">phenotype</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#core.phenotype.Phenotype" title="core.phenotype.Phenotype"><span class="pre">Phenotype</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">depth</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">7</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">inputs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">outputs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/core/neural_network_from_graph.html#NNFromGraph"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#core.neural_network_from_graph.NNFromGraph" title="Link to this definition"></a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Module</span></code></p>
-<p>Neural network implementation based on a phenotype’s graph structure.</p>
-<p>This class constructs a neural network using the structure defined in a phenotype, allowing for
-the propagation of inputs through the network. It initializes the network parameters and manages
-the forward pass of data through the network layers.</p>
+<p>A neural network model constructed from a graph representation of a phenotype.</p>
+<p>This class creates a neural network based on a given graph structure, assigning
+weights, thresholds, and other properties to the nodes and edges of the graph.
+The <cite>forward</cite> method performs a custom feedforward pass through the network
+based on the graph structure.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>phenotype</strong> (<a class="reference internal" href="#core.phenotype.Phenotype" title="core.phenotype.Phenotype"><em>Phenotype</em></a>) – The phenotype that defines the structure of the neural network.</p></li>
-<li><p><strong>depth</strong> (<em>int</em><em>, </em><em>optional</em>) – The number of propagation layers in the network. Defaults to 7.</p></li>
-<li><p><strong>inputs</strong> (<em>int</em><em>, </em><em>optional</em>) – The number of input nodes. Defaults to 2.</p></li>
-<li><p><strong>outputs</strong> (<em>int</em><em>, </em><em>optional</em>) – The number of output nodes. Defaults to 1.</p></li>
+<li><p><strong>phenotype</strong> (<a class="reference internal" href="#core.phenotype.Phenotype" title="core.phenotype.Phenotype"><em>Phenotype</em></a>) – The phenotype object containing the graph structure.</p></li>
+<li><p><strong>depth</strong> (<em>int</em>) – The number of iterations for forward propagation (default is 7).</p></li>
+<li><p><strong>inputs</strong> (<em>int</em>) – The number of input nodes (default is 2).</p></li>
+<li><p><strong>outputs</strong> (<em>int</em>) – The number of output nodes (default is 1).</p></li>
 </ul>
 </dd>
 </dl>
+<p><strong>Attributes:</strong></p>
+<ul class="simple">
+<li><p><strong>phenotype</strong> (<em>Phenotype</em>): The phenotype object containing the graph structure.</p></li>
+<li><p><strong>input_ids</strong> (<em>list</em>): List of input node indices in the graph.</p></li>
+<li><p><strong>output_ids</strong> (<em>list</em>): List of output node indices in the graph.</p></li>
+<li><p><strong>depth</strong> (<em>int</em>): Number of iterations for the forward propagation.</p></li>
+<li><p><strong>t</strong> (<em>int</em>):</p></li>
+<li><p><strong>r</strong> (<em>int</em>):</p></li>
+<li><p><strong>A</strong> (<em>torch.Tensor</em>): Adjacency matrix of the graph.</p></li>
+<li><p><strong>W</strong> (<em>torch.Tensor</em>): Trainable weight matrix for the graph.</p></li>
+<li><p><strong>thresholds</strong> (<em>torch.Tensor</em>): Thresholds for each node in the graph.</p></li>
+</ul>
 <dl class="py method">
 <dt class="sig sig-object py" id="core.neural_network_from_graph.NNFromGraph.forward">
 <span class="sig-name descname"><span class="pre">forward</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">obs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Tensor</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Tensor</span></span></span><a class="reference internal" href="_modules/core/neural_network_from_graph.html#NNFromGraph.forward"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#core.neural_network_from_graph.NNFromGraph.forward" title="Link to this definition"></a></dt>
-<dd><p>Propagate the input observations through the neural network.</p>
-<p>This method takes the input observations and processes them through the network for a specified number
-of layers, applying weights and thresholds to determine the output. It raises an error if the input
-observations exceed the expected size.</p>
+<dd><p>Performs the forward pass for the NNFromGraph model.</p>
+<p>The forward method propagates the input tensor through the graph-based
+network, updating node activations based on thresholds and adjacency
+weights for each depth iteration.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>obs</strong> – A tensor containing the input observations to be processed by the network.</p>
+<dd class="field-odd"><p><strong>obs</strong> (<em>torch.Tensor</em>) – Input tensor with observations for each input node.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Output tensor representing the activations of the output nodes.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>torch.Tensor</p>
 </dd>
 <dt class="field-even">Raises<span class="colon">:</span></dt>
-<dd class="field-even"><p><strong>ValueError</strong> – If the observation size is larger than the expected input size.</p>
-</dd>
-<dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>The output of the network corresponding to the specified output nodes.</p>
-</dd>
-<dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p>Tensor</p>
+<dd class="field-even"><p><strong>ValueError</strong> – If the observation tensor has more elements than input nodes.</p>
 </dd>
 </dl>
+<p class="rubric">Example</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">phenotype</span> <span class="o">=</span> <span class="n">Phenotype</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">model</span> <span class="o">=</span> <span class="n">NNFromGraph</span><span class="p">(</span><span class="n">phenotype</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">obs</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">([</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">output</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">forward</span><span class="p">(</span><span class="n">obs</span><span class="p">)</span>
+</pre></div>
+</div>
 </dd></dl>
 
 </dd></dl>
@@ -681,64 +599,30 @@ observations exceed the expected size.</p>
 <dt class="sig sig-object py" id="core.phenotype.Phenotype">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">core.phenotype.</span></span><span class="sig-name descname"><span class="pre">Phenotype</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">genome</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#core.genome.Genome" title="core.genome.Genome"><span class="pre">Genome</span></a></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/core/phenotype.html#Phenotype"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#core.phenotype.Phenotype" title="Link to this definition"></a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
-<p>Represent the phenotype of a genome in a directed graph structure.</p>
-<p>This class manages the structure and behavior of a phenotype, including the creation and manipulation of nodes
-that represent cells. It provides methods for developing the phenotype based on its genome, adding cells,
-and modifying connections between nodes.</p>
-<dl class="py attribute">
-<dt class="sig sig-object py" id="core.phenotype.Phenotype.structure">
-<span class="sig-name descname"><span class="pre">structure</span></span><a class="headerlink" href="#core.phenotype.Phenotype.structure" title="Link to this definition"></a></dt>
-<dd><p>The directed graph representing the phenotype’s structure.</p>
+<p>Represents the phenotype of a genome in a directed graph structure.</p>
+<p>This class manages the creation and manipulation of nodes representing cells, providing methods for
+developing the phenotype based on its genome, adding cells, and modifying connections.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>nx.DiGraph</p>
+<dt class="field-odd">Variables<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>structure</strong> – Directed graph representing the phenotype’s structure.</p></li>
+<li><p><strong>genome</strong> – The genome associated with this phenotype.</p></li>
+<li><p><strong>cell_count</strong> – Count of cells in the phenotype.</p></li>
+<li><p><strong>internal_register</strong> – Register used for internal operations within the phenotype.</p></li>
+</ul>
 </dd>
 </dl>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="core.phenotype.Phenotype.genome">
-<span class="sig-name descname"><span class="pre">genome</span></span><a class="headerlink" href="#core.phenotype.Phenotype.genome" title="Link to this definition"></a></dt>
-<dd><p>The genome associated with this phenotype.</p>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="core.phenotype.Phenotype.cell_count">
-<span class="sig-name descname"><span class="pre">cell_count</span></span><a class="headerlink" href="#core.phenotype.Phenotype.cell_count" title="Link to this definition"></a></dt>
-<dd><p>The count of cells in the phenotype.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>int</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="core.phenotype.Phenotype.internal_register">
-<span class="sig-name descname"><span class="pre">internal_register</span></span><a class="headerlink" href="#core.phenotype.Phenotype.internal_register" title="Link to this definition"></a></dt>
-<dd><p>A register used for internal operations within the phenotype.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>int</p>
-</dd>
-</dl>
-</dd></dl>
-
 <dl class="py method">
 <dt class="sig sig-object py" id="core.phenotype.Phenotype.add_cell">
 <span class="sig-name descname"><span class="pre">add_cell</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/core/phenotype.html#Phenotype.add_cell"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#core.phenotype.Phenotype.add_cell" title="Link to this definition"></a></dt>
-<dd><p>Add a new cell to the phenotype’s structure.</p>
-<p>This method creates a new hidden cell node in the phenotype’s structure and increments the cell count.
-It returns the identifier of the newly added cell.</p>
+<dd><p>Adds a new cell to the phenotype’s structure.</p>
+<p>Creates a new hidden cell node and increments the cell count.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>self</strong> – The instance of the class.</p>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Identifier of the newly added cell.</p>
 </dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>The identifier of the newly added cell.</p>
-</dd>
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>str</p>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>str</p>
 </dd>
 </dl>
 </dd></dl>
@@ -746,15 +630,10 @@ It returns the identifier of the newly added cell.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="core.phenotype.Phenotype.add_recurrent_edge">
 <span class="sig-name descname"><span class="pre">add_recurrent_edge</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">structural_node</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/core/phenotype.html#Phenotype.add_recurrent_edge"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#core.phenotype.Phenotype.add_recurrent_edge" title="Link to this definition"></a></dt>
-<dd><p>Add a recurrent edge to the specified structural node.</p>
-<p>This method creates a self-loop on the given structural node by adding an edge that connects the node to itself.
-This is typically used to represent recurrent connections in the phenotype’s structure.</p>
+<dd><p>Adds a recurrent edge to the specified node by creating a self-loop.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>structural_node</strong> – The node to which the recurrent edge will be added.</p>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>None</p>
+<dd class="field-odd"><p><strong>structural_node</strong> – Node to which the recurrent edge is added.</p>
 </dd>
 </dl>
 </dd></dl>
@@ -762,19 +641,14 @@ This is typically used to represent recurrent connections in the phenotype’s s
 <dl class="py method">
 <dt class="sig sig-object py" id="core.phenotype.Phenotype.change_weight">
 <span class="sig-name descname"><span class="pre">change_weight</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">structural_node</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">weight</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/core/phenotype.html#Phenotype.change_weight"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#core.phenotype.Phenotype.change_weight" title="Link to this definition"></a></dt>
-<dd><p>Update the weight of the edge connecting a predecessor to the specified structural node.</p>
-<p>This method modifies the weight of the edge from a selected predecessor node to the given structural node
-based on the current internal register. It ensures that the connection reflects the desired weight for the
-phenotype’s structure.</p>
+<dd><p>Updates the weight of the edge connecting a predecessor to the specified node.</p>
+<p>Modifies the edge weight from a selected predecessor to the node based on the internal register.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>structural_node</strong> – The node whose incoming edge weight will be changed.</p></li>
-<li><p><strong>weight</strong> – The new weight to assign to the edge.</p></li>
+<li><p><strong>structural_node</strong> – Node whose incoming edge weight is changed.</p></li>
+<li><p><strong>weight</strong> – New weight to assign to the edge.</p></li>
 </ul>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>None</p>
 </dd>
 </dl>
 </dd></dl>
@@ -782,18 +656,13 @@ phenotype’s structure.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="core.phenotype.Phenotype.continue_reading">
 <span class="sig-name descname"><span class="pre">continue_reading</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">structural_node</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">genome</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/core/phenotype.html#Phenotype.continue_reading"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#core.phenotype.Phenotype.continue_reading" title="Link to this definition"></a></dt>
-<dd><p>Update the genome attribute of the specified structural node.</p>
-<p>This method assigns the left child genome to the given structural node, effectively continuing the reading
-process of the genome. It is used to progress through the genetic information associated with the phenotype.</p>
+<dd><p>Updates the genome attribute of the specified node, continuing the genome reading process.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>structural_node</strong> – The node whose genome attribute will be updated.</p></li>
-<li><p><strong>genome</strong> – The genome from which the left child genome is derived.</p></li>
+<li><p><strong>structural_node</strong> – Node whose genome attribute is updated.</p></li>
+<li><p><strong>genome</strong> – Genome from which the left child genome is derived.</p></li>
 </ul>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>None</p>
 </dd>
 </dl>
 </dd></dl>
@@ -801,35 +670,21 @@ process of the genome. It is used to progress through the genetic information as
 <dl class="py method">
 <dt class="sig sig-object py" id="core.phenotype.Phenotype.develop">
 <span class="sig-name descname"><span class="pre">develop</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/core/phenotype.html#Phenotype.develop"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#core.phenotype.Phenotype.develop" title="Link to this definition"></a></dt>
-<dd><p>Develop the phenotype’s structure based on its genome.</p>
-<p>This method modifies the phenotype’s structure by iterating through its nodes and applying operations
-based on the associated genome. It skips the input and output nodes, focusing on the hidden nodes to
-evolve the structure further.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>self</strong> – The instance of the class.</p>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>None</p>
-</dd>
-</dl>
+<dd><p>Develops the phenotype’s structure based on its genome.</p>
+<p>Modifies the phenotype’s structure by applying operations based on the associated genome,
+focusing on hidden nodes to evolve the structure.</p>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="core.phenotype.Phenotype.development_finished">
 <span class="sig-name descname"><span class="pre">development_finished</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/core/phenotype.html#Phenotype.development_finished"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#core.phenotype.Phenotype.development_finished" title="Link to this definition"></a></dt>
-<dd><p>Check if the development of all cells in the phenotype is complete.</p>
-<p>This method iterates through the nodes in the phenotype’s structure to determine if all non-terminal nodes
-have reached a terminal state. It returns True if all cells have finished developing, and False otherwise.</p>
+<dd><p>Checks if development of all cells is complete.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>self</strong> – The instance of the class.</p>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>True if all cells have finished developing; otherwise, False.</p>
 </dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>True if all cells have finished developing, otherwise False.</p>
-</dd>
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>bool</p>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>bool</p>
 </dd>
 </dl>
 </dd></dl>
@@ -837,15 +692,10 @@ have reached a terminal state. It returns True if all cells have finished develo
 <dl class="py method">
 <dt class="sig sig-object py" id="core.phenotype.Phenotype.edit_register">
 <span class="sig-name descname"><span class="pre">edit_register</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/core/phenotype.html#Phenotype.edit_register"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#core.phenotype.Phenotype.edit_register" title="Link to this definition"></a></dt>
-<dd><p>Modify the internal register by adding a specified value.</p>
-<p>This method updates the internal register by incrementing it with the provided value.
-It is typically used to adjust the state of the register during the phenotype’s operations.</p>
+<dd><p>Modifies the internal register by adding a specified value.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>value</strong> – The amount to add to the internal register.</p>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>None</p>
+<dd class="field-odd"><p><strong>value</strong> – Amount to add to the internal register.</p>
 </dd>
 </dl>
 </dd></dl>
@@ -853,15 +703,11 @@ It is typically used to adjust the state of the register during the phenotype’
 <dl class="py method">
 <dt class="sig sig-object py" id="core.phenotype.Phenotype.edit_threshold">
 <span class="sig-name descname"><span class="pre">edit_threshold</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">structural_node</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/core/phenotype.html#Phenotype.edit_threshold"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#core.phenotype.Phenotype.edit_threshold" title="Link to this definition"></a></dt>
-<dd><p>Set the threshold of a specified structural node to 1.</p>
-<p>This method updates the threshold attribute of the given structural node in the phenotype’s structure.
-It is typically used to modify the behavior of the node during the development process.</p>
+<dd><p>Sets the threshold of a specified node to 1.</p>
+<p>Updates the threshold attribute of the node to modify its behavior.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>structural_node</strong> – The node whose threshold is to be edited.</p>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>None</p>
+<dd class="field-odd"><p><strong>structural_node</strong> – Node whose threshold is edited.</p>
 </dd>
 </dl>
 </dd></dl>
@@ -869,23 +715,19 @@ It is typically used to modify the behavior of the node during the development p
 <dl class="py method">
 <dt class="sig sig-object py" id="core.phenotype.Phenotype.expand_inputs_and_outputs">
 <span class="sig-name descname"><span class="pre">expand_inputs_and_outputs</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">inputs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">outputs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/core/phenotype.html#Phenotype.expand_inputs_and_outputs"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#core.phenotype.Phenotype.expand_inputs_and_outputs" title="Link to this definition"></a></dt>
-<dd><p>Expand the input and output nodes of the phenotype’s structure.</p>
-<p>This method adds the specified number of input and output nodes to the phenotype’s structure,
-connecting them to the existing nodes while ensuring the structure remains valid. It also
-removes the original input and output nodes and checks the development status of the phenotype.</p>
+<dd><p>Expands the input and output nodes of the structure, ensuring validity of connections.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>inputs</strong> – The number of input nodes to add.</p></li>
-<li><p><strong>outputs</strong> – The number of output nodes to add.</p></li>
+<li><p><strong>inputs</strong> – Number of input nodes to add.</p></li>
+<li><p><strong>outputs</strong> – Number of output nodes to add.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Raises<span class="colon">:</span></dt>
 <dd class="field-even"><p><strong>ValueError</strong> – If the structure has already been expanded.</p>
 </dd>
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>A tuple containing two values, t and r, which represent specific metrics
-related to the structure’s configuration.</p>
+<dd class="field-odd"><p>Tuple containing two metrics related to the structure configuration.</p>
 </dd>
 <dt class="field-even">Return type<span class="colon">:</span></dt>
 <dd class="field-even"><p>tuple</p>
@@ -896,18 +738,13 @@ related to the structure’s configuration.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="core.phenotype.Phenotype.jump">
 <span class="sig-name descname"><span class="pre">jump</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">structural_node</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">genome</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/core/phenotype.html#Phenotype.jump"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#core.phenotype.Phenotype.jump" title="Link to this definition"></a></dt>
-<dd><p>Perform a jump operation on the specified structural node.</p>
-<p>This method is intended to modify the behavior or state of the given structural node based on the associated genome.
-The specific implementation details of the jump operation are not defined in this method.</p>
+<dd><p>Performs a jump operation on the specified node.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>structural_node</strong> – The node on which the jump operation is to be performed.</p></li>
-<li><p><strong>genome</strong> – The genome associated with the structural node.</p></li>
+<li><p><strong>structural_node</strong> – Node on which the jump operation is performed.</p></li>
+<li><p><strong>genome</strong> – Genome associated with the structural node.</p></li>
 </ul>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>None</p>
 </dd>
 </dl>
 </dd></dl>
@@ -915,19 +752,19 @@ The specific implementation details of the jump operation are not defined in thi
 <dl class="py method">
 <dt class="sig sig-object py" id="core.phenotype.Phenotype.perform_operation">
 <span class="sig-name descname"><span class="pre">perform_operation</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">structural_node</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">symbol</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">genome</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/core/phenotype.html#Phenotype.perform_operation"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#core.phenotype.Phenotype.perform_operation" title="Link to this definition"></a></dt>
-<dd><p>Perform an operation on a structural node based on the given symbol.</p>
-<p>This method interprets the provided symbol to determine the appropriate operation to execute on the
-specified structural node. It may modify the node’s properties or structure and returns a new node if applicable.</p>
+<dd><p>Performs an operation on a structural node based on the given symbol.</p>
+<p>Interprets the symbol to determine the appropriate operation for the specified node,
+modifying the node’s properties or structure as needed.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>structural_node</strong> – The node on which the operation is to be performed.</p></li>
-<li><p><strong>symbol</strong> – A character representing the operation to be executed.</p></li>
-<li><p><strong>genome</strong> – The genome associated with the structural node.</p></li>
+<li><p><strong>structural_node</strong> – Node on which the operation is performed.</p></li>
+<li><p><strong>symbol</strong> – Character representing the operation.</p></li>
+<li><p><strong>genome</strong> – Genome associated with the structural node.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>The newly created node if applicable; otherwise, None.</p>
+<dd class="field-even"><p>Newly created node if applicable; otherwise, None.</p>
 </dd>
 </dl>
 </dd></dl>
@@ -935,21 +772,15 @@ specified structural node. It may modify the node’s properties or structure an
 <dl class="py method">
 <dt class="sig sig-object py" id="core.phenotype.Phenotype.read_genome">
 <span class="sig-name descname"><span class="pre">read_genome</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">structural_node</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">new_node</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">symbol</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">genome</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/core/phenotype.html#Phenotype.read_genome"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#core.phenotype.Phenotype.read_genome" title="Link to this definition"></a></dt>
-<dd><p>Process the genome based on the specified symbol and update the structural node accordingly.</p>
-<p>This method interprets the provided symbol to determine the appropriate action to take on the structural node,
-which may involve splitting the node, continuing the reading process, or updating the node’s attributes.
-It facilitates the interaction between the genome and the phenotype’s structure.</p>
+<dd><p>Processes the genome based on the specified symbol and updates the node accordingly.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>structural_node</strong> – The node to be processed based on the genome.</p></li>
-<li><p><strong>new_node</strong> – The new node that may be created or modified during the process.</p></li>
-<li><p><strong>symbol</strong> – A character representing the action to be taken.</p></li>
-<li><p><strong>genome</strong> – The genome associated with the structural node.</p></li>
+<li><p><strong>structural_node</strong> – Node to be processed.</p></li>
+<li><p><strong>new_node</strong> – New node that may be created or modified.</p></li>
+<li><p><strong>symbol</strong> – Character representing the action.</p></li>
+<li><p><strong>genome</strong> – Genome associated with the structural node.</p></li>
 </ul>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>None</p>
 </dd>
 </dl>
 </dd></dl>
@@ -957,19 +788,15 @@ It facilitates the interaction between the genome and the phenotype’s structur
 <dl class="py method">
 <dt class="sig sig-object py" id="core.phenotype.Phenotype.split">
 <span class="sig-name descname"><span class="pre">split</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">structural_node</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">new_node</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">genome</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/core/phenotype.html#Phenotype.split"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#core.phenotype.Phenotype.split" title="Link to this definition"></a></dt>
-<dd><p>Split the genome attributes between the specified structural nodes.</p>
-<p>This method assigns the right and left child genomes to the new and original structural nodes, respectively.
-It facilitates the division of genetic information during the development of the phenotype.</p>
+<dd><p>Splits genome attributes between specified nodes.</p>
+<p>Assigns the right and left child genomes to the new and original nodes.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>structural_node</strong> – The original node whose genome will be updated.</p></li>
-<li><p><strong>new_node</strong> – The new node that will receive the right child genome.</p></li>
-<li><p><strong>genome</strong> – The genome from which the child genomes are derived.</p></li>
+<li><p><strong>structural_node</strong> – Original node whose genome will be updated.</p></li>
+<li><p><strong>new_node</strong> – New node receiving the right child genome.</p></li>
+<li><p><strong>genome</strong> – Genome from which child genomes are derived.</p></li>
 </ul>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>None</p>
 </dd>
 </dl>
 </dd></dl>
@@ -977,15 +804,17 @@ It facilitates the division of genetic information during the development of the
 <dl class="py method">
 <dt class="sig sig-object py" id="core.phenotype.Phenotype.split_parallel">
 <span class="sig-name descname"><span class="pre">split_parallel</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">structural_node</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/core/phenotype.html#Phenotype.split_parallel"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#core.phenotype.Phenotype.split_parallel" title="Link to this definition"></a></dt>
-<dd><p>Create a new node that splits the connections of the specified structural node in parallel.</p>
-<p>This method adds a new cell and establishes connections from the new node to the predecessors and successors
-of the given structural node. It also handles any recurrent links associated with the original node.</p>
+<dd><p>Creates a new node that splits connections in parallel.</p>
+<p>Adds a new cell, connecting it to the predecessors and successors of the given node.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>structural_node</strong> – The node to be split in parallel.</p>
+<dd class="field-odd"><p><strong>structural_node</strong> – Node to be split in parallel.</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>The newly created node that represents the split.</p>
+<dd class="field-even"><p>Identifier of the newly created node.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str</p>
 </dd>
 </dl>
 </dd></dl>
@@ -993,15 +822,18 @@ of the given structural node. It also handles any recurrent links associated wit
 <dl class="py method">
 <dt class="sig sig-object py" id="core.phenotype.Phenotype.split_sequential">
 <span class="sig-name descname"><span class="pre">split_sequential</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">structural_node</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/core/phenotype.html#Phenotype.split_sequential"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#core.phenotype.Phenotype.split_sequential" title="Link to this definition"></a></dt>
-<dd><p>Create a new node that splits the connections of the specified structural node sequentially.</p>
-<p>This method adds a new cell and modifies the connections of the original structural node by transferring
-its successors to the new node. It also handles any recurrent links associated with the original node.</p>
+<dd><p>Creates a new node that splits connections sequentially.</p>
+<p>Adds a new cell and modifies the connections of the original node, transferring its
+successors to the new node.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>structural_node</strong> – The node to be split sequentially.</p>
+<dd class="field-odd"><p><strong>structural_node</strong> – Node to be split sequentially.</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>The newly created node that represents the split.</p>
+<dd class="field-even"><p>Identifier of the newly created node.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str</p>
 </dd>
 </dl>
 </dd></dl>

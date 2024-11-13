@@ -107,9 +107,14 @@
 <dt class="sig sig-object py" id="tasks.cartpole.compute_fitness">
 <span class="sig-prename descclassname"><span class="pre">tasks.cartpole.</span></span><span class="sig-name descname"><span class="pre">compute_fitness</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">individual</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/tasks/cartpole.html#compute_fitness"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tasks.cartpole.compute_fitness" title="Link to this definition"></a></dt>
 <dd><p>Compute the fitness of an individual in the CartPole environment.</p>
+<p>The fitness is measured by the mean reward obtained over a number of trials,
+where each trial consists of running the individual’s neural network in
+the CartPole-v1 environment.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>individual</strong> – The individual whose fitness is to be computed.</p>
+<dd class="field-odd"><p><strong>individual</strong> (<em>Any</em><em> (</em><em>typically an individual in an evolutionary algorithm</em><em>)</em>) – The individual whose fitness is to be computed.
+It is expected to be an object that can be converted
+into a <cite>Phenotype</cite> for neural network evaluation.</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>The mean reward obtained over a number of trials.</p>
@@ -124,11 +129,16 @@
 <dt class="sig sig-object py" id="tasks.cartpole.compute_fitness_growth_penalty">
 <span class="sig-prename descclassname"><span class="pre">tasks.cartpole.</span></span><span class="sig-name descname"><span class="pre">compute_fitness_growth_penalty</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">individual</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">penalty</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/tasks/cartpole.html#compute_fitness_growth_penalty"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tasks.cartpole.compute_fitness_growth_penalty" title="Link to this definition"></a></dt>
 <dd><p>Compute the fitness of an individual with a growth penalty.</p>
+<p>This function evaluates the fitness of an individual by first calculating
+its original fitness using <cite>compute_fitness</cite>. Then, it applies a penalty
+based on the number of nodes in the individual’s genotype. The penalty
+helps to discourage overly complex solutions.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>individual</strong> – The individual whose fitness is to be computed.</p></li>
-<li><p><strong>penalty</strong> (<em>float</em><em>, </em><em>optional</em>) – The penalty factor for the number of nodes. Default is 0.</p></li>
+<li><p><strong>individual</strong> (<em>Any</em><em> (</em><em>typically an individual in an evolutionary algorithm</em><em>)</em>) – The individual whose fitness is to be computed.</p></li>
+<li><p><strong>penalty</strong> (<em>float</em><em>, </em><em>optional</em>) – The penalty factor for the number of nodes. Default is 0,
+meaning no penalty is applied.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
@@ -147,15 +157,23 @@
 <dt class="sig sig-object py" id="tasks.parity.compute_fitness">
 <span class="sig-prename descclassname"><span class="pre">tasks.parity.</span></span><span class="sig-name descname"><span class="pre">compute_fitness</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">individual</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">2</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/tasks/parity.html#compute_fitness"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tasks.parity.compute_fitness" title="Link to this definition"></a></dt>
 <dd><p>Compute the fitness of an individual in the parity problem.</p>
+<p>The fitness is evaluated by computing the normalized mutual information score
+between the outputs of a neural network and the expected parity targets
+for all possible binary input combinations. The network is evaluated with
+<cite>n</cite> binary inputs, and the fitness is a measure of how well the network
+predicts the parity of the inputs.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>individual</strong> – The individual whose fitness is to be computed.</p></li>
-<li><p><strong>n</strong> (<em>int</em><em>, </em><em>optional</em>) – The number of binary inputs. Default is 2.</p></li>
+<li><p><strong>individual</strong> (<em>Any</em><em> (</em><em>typically an individual in an evolutionary algorithm</em><em>)</em>) – The individual whose fitness is to be computed.
+It is expected to be an object that can be converted
+into a <cite>Phenotype</cite> for neural network evaluation.</p></li>
+<li><p><strong>n</strong> (<em>int</em><em>, </em><em>optional</em>) – The number of binary inputs to the neural network. Default is 2.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>The normalized mutual information score between the outputs and the targets.</p>
+<dd class="field-even"><p>The normalized mutual information score between the network’s
+outputs and the expected targets.</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>float</p>
@@ -170,9 +188,14 @@
 <dt class="sig sig-object py" id="tasks.xor_gate.compute_fitness">
 <span class="sig-prename descclassname"><span class="pre">tasks.xor_gate.</span></span><span class="sig-name descname"><span class="pre">compute_fitness</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">individual</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/tasks/xor_gate.html#compute_fitness"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tasks.xor_gate.compute_fitness" title="Link to this definition"></a></dt>
 <dd><p>Compute the fitness of an individual for the XOR problem.</p>
+<p>The fitness is calculated by comparing the neural network’s outputs with the
+expected results for all possible input combinations. The fitness value is
+the proportion of correct outputs for the XOR problem.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>individual</strong> – The individual whose fitness is to be computed.</p>
+<dd class="field-odd"><p><strong>individual</strong> (<em>Any</em><em> (</em><em>typically an individual in an evolutionary algorithm</em><em>)</em>) – The individual whose fitness is to be computed.
+It is expected to be an object that can be converted
+into a <cite>Phenotype</cite> for neural network evaluation.</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>The fitness value, which is the proportion of correct outputs.</p>
@@ -187,9 +210,13 @@
 <dt class="sig sig-object py" id="tasks.xor_gate.compute_fitness_information_formula">
 <span class="sig-prename descclassname"><span class="pre">tasks.xor_gate.</span></span><span class="sig-name descname"><span class="pre">compute_fitness_information_formula</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">individual</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/tasks/xor_gate.html#compute_fitness_information_formula"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tasks.xor_gate.compute_fitness_information_formula" title="Link to this definition"></a></dt>
 <dd><p>Compute the fitness of an individual using an information-theoretic formula.</p>
+<p>The fitness is based on the mutual information between the neural network’s outputs
+and the expected targets, with a regularization term for the complexity of the network.
+This combines the accuracy of the network’s predictions and its complexity to provide
+a more robust measure of fitness.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>individual</strong> – The individual whose fitness is to be computed.</p>
+<dd class="field-odd"><p><strong>individual</strong> (<em>Any</em><em> (</em><em>typically an individual in an evolutionary algorithm</em><em>)</em>) – The individual whose fitness is to be computed.</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>The fitness value based on mutual information and neural network complexity.</p>
@@ -204,15 +231,22 @@
 <dt class="sig sig-object py" id="tasks.xor_gate.compute_fitness_target">
 <span class="sig-prename descclassname"><span class="pre">tasks.xor_gate.</span></span><span class="sig-name descname"><span class="pre">compute_fitness_target</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">individual</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">print_info</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/tasks/xor_gate.html#compute_fitness_target"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tasks.xor_gate.compute_fitness_target" title="Link to this definition"></a></dt>
 <dd><p>Compute the fitness of an individual with an option to print detailed information.</p>
+<p>This function computes the fitness by comparing the individual’s tree structure
+to a target tree structure. The fitness is based on several factors including
+depth, number of nodes, common tags, and successors. The more similar the individual’s
+tree structure is to the target, the higher the fitness.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>individual</strong> – The individual whose fitness is to be computed.</p></li>
-<li><p><strong>print_info</strong> (<em>bool</em><em>, </em><em>optional</em>) – Whether to print detailed information. Default is False.</p></li>
+<li><p><strong>individual</strong> (<a class="reference internal" href="core.html#core.genome.Genome" title="core.genome.Genome"><em>Genome</em></a>) – The individual whose fitness is to be computed.
+It is expected to be an object that can be converted
+into a <cite>Genome</cite> and compared with a target genome.</p></li>
+<li><p><strong>print_info</strong> (<em>bool</em><em>, </em><em>optional</em>) – Whether to print detailed information about the fitness
+calculation. Default is False.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>The fitness value.</p>
+<dd class="field-even"><p>The fitness value based on the similarity of the tree structures.</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>float</p>
@@ -224,15 +258,16 @@
 <dt class="sig sig-object py" id="tasks.xor_gate.target_function">
 <span class="sig-prename descclassname"><span class="pre">tasks.xor_gate.</span></span><span class="sig-name descname"><span class="pre">target_function</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/tasks/xor_gate.html#target_function"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tasks.xor_gate.target_function" title="Link to this definition"></a></dt>
 <dd><p>Compute the XOR of two binary inputs.</p>
+<p>The XOR function outputs 1 when the inputs are different, and 0 when they are the same.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>x</strong> (<em>int</em>) – The first binary input.</p></li>
-<li><p><strong>y</strong> (<em>int</em>) – The second binary input.</p></li>
+<li><p><strong>x</strong> (<em>int</em>) – The first binary input (either 0 or 1).</p></li>
+<li><p><strong>y</strong> (<em>int</em>) – The second binary input (either 0 or 1).</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>The XOR of the inputs.</p>
+<dd class="field-even"><p>The XOR of the two inputs.</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>int</p>

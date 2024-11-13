@@ -78,31 +78,25 @@
 <a class="viewcode-back" href="../../core.html#core.phenotype.Phenotype">[docs]</a>
 <span class="k">class</span> <span class="nc">Phenotype</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Represent the phenotype of a genome in a directed graph structure.</span>
+<span class="sd">    Represents the phenotype of a genome in a directed graph structure.</span>
 
-<span class="sd">    This class manages the structure and behavior of a phenotype, including the creation and manipulation of nodes </span>
-<span class="sd">    that represent cells. It provides methods for developing the phenotype based on its genome, adding cells, </span>
-<span class="sd">    and modifying connections between nodes.</span>
+<span class="sd">    This class manages the creation and manipulation of nodes representing cells, providing methods for </span>
+<span class="sd">    developing the phenotype based on its genome, adding cells, and modifying connections.</span>
 
-<span class="sd">    Attributes:</span>
-<span class="sd">        structure (nx.DiGraph): The directed graph representing the phenotype&#39;s structure.</span>
-<span class="sd">        genome: The genome associated with this phenotype.</span>
-<span class="sd">        cell_count (int): The count of cells in the phenotype.</span>
-<span class="sd">        internal_register (int): A register used for internal operations within the phenotype.</span>
+<span class="sd">    :ivar structure: Directed graph representing the phenotype&#39;s structure.</span>
+<span class="sd">    :ivar genome: The genome associated with this phenotype.</span>
+<span class="sd">    :ivar cell_count: Count of cells in the phenotype.</span>
+<span class="sd">    :ivar internal_register: Register used for internal operations within the phenotype.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">genome</span><span class="p">:</span> <span class="n">Genome</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Initialize a Phenotype instance with a given genome.</span>
+<span class="sd">        Initializes a Phenotype instance with a given genome.</span>
 
-<span class="sd">        This constructor sets up the initial structure of the phenotype, including input and output nodes, </span>
-<span class="sd">        and establishes connections between them. It also initializes various attributes related to the phenotype&#39;s structure.</span>
+<span class="sd">        Sets up the initial structure of the phenotype, including input and output nodes, </span>
+<span class="sd">        and establishes connections between them.</span>
 
-<span class="sd">        Args:</span>
-<span class="sd">            genome: The genome associated with this phenotype.</span>
-
-<span class="sd">        Returns:</span>
-<span class="sd">            None</span>
+<span class="sd">        :param genome: The genome associated with this phenotype.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">structure</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">DiGraph</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">genome</span> <span class="o">=</span> <span class="n">genome</span>
@@ -123,16 +117,12 @@
 <a class="viewcode-back" href="../../core.html#core.phenotype.Phenotype.add_cell">[docs]</a>
     <span class="k">def</span> <span class="nf">add_cell</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Add a new cell to the phenotype&#39;s structure.</span>
+<span class="sd">        Adds a new cell to the phenotype&#39;s structure.</span>
 
-<span class="sd">        This method creates a new hidden cell node in the phenotype&#39;s structure and increments the cell count. </span>
-<span class="sd">        It returns the identifier of the newly added cell.</span>
+<span class="sd">        Creates a new hidden cell node and increments the cell count.</span>
 
-<span class="sd">        Args:</span>
-<span class="sd">            self: The instance of the class.</span>
-
-<span class="sd">        Returns:</span>
-<span class="sd">            str: The identifier of the newly added cell.</span>
+<span class="sd">        :return: Identifier of the newly added cell.</span>
+<span class="sd">        :rtype: str</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">genome</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">genome</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">structure</span><span class="o">.</span><span class="n">add_node</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">cell_count</span><span class="p">),</span>
@@ -147,17 +137,10 @@
 <a class="viewcode-back" href="../../core.html#core.phenotype.Phenotype.develop">[docs]</a>
     <span class="k">def</span> <span class="nf">develop</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Develop the phenotype&#39;s structure based on its genome.</span>
+<span class="sd">        Develops the phenotype&#39;s structure based on its genome.</span>
 
-<span class="sd">        This method modifies the phenotype&#39;s structure by iterating through its nodes and applying operations</span>
-<span class="sd">        based on the associated genome. It skips the input and output nodes, focusing on the hidden nodes to</span>
-<span class="sd">        evolve the structure further.</span>
-
-<span class="sd">        Args:</span>
-<span class="sd">            self: The instance of the class.</span>
-
-<span class="sd">        Returns:</span>
-<span class="sd">            None</span>
+<span class="sd">        Modifies the phenotype&#39;s structure by applying operations based on the associated genome, </span>
+<span class="sd">        focusing on hidden nodes to evolve the structure.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
         <span class="n">old_structure</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">structure</span><span class="p">)</span>
@@ -177,18 +160,15 @@
 <a class="viewcode-back" href="../../core.html#core.phenotype.Phenotype.perform_operation">[docs]</a>
     <span class="k">def</span> <span class="nf">perform_operation</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">structural_node</span><span class="p">,</span> <span class="n">symbol</span><span class="p">,</span> <span class="n">genome</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Perform an operation on a structural node based on the given symbol.</span>
+<span class="sd">        Performs an operation on a structural node based on the given symbol.</span>
 
-<span class="sd">        This method interprets the provided symbol to determine the appropriate operation to execute on the </span>
-<span class="sd">        specified structural node. It may modify the node&#39;s properties or structure and returns a new node if applicable.</span>
+<span class="sd">        Interprets the symbol to determine the appropriate operation for the specified node, </span>
+<span class="sd">        modifying the node&#39;s properties or structure as needed.</span>
 
-<span class="sd">        Args:</span>
-<span class="sd">            structural_node: The node on which the operation is to be performed.</span>
-<span class="sd">            symbol: A character representing the operation to be executed.</span>
-<span class="sd">            genome: The genome associated with the structural node.</span>
-
-<span class="sd">        Returns:</span>
-<span class="sd">            The newly created node if applicable; otherwise, None.</span>
+<span class="sd">        :param structural_node: Node on which the operation is performed.</span>
+<span class="sd">        :param symbol: Character representing the operation.</span>
+<span class="sd">        :param genome: Genome associated with the structural node.</span>
+<span class="sd">        :return: Newly created node if applicable; otherwise, None.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">new_node</span> <span class="o">=</span> <span class="kc">None</span>
 
@@ -223,16 +203,11 @@
 <a class="viewcode-back" href="../../core.html#core.phenotype.Phenotype.edit_threshold">[docs]</a>
     <span class="k">def</span> <span class="nf">edit_threshold</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">structural_node</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Set the threshold of a specified structural node to 1.</span>
+<span class="sd">        Sets the threshold of a specified node to 1.</span>
 
-<span class="sd">        This method updates the threshold attribute of the given structural node in the phenotype&#39;s structure.</span>
-<span class="sd">        It is typically used to modify the behavior of the node during the development process.</span>
+<span class="sd">        Updates the threshold attribute of the node to modify its behavior.</span>
 
-<span class="sd">        Args:</span>
-<span class="sd">            structural_node: The node whose threshold is to be edited.</span>
-
-<span class="sd">        Returns:</span>
-<span class="sd">            None</span>
+<span class="sd">        :param structural_node: Node whose threshold is edited.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">structure</span><span class="o">.</span><span class="n">nodes</span><span class="p">[</span><span class="n">structural_node</span><span class="p">][</span><span class="s2">&quot;threshold&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span></div>
 
@@ -242,17 +217,10 @@
 <a class="viewcode-back" href="../../core.html#core.phenotype.Phenotype.jump">[docs]</a>
     <span class="k">def</span> <span class="nf">jump</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">structural_node</span><span class="p">,</span> <span class="n">genome</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Perform a jump operation on the specified structural node.</span>
+<span class="sd">        Performs a jump operation on the specified node.</span>
 
-<span class="sd">        This method is intended to modify the behavior or state of the given structural node based on the associated genome. </span>
-<span class="sd">        The specific implementation details of the jump operation are not defined in this method.</span>
-
-<span class="sd">        Args:</span>
-<span class="sd">            structural_node: The node on which the jump operation is to be performed.</span>
-<span class="sd">            genome: The genome associated with the structural node.</span>
-
-<span class="sd">        Returns:</span>
-<span class="sd">            None</span>
+<span class="sd">        :param structural_node: Node on which the jump operation is performed.</span>
+<span class="sd">        :param genome: Genome associated with the structural node.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">pass</span></div>
 
@@ -261,16 +229,13 @@
 <a class="viewcode-back" href="../../core.html#core.phenotype.Phenotype.split_parallel">[docs]</a>
     <span class="k">def</span> <span class="nf">split_parallel</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">structural_node</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Create a new node that splits the connections of the specified structural node in parallel.</span>
+<span class="sd">        Creates a new node that splits connections in parallel.</span>
 
-<span class="sd">        This method adds a new cell and establishes connections from the new node to the predecessors and successors </span>
-<span class="sd">        of the given structural node. It also handles any recurrent links associated with the original node.</span>
+<span class="sd">        Adds a new cell, connecting it to the predecessors and successors of the given node.</span>
 
-<span class="sd">        Args:</span>
-<span class="sd">            structural_node: The node to be split in parallel.</span>
-
-<span class="sd">        Returns:</span>
-<span class="sd">            The newly created node that represents the split.</span>
+<span class="sd">        :param structural_node: Node to be split in parallel.</span>
+<span class="sd">        :return: Identifier of the newly created node.</span>
+<span class="sd">        :rtype: str</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">new_node</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">add_cell</span><span class="p">()</span>
 
@@ -311,16 +276,14 @@
 <a class="viewcode-back" href="../../core.html#core.phenotype.Phenotype.split_sequential">[docs]</a>
     <span class="k">def</span> <span class="nf">split_sequential</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">structural_node</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Create a new node that splits the connections of the specified structural node sequentially.</span>
+<span class="sd">        Creates a new node that splits connections sequentially.</span>
 
-<span class="sd">        This method adds a new cell and modifies the connections of the original structural node by transferring </span>
-<span class="sd">        its successors to the new node. It also handles any recurrent links associated with the original node.</span>
+<span class="sd">        Adds a new cell and modifies the connections of the original node, transferring its </span>
+<span class="sd">        successors to the new node.</span>
 
-<span class="sd">        Args:</span>
-<span class="sd">            structural_node: The node to be split sequentially.</span>
-
-<span class="sd">        Returns:</span>
-<span class="sd">            The newly created node that represents the split.</span>
+<span class="sd">        :param structural_node: Node to be split sequentially.</span>
+<span class="sd">        :return: Identifier of the newly created node.</span>
+<span class="sd">        :rtype: str</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">new_node</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">add_cell</span><span class="p">()</span>
 
@@ -359,16 +322,9 @@
 <a class="viewcode-back" href="../../core.html#core.phenotype.Phenotype.add_recurrent_edge">[docs]</a>
     <span class="k">def</span> <span class="nf">add_recurrent_edge</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">structural_node</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Add a recurrent edge to the specified structural node.</span>
+<span class="sd">        Adds a recurrent edge to the specified node by creating a self-loop.</span>
 
-<span class="sd">        This method creates a self-loop on the given structural node by adding an edge that connects the node to itself.</span>
-<span class="sd">        This is typically used to represent recurrent connections in the phenotype&#39;s structure.</span>
-
-<span class="sd">        Args:</span>
-<span class="sd">            structural_node: The node to which the recurrent edge will be added.</span>
-
-<span class="sd">        Returns:</span>
-<span class="sd">            None</span>
+<span class="sd">        :param structural_node: Node to which the recurrent edge is added.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">structure</span><span class="o">.</span><span class="n">add_edge</span><span class="p">(</span>
             <span class="n">structural_node</span><span class="p">,</span>
@@ -382,16 +338,9 @@
 <a class="viewcode-back" href="../../core.html#core.phenotype.Phenotype.edit_register">[docs]</a>
     <span class="k">def</span> <span class="nf">edit_register</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Modify the internal register by adding a specified value.</span>
+<span class="sd">        Modifies the internal register by adding a specified value.</span>
 
-<span class="sd">        This method updates the internal register by incrementing it with the provided value. </span>
-<span class="sd">        It is typically used to adjust the state of the register during the phenotype&#39;s operations.</span>
-
-<span class="sd">        Args:</span>
-<span class="sd">            value: The amount to add to the internal register.</span>
-
-<span class="sd">        Returns:</span>
-<span class="sd">            None</span>
+<span class="sd">        :param value: Amount to add to the internal register.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">internal_register</span> <span class="o">+=</span> <span class="n">value</span></div>
 
@@ -400,20 +349,12 @@
 <a class="viewcode-back" href="../../core.html#core.phenotype.Phenotype.read_genome">[docs]</a>
     <span class="k">def</span> <span class="nf">read_genome</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">structural_node</span><span class="p">,</span> <span class="n">new_node</span><span class="p">,</span> <span class="n">symbol</span><span class="p">,</span> <span class="n">genome</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Process the genome based on the specified symbol and update the structural node accordingly.</span>
+<span class="sd">        Processes the genome based on the specified symbol and updates the node accordingly.</span>
 
-<span class="sd">        This method interprets the provided symbol to determine the appropriate action to take on the structural node, </span>
-<span class="sd">        which may involve splitting the node, continuing the reading process, or updating the node&#39;s attributes. </span>
-<span class="sd">        It facilitates the interaction between the genome and the phenotype&#39;s structure.</span>
-
-<span class="sd">        Args:</span>
-<span class="sd">            structural_node: The node to be processed based on the genome.</span>
-<span class="sd">            new_node: The new node that may be created or modified during the process.</span>
-<span class="sd">            symbol: A character representing the action to be taken.</span>
-<span class="sd">            genome: The genome associated with the structural node.</span>
-
-<span class="sd">        Returns:</span>
-<span class="sd">            None</span>
+<span class="sd">        :param structural_node: Node to be processed.</span>
+<span class="sd">        :param new_node: New node that may be created or modified.</span>
+<span class="sd">        :param symbol: Character representing the action.</span>
+<span class="sd">        :param genome: Genome associated with the structural node.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="n">symbol</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;p&quot;</span><span class="p">,</span> <span class="s2">&quot;s&quot;</span><span class="p">]:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">structural_node</span><span class="p">,</span> <span class="n">new_node</span><span class="p">,</span> <span class="n">genome</span><span class="p">)</span>
@@ -430,18 +371,13 @@
 <a class="viewcode-back" href="../../core.html#core.phenotype.Phenotype.split">[docs]</a>
     <span class="k">def</span> <span class="nf">split</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">structural_node</span><span class="p">,</span> <span class="n">new_node</span><span class="p">,</span> <span class="n">genome</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Split the genome attributes between the specified structural nodes.</span>
+<span class="sd">        Splits genome attributes between specified nodes.</span>
 
-<span class="sd">        This method assigns the right and left child genomes to the new and original structural nodes, respectively. </span>
-<span class="sd">        It facilitates the division of genetic information during the development of the phenotype.</span>
+<span class="sd">        Assigns the right and left child genomes to the new and original nodes.</span>
 
-<span class="sd">        Args:</span>
-<span class="sd">            structural_node: The original node whose genome will be updated.</span>
-<span class="sd">            new_node: The new node that will receive the right child genome.</span>
-<span class="sd">            genome: The genome from which the child genomes are derived.</span>
-
-<span class="sd">        Returns:</span>
-<span class="sd">            None</span>
+<span class="sd">        :param structural_node: Original node whose genome will be updated.</span>
+<span class="sd">        :param new_node: New node receiving the right child genome.</span>
+<span class="sd">        :param genome: Genome from which child genomes are derived.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">structure</span><span class="o">.</span><span class="n">nodes</span><span class="p">[</span><span class="n">new_node</span><span class="p">][</span><span class="s2">&quot;attr&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">Genome</span><span class="p">(</span>
             <span class="n">genome</span><span class="o">.</span><span class="n">get_right_child_genome</span><span class="p">()</span>
@@ -456,17 +392,10 @@
 <a class="viewcode-back" href="../../core.html#core.phenotype.Phenotype.continue_reading">[docs]</a>
     <span class="k">def</span> <span class="nf">continue_reading</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">structural_node</span><span class="p">,</span> <span class="n">genome</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Update the genome attribute of the specified structural node.</span>
+<span class="sd">        Updates the genome attribute of the specified node, continuing the genome reading process.</span>
 
-<span class="sd">        This method assigns the left child genome to the given structural node, effectively continuing the reading </span>
-<span class="sd">        process of the genome. It is used to progress through the genetic information associated with the phenotype.</span>
-
-<span class="sd">        Args:</span>
-<span class="sd">            structural_node: The node whose genome attribute will be updated.</span>
-<span class="sd">            genome: The genome from which the left child genome is derived.</span>
-
-<span class="sd">        Returns:</span>
-<span class="sd">            None</span>
+<span class="sd">        :param structural_node: Node whose genome attribute is updated.</span>
+<span class="sd">        :param genome: Genome from which the left child genome is derived.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">structure</span><span class="o">.</span><span class="n">nodes</span><span class="p">[</span><span class="n">structural_node</span><span class="p">][</span><span class="s2">&quot;attr&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">Genome</span><span class="p">(</span>
             <span class="n">genome</span><span class="o">.</span><span class="n">get_left_child_genome</span><span class="p">()</span>
@@ -478,18 +407,12 @@
 <a class="viewcode-back" href="../../core.html#core.phenotype.Phenotype.change_weight">[docs]</a>
     <span class="k">def</span> <span class="nf">change_weight</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">structural_node</span><span class="p">,</span> <span class="n">weight</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Update the weight of the edge connecting a predecessor to the specified structural node.</span>
+<span class="sd">        Updates the weight of the edge connecting a predecessor to the specified node.</span>
 
-<span class="sd">        This method modifies the weight of the edge from a selected predecessor node to the given structural node </span>
-<span class="sd">        based on the current internal register. It ensures that the connection reflects the desired weight for the </span>
-<span class="sd">        phenotype&#39;s structure.</span>
+<span class="sd">        Modifies the edge weight from a selected predecessor to the node based on the internal register.</span>
 
-<span class="sd">        Args:</span>
-<span class="sd">            structural_node: The node whose incoming edge weight will be changed.</span>
-<span class="sd">            weight: The new weight to assign to the edge.</span>
-
-<span class="sd">        Returns:</span>
-<span class="sd">            None</span>
+<span class="sd">        :param structural_node: Node whose incoming edge weight is changed.</span>
+<span class="sd">        :param weight: New weight to assign to the edge.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">link_to_edit</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">internal_register</span>
 
@@ -515,18 +438,11 @@
 <a class="viewcode-back" href="../../core.html#core.phenotype.Phenotype.development_finished">[docs]</a>
     <span class="k">def</span> <span class="nf">development_finished</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Check if the development of all cells in the phenotype is complete.</span>
+<span class="sd">        Checks if development of all cells is complete.</span>
 
-<span class="sd">        This method iterates through the nodes in the phenotype&#39;s structure to determine if all non-terminal nodes </span>
-<span class="sd">        have reached a terminal state. It returns True if all cells have finished developing, and False otherwise.</span>
-
-<span class="sd">        Args:</span>
-<span class="sd">            self: The instance of the class.</span>
-
-<span class="sd">        Returns:</span>
-<span class="sd">            bool: True if all cells have finished developing, otherwise False.</span>
+<span class="sd">        :return: True if all cells have finished developing; otherwise, False.</span>
+<span class="sd">        :rtype: bool</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-
         <span class="k">for</span> <span class="n">node</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">structure</span><span class="o">.</span><span class="n">nodes</span><span class="p">:</span>
             <span class="k">if</span> <span class="n">node</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;I&quot;</span><span class="p">,</span> <span class="s2">&quot;O&quot;</span><span class="p">]:</span>
                 <span class="n">genome</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">structure</span><span class="o">.</span><span class="n">nodes</span><span class="p">[</span><span class="n">node</span><span class="p">][</span><span class="s2">&quot;attr&quot;</span><span class="p">]</span>
@@ -545,24 +461,14 @@
 <a class="viewcode-back" href="../../core.html#core.phenotype.Phenotype.expand_inputs_and_outputs">[docs]</a>
     <span class="k">def</span> <span class="nf">expand_inputs_and_outputs</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">inputs</span><span class="p">,</span> <span class="n">outputs</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Expand the input and output nodes of the phenotype&#39;s structure.</span>
+<span class="sd">        Expands the input and output nodes of the structure, ensuring validity of connections.</span>
 
-<span class="sd">        This method adds the specified number of input and output nodes to the phenotype&#39;s structure, </span>
-<span class="sd">        connecting them to the existing nodes while ensuring the structure remains valid. It also </span>
-<span class="sd">        removes the original input and output nodes and checks the development status of the phenotype.</span>
-
-<span class="sd">        Args:</span>
-<span class="sd">            inputs: The number of input nodes to add.</span>
-<span class="sd">            outputs: The number of output nodes to add.</span>
-
-<span class="sd">        Raises:</span>
-<span class="sd">            ValueError: If the structure has already been expanded.</span>
-
-<span class="sd">        Returns:</span>
-<span class="sd">            tuple: A tuple containing two values, t and r, which represent specific metrics </span>
-<span class="sd">            related to the structure&#39;s configuration.</span>
+<span class="sd">        :param inputs: Number of input nodes to add.</span>
+<span class="sd">        :param outputs: Number of output nodes to add.</span>
+<span class="sd">        :raises ValueError: If the structure has already been expanded.</span>
+<span class="sd">        :return: Tuple containing two metrics related to the structure configuration.</span>
+<span class="sd">        :rtype: tuple</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-
         <span class="k">if</span> <span class="s2">&quot;O&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">structure</span><span class="o">.</span><span class="n">nodes</span><span class="p">:</span>
             <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Structure already expanded&quot;</span><span class="p">)</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Structure already expanded&quot;</span><span class="p">)</span>

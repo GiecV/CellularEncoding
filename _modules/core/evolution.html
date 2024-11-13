@@ -88,26 +88,24 @@
 <a class="viewcode-back" href="../../core.html#core.evolution.Evolution">[docs]</a>
 <span class="k">class</span> <span class="nc">Evolution</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Manage the evolution of a population of genomes over multiple generations.</span>
+<span class="sd">    Manages the evolution of a population of genomes over multiple generations.</span>
 
 <span class="sd">    This class implements an evolutionary algorithm that evolves a population of genomes through selection, </span>
 <span class="sd">    crossover, and mutation. It tracks fitness scores, maintains a history of fitness, and allows for the </span>
 <span class="sd">    generation of offspring based on the best individuals in the population.</span>
 
-<span class="sd">    Args:</span>
-<span class="sd">        population_size (int, optional): The size of the population. Defaults to 1000.</span>
-<span class="sd">        generations (int, optional): The number of generations to evolve. Defaults to 300.</span>
-<span class="sd">        mutation_rate (float, optional): The rate of mutation for individuals. Defaults to 0.05.</span>
-<span class="sd">        inputs (int, optional): The number of inputs for the genomes. Defaults to 2.</span>
-<span class="sd">        population (list, optional): An optional initial population. Defaults to None.</span>
+<span class="sd">    :param population_size: The size of the population (default is 1000).</span>
+<span class="sd">    :param generations: The number of generations to evolve (default is 300).</span>
+<span class="sd">    :param mutation_rate: The rate of mutation for individuals (default is 0.05).</span>
+<span class="sd">    :param inputs: The number of inputs for the genomes (default is 2).</span>
+<span class="sd">    :param population: An optional initial population (default is None).</span>
 
-<span class="sd">    Attributes:</span>
-<span class="sd">        fitness_history (list): A history of the best fitness scores over generations.</span>
-<span class="sd">        innovative_individuals (list): A list of individuals that achieved the best fitness scores.</span>
-<span class="sd">        fitness_grids (dict): A dictionary to store fitness grids.</span>
-<span class="sd">        fitness_scores (list): A list of fitness scores for the current population.</span>
-<span class="sd">        logs (list): A log of the evolution process.</span>
-<span class="sd">        lineage (list): A record of the lineage of the best individuals.</span>
+<span class="sd">    :ivar fitness_history: A history of the best fitness scores over generations.</span>
+<span class="sd">    :ivar innovative_individuals: A list of individuals that achieved the best fitness scores.</span>
+<span class="sd">    :ivar fitness_grids: A dictionary to store fitness grids.</span>
+<span class="sd">    :ivar fitness_scores: A list of fitness scores for the current population.</span>
+<span class="sd">    :ivar logs: A log of the evolution process.</span>
+<span class="sd">    :ivar lineage: A record of the lineage of the best individuals.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">population_size</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1000</span><span class="p">,</span> <span class="n">generations</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">300</span><span class="p">,</span> <span class="n">mutation_rate</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.05</span><span class="p">,</span> <span class="n">inputs</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">2</span><span class="p">,</span> <span class="n">population</span><span class="p">:</span> <span class="nb">list</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
@@ -118,15 +116,13 @@
 <span class="sd">        the number of generations to evolve, and the mutation rate. It also initializes various attributes to track </span>
 <span class="sd">        the fitness history, innovative individuals, and the current population.</span>
 
-<span class="sd">        Args:</span>
-<span class="sd">            population_size (int, optional): The size of the population. Defaults to 1000.</span>
-<span class="sd">            generations (int, optional): The number of generations to evolve. Defaults to 300.</span>
-<span class="sd">            mutation_rate (float, optional): The rate of mutation for individuals. Defaults to 0.05.</span>
-<span class="sd">            inputs (int, optional): The number of inputs for the genomes. Defaults to 2.</span>
-<span class="sd">            population (list, optional): An optional initial population. Defaults to None.</span>
+<span class="sd">        :param population_size: The size of the population (default is 1000).</span>
+<span class="sd">        :param generations: The number of generations to evolve (default is 300).</span>
+<span class="sd">        :param mutation_rate: The rate of mutation for individuals (default is 0.05).</span>
+<span class="sd">        :param inputs: The number of inputs for the genomes (default is 2).</span>
+<span class="sd">        :param population: An optional initial population (default is None).</span>
 
-<span class="sd">        Returns:</span>
-<span class="sd">            None</span>
+<span class="sd">        :return: None</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">population_size</span> <span class="o">=</span> <span class="n">population_size</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">generations</span> <span class="o">=</span> <span class="n">generations</span>
@@ -149,11 +145,7 @@
 <span class="sd">        This method generates a list of individuals for the population by calling the method to create each individual. </span>
 <span class="sd">        It ensures that the population is ready for the evolutionary process.</span>
 
-<span class="sd">        Args:</span>
-<span class="sd">            self: The instance of the class.</span>
-
-<span class="sd">        Returns:</span>
-<span class="sd">            list: A list containing the initialized individuals in the population.</span>
+<span class="sd">        :return: A list containing the initialized individuals in the population.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">create_individual</span><span class="p">()</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">population_size</span><span class="p">)]</span></div>
 
@@ -167,11 +159,7 @@
 <span class="sd">        This method creates a new instance of a genome and assigns random symbols to the root nodes of each tree </span>
 <span class="sd">        within the genome. It ensures that each individual in the population starts with a unique genetic configuration.</span>
 
-<span class="sd">        Args:</span>
-<span class="sd">            self: The instance of the class.</span>
-
-<span class="sd">        Returns:</span>
-<span class="sd">            Genome: The newly created individual represented as a genome.</span>
+<span class="sd">        :return: The newly created individual represented as a genome.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">genome</span> <span class="o">=</span> <span class="n">Genome</span><span class="p">()</span>
         <span class="n">symbols</span> <span class="o">=</span> <span class="n">genome</span><span class="o">.</span><span class="n">SYMBOLS</span>
@@ -193,18 +181,11 @@
 <span class="sd">        and tracking the best fitness scores over generations. It also logs information about the evolution </span>
 <span class="sd">        process and stops if the maximum allowed time is exceeded.</span>
 
-<span class="sd">        Args:</span>
-<span class="sd">            info (bool, optional): Whether to log detailed information about each generation. Defaults to True.</span>
-<span class="sd">            max_time (int, optional): The maximum time allowed for the evolution process in seconds. Defaults to 2100.</span>
+<span class="sd">        :param info: Whether to log detailed information about each generation (default is True).</span>
+<span class="sd">        :param stop: Whether to stop if the best fitness score is 1 (default is True).</span>
 
-<span class="sd">        Returns:</span>
-<span class="sd">            tuple: A tuple containing the best individual from the final population and the number of generations completed.</span>
-
-<span class="sd">        Examples:</span>
-<span class="sd">            &gt;&gt;&gt; evolution = Evolution(population_size=1000, generations=300, mutation_rate=0.05, inputs=2)</span>
-<span class="sd">            &gt;&gt;&gt; best_individual, generations_completed = evolution.evolve()</span>
+<span class="sd">        :return: A tuple containing the best individual from the final population and the number of generations completed.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-
         <span class="n">best_score</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="s1">&#39;-inf&#39;</span><span class="p">)</span>
         <span class="n">start_time</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
 
@@ -255,11 +236,7 @@
 <span class="sd">        and applies mutation to introduce variability. The resulting offspring are returned for inclusion in the </span>
 <span class="sd">        next generation.</span>
 
-<span class="sd">        Args:</span>
-<span class="sd">            self: The instance of the class.</span>
-
-<span class="sd">        Returns:</span>
-<span class="sd">            list: A list of mutated offspring generated from the current population.</span>
+<span class="sd">        :return: A list of mutated offspring generated from the current population.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">start_time</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
         <span class="n">offspring</span> <span class="o">=</span> <span class="p">[]</span>
@@ -289,11 +266,9 @@
 <span class="sd">        sorts them by their fitness scores, and selects the top individuals to form the new population. </span>
 <span class="sd">        It also updates the fitness history with the best score from the current selection.</span>
 
-<span class="sd">        Args:</span>
-<span class="sd">            population (list): The population of individuals to evaluate.</span>
+<span class="sd">        :param population: The population of individuals to evaluate.</span>
 
-<span class="sd">        Returns:</span>
-<span class="sd">            tuple: A tuple containing two lists: the best individuals and their corresponding fitness scores.</span>
+<span class="sd">        :return: A tuple containing two lists: the best individuals and their corresponding fitness scores.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">start_time</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
         <span class="n">ns</span> <span class="o">=</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">inputs</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">population</span><span class="p">))]</span>
@@ -320,13 +295,11 @@
 <span class="sd">        This method generates two offspring by combining genetic information from the provided parent individuals. </span>
 <span class="sd">        It utilizes the indices of the parents to facilitate the crossover process.</span>
 
-<span class="sd">        Args:</span>
-<span class="sd">            parent1: The first parent individual.</span>
-<span class="sd">            parent2: The second parent individual.</span>
-<span class="sd">            parents_indexes (list): The indices of the parents in the population.</span>
+<span class="sd">        :param parent1: The first parent individual.</span>
+<span class="sd">        :param parent2: The second parent individual.</span>
+<span class="sd">        :param parents_indexes: The indices of the parents in the population.</span>
 
-<span class="sd">        Returns:</span>
-<span class="sd">            tuple: A tuple containing the two newly created child individuals.</span>
+<span class="sd">        :return: A tuple containing the two newly created child individuals.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">child1</span><span class="p">,</span> <span class="n">child2</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_children</span><span class="p">(</span><span class="n">parent1</span><span class="p">,</span> <span class="n">parent2</span><span class="p">,</span> <span class="n">parents_indexes</span><span class="p">)</span>
 
@@ -343,13 +316,11 @@
 <span class="sd">        It selects random cut points in the trees of the parents and performs crossover to create offspring that </span>
 <span class="sd">        inherit characteristics from both parents.</span>
 
-<span class="sd">        Args:</span>
-<span class="sd">            parent1: The first parent individual.</span>
-<span class="sd">            parent2: The second parent individual.</span>
-<span class="sd">            parents_indexes (list): The indices of the parents in the population.</span>
+<span class="sd">        :param parent1: The first parent individual.</span>
+<span class="sd">        :param parent2: The second parent individual.</span>
+<span class="sd">        :param parents_indexes: The indices of the parents in the population.</span>
 
-<span class="sd">        Returns:</span>
-<span class="sd">            tuple: A tuple containing two newly created child genomes.</span>
+<span class="sd">        :return: A tuple containing the two newly created child individuals.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">trees</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="n">trees2</span> <span class="o">=</span> <span class="p">[]</span>
@@ -394,17 +365,14 @@
 <a class="viewcode-back" href="../../core.html#core.evolution.Evolution.mutate">[docs]</a>
     <span class="k">def</span> <span class="nf">mutate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">genome</span><span class="p">:</span> <span class="n">Genome</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Apply mutations to the given genome based on a mutation rate.</span>
+<span class="sd">        Apply mutation to an individual genome.</span>
 
-<span class="sd">        This method iterates through the trees in the genome and randomly alters the symbols of nodes </span>
-<span class="sd">        according to the specified mutation rate. It introduces genetic diversity by changing certain </span>
-<span class="sd">        node tags to new symbols, which can be either operational or division symbols.</span>
+<span class="sd">        This method introduces small random changes in the genome by modifying the genetic material of the individual. </span>
+<span class="sd">        Mutation helps introduce genetic diversity and allows the evolutionary process to explore a larger solution space.</span>
 
-<span class="sd">        Args:</span>
-<span class="sd">            genome: The genome to be mutated.</span>
+<span class="sd">        :param individual: The individual genome to mutate.</span>
 
-<span class="sd">        Returns:</span>
-<span class="sd">            Genome: The mutated genome after applying the changes.</span>
+<span class="sd">        :return: The mutated individual genome.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">tree</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">genome</span><span class="o">.</span><span class="n">get_trees</span><span class="p">()):</span>
             <span class="n">nodes</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">tree</span><span class="o">.</span><span class="n">all_nodes_itr</span><span class="p">())</span>
@@ -428,19 +396,13 @@
 <a class="viewcode-back" href="../../core.html#core.evolution.Evolution.get_lineage">[docs]</a>
     <span class="k">def</span> <span class="nf">get_lineage</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">gens_to_save</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">5</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Retrieve the lineage of the best individuals over a specified number of generations.</span>
+<span class="sd">        Generate a lineage of the best individuals over generations.</span>
 
-<span class="sd">        This method collects and returns the genomes of the best individuals from the evolution process, </span>
-<span class="sd">        tracing back through their parent generations. It allows for the analysis of genetic progression </span>
-<span class="sd">        by saving a specified number of generations in the lineage.</span>
+<span class="sd">        This method creates a record of the best individuals from each generation, which is useful for tracking </span>
+<span class="sd">        the evolutionary progress and visualizing how the population has changed over time.</span>
 
-<span class="sd">        Args:</span>
-<span class="sd">            gens_to_save (int, optional): The number of generations to include in the lineage. Defaults to 5.</span>
-
-<span class="sd">        Returns:</span>
-<span class="sd">            list: A list of dictionaries containing the generation index and the corresponding genome of each individual.</span>
+<span class="sd">        :return: A list of the best individuals from each generation.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-
         <span class="k">def</span> <span class="nf">traverse_generations</span><span class="p">(</span><span class="n">data</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span> <span class="n">generation_idx</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">individual_idx</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">genomes</span><span class="p">:</span> <span class="nb">list</span><span class="p">):</span>
 
             <span class="n">individual</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="n">generation_idx</span><span class="p">][</span><span class="s1">&#39;individuals&#39;</span><span class="p">][</span><span class="n">individual_idx</span><span class="p">]</span>

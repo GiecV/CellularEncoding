@@ -85,11 +85,17 @@
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Compute the fitness of an individual in the CartPole environment.</span>
 
-<span class="sd">    Args:</span>
-<span class="sd">        individual: The individual whose fitness is to be computed.</span>
+<span class="sd">    The fitness is measured by the mean reward obtained over a number of trials, </span>
+<span class="sd">    where each trial consists of running the individual&#39;s neural network in </span>
+<span class="sd">    the CartPole-v1 environment.</span>
 
-<span class="sd">    Returns:</span>
-<span class="sd">        float: The mean reward obtained over a number of trials.</span>
+<span class="sd">    :param individual: The individual whose fitness is to be computed. </span>
+<span class="sd">                       It is expected to be an object that can be converted </span>
+<span class="sd">                       into a `Phenotype` for neural network evaluation.</span>
+<span class="sd">    :type individual: Any (typically an individual in an evolutionary algorithm)</span>
+
+<span class="sd">    :return: The mean reward obtained over a number of trials.</span>
+<span class="sd">    :rtype: float</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">p</span> <span class="o">=</span> <span class="n">Phenotype</span><span class="p">(</span><span class="n">individual</span><span class="p">)</span>
     <span class="n">nn</span> <span class="o">=</span> <span class="n">NNFromGraph</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="n">inputs</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">outputs</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
@@ -121,12 +127,19 @@
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Compute the fitness of an individual with a growth penalty.</span>
 
-<span class="sd">    Args:</span>
-<span class="sd">        individual: The individual whose fitness is to be computed.</span>
-<span class="sd">        penalty (float, optional): The penalty factor for the number of nodes. Default is 0.</span>
+<span class="sd">    This function evaluates the fitness of an individual by first calculating </span>
+<span class="sd">    its original fitness using `compute_fitness`. Then, it applies a penalty </span>
+<span class="sd">    based on the number of nodes in the individual&#39;s genotype. The penalty </span>
+<span class="sd">    helps to discourage overly complex solutions.</span>
 
-<span class="sd">    Returns:</span>
-<span class="sd">        float: The penalized fitness value.</span>
+<span class="sd">    :param individual: The individual whose fitness is to be computed.</span>
+<span class="sd">    :type individual: Any (typically an individual in an evolutionary algorithm)</span>
+<span class="sd">    :param penalty: The penalty factor for the number of nodes. Default is 0, </span>
+<span class="sd">                    meaning no penalty is applied.</span>
+<span class="sd">    :type penalty: float, optional</span>
+
+<span class="sd">    :return: The penalized fitness value.</span>
+<span class="sd">    :rtype: float</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">fitness</span> <span class="o">=</span> <span class="n">compute_fitness</span><span class="p">(</span><span class="n">individual</span><span class="p">)</span>
 

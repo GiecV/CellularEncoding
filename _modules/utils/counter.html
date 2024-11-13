@@ -72,6 +72,13 @@
 <div class="viewcode-block" id="GlobalCounter">
 <a class="viewcode-back" href="../../utils.html#utils.counter.GlobalCounter">[docs]</a>
 <span></span><span class="k">class</span> <span class="nc">GlobalCounter</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    A class that provides a global counter with methods to generate </span>
+<span class="sd">    sequential integer values, either as integers or as strings.</span>
+
+<span class="sd">    The counter is shared across all instances of the class, and its </span>
+<span class="sd">    value is incremented with each call to the `next` or `next_str` methods.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">_counter</span> <span class="o">=</span> <span class="mi">0</span>
 
 <div class="viewcode-block" id="GlobalCounter.next">
@@ -81,8 +88,10 @@
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Get the next integer value from the global counter.</span>
 
-<span class="sd">        Returns:</span>
-<span class="sd">            int: The next integer value.</span>
+<span class="sd">        This method increments the counter by 1 and returns the next value as an integer.</span>
+
+<span class="sd">        :return: The next integer value in the sequence.</span>
+<span class="sd">        :rtype: int</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">value</span> <span class="o">=</span> <span class="bp">cls</span><span class="o">.</span><span class="n">_counter</span>
         <span class="bp">cls</span><span class="o">.</span><span class="n">_counter</span> <span class="o">+=</span> <span class="mi">1</span>
@@ -96,8 +105,10 @@
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Get the next integer value from the global counter as a string.</span>
 
-<span class="sd">        Returns:</span>
-<span class="sd">            str: The next integer value as a string.</span>
+<span class="sd">        This method increments the counter by 1 and returns the next value as a string.</span>
+
+<span class="sd">        :return: The next integer value in the sequence as a string.</span>
+<span class="sd">        :rtype: str</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">value</span> <span class="o">=</span> <span class="bp">cls</span><span class="o">.</span><span class="n">_counter</span>
         <span class="bp">cls</span><span class="o">.</span><span class="n">_counter</span> <span class="o">+=</span> <span class="mi">1</span>

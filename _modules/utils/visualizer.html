@@ -85,29 +85,40 @@
 <div class="viewcode-block" id="Visualizer">
 <a class="viewcode-back" href="../../utils.html#utils.visualizer.Visualizer">[docs]</a>
 <span class="k">class</span> <span class="nc">Visualizer</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    A class for visualizing neural networks, phenotypes, and evolutionary runs.</span>
 
-    <span class="nd">@classmethod</span>
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">inputs</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">outputs</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
+<span class="sd">    This class provides methods to visualize neural network structures, the</span>
+<span class="sd">    phenotype of individuals, and data from evolutionary runs. It supports</span>
+<span class="sd">    various types of plots including network graphs, tree visualizations,</span>
+<span class="sd">    and fitness over time.</span>
+
+<span class="sd">    :param inputs: The number of input nodes in the neural network. Default is 2.</span>
+<span class="sd">    :type inputs: int, optional</span>
+<span class="sd">    :param outputs: The number of output nodes in the neural network. Default is 1.</span>
+<span class="sd">    :type outputs: int, optional</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">inputs</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">outputs</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Initialize the Visualizer with the number of inputs and outputs.</span>
 
-<span class="sd">        Args:</span>
-<span class="sd">            inputs (int, optional): The number of input nodes. Default is 2.</span>
-<span class="sd">            outputs (int, optional): The number of output nodes. Default is 1.</span>
+<span class="sd">        :param inputs: The number of input nodes. Default is 2.</span>
+<span class="sd">        :type inputs: int, optional</span>
+<span class="sd">        :param outputs: The number of output nodes. Default is 1.</span>
+<span class="sd">        :type outputs: int, optional</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="bp">cls</span><span class="o">.</span><span class="n">inputs</span> <span class="o">=</span> <span class="n">inputs</span>
-        <span class="bp">cls</span><span class="o">.</span><span class="n">outputs</span> <span class="o">=</span> <span class="n">outputs</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">inputs</span> <span class="o">=</span> <span class="n">inputs</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">outputs</span> <span class="o">=</span> <span class="n">outputs</span>
 
-    <span class="nd">@classmethod</span>
-    <span class="k">def</span> <span class="nf">_calculate_node_positions</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">structure</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">_calculate_node_positions</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">structure</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Calculate the positions of nodes in the neural network graph.</span>
 
-<span class="sd">        Args:</span>
-<span class="sd">            structure (networkx.DiGraph): The graph structure of the neural network.</span>
-
-<span class="sd">        Returns:</span>
-<span class="sd">            dict: A dictionary mapping nodes to their positions.</span>
+<span class="sd">        :param structure: The graph structure of the neural network.</span>
+<span class="sd">        :type structure: networkx.DiGraph</span>
+<span class="sd">        :return: A dictionary mapping nodes to their positions.</span>
+<span class="sd">        :rtype: dict</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">start_nodes</span> <span class="o">=</span> <span class="p">[</span>
             <span class="n">node</span> <span class="k">for</span> <span class="n">node</span> <span class="ow">in</span> <span class="n">structure</span><span class="o">.</span><span class="n">nodes</span> <span class="k">if</span> <span class="n">node</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;I&quot;</span><span class="p">)]</span>
@@ -140,14 +151,14 @@
 
 <div class="viewcode-block" id="Visualizer.print_innovative_networks">
 <a class="viewcode-back" href="../../utils.html#utils.visualizer.Visualizer.print_innovative_networks">[docs]</a>
-    <span class="nd">@classmethod</span>
-    <span class="k">def</span> <span class="nf">print_innovative_networks</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">innovative_individuals</span><span class="p">,</span> <span class="n">save</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">print_innovative_networks</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">innovative_individuals</span><span class="p">,</span> <span class="n">save</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Print and optionally save the innovative neural networks.</span>
 
-<span class="sd">        Args:</span>
-<span class="sd">            innovative_individuals (list): A list of innovative individuals.</span>
-<span class="sd">            save (bool, optional): Whether to save the plots. Default is False.</span>
+<span class="sd">        :param innovative_individuals: A list of innovative individuals.</span>
+<span class="sd">        :type innovative_individuals: list</span>
+<span class="sd">        :param save: Whether to save the plots. Default is False.</span>
+<span class="sd">        :type save: bool, optional</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">num_individuals</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">innovative_individuals</span><span class="p">)</span>
         <span class="n">rows</span> <span class="o">=</span> <span class="n">num_individuals</span>
@@ -158,10 +169,11 @@
 
         <span class="k">for</span> <span class="n">idx</span><span class="p">,</span> <span class="p">(</span><span class="n">individual</span><span class="p">,</span> <span class="n">fitness_score</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">innovative_individuals</span><span class="p">):</span>
             <span class="n">phenotype</span> <span class="o">=</span> <span class="n">Phenotype</span><span class="p">(</span><span class="n">individual</span><span class="p">)</span>
-            <span class="n">nn</span> <span class="o">=</span> <span class="n">NNFromGraph</span><span class="p">(</span><span class="n">phenotype</span><span class="p">,</span> <span class="n">inputs</span><span class="o">=</span><span class="bp">cls</span><span class="o">.</span><span class="n">inputs</span><span class="p">,</span> <span class="n">outputs</span><span class="o">=</span><span class="bp">cls</span><span class="o">.</span><span class="n">outputs</span><span class="p">)</span>
+            <span class="n">nn</span> <span class="o">=</span> <span class="n">NNFromGraph</span><span class="p">(</span><span class="n">phenotype</span><span class="p">,</span> <span class="n">inputs</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">inputs</span><span class="p">,</span>
+                             <span class="n">outputs</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">outputs</span><span class="p">)</span>
 
             <span class="c1"># Neural network plot (col 0)</span>
-            <span class="n">pos</span> <span class="o">=</span> <span class="bp">cls</span><span class="o">.</span><span class="n">_calculate_node_positions</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">phenotype</span><span class="o">.</span><span class="n">structure</span><span class="p">)</span>
+            <span class="n">pos</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_calculate_node_positions</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">phenotype</span><span class="o">.</span><span class="n">structure</span><span class="p">)</span>
             <span class="n">node_labels</span> <span class="o">=</span> <span class="p">{</span><span class="n">node</span><span class="p">:</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">node</span><span class="si">}</span><span class="s2">[</span><span class="si">{</span><span class="n">nn</span><span class="o">.</span><span class="n">phenotype</span><span class="o">.</span><span class="n">structure</span><span class="o">.</span><span class="n">nodes</span><span class="p">[</span><span class="n">node</span><span class="p">][</span><span class="s1">&#39;threshold&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">]&quot;</span>
                            <span class="k">for</span> <span class="n">node</span> <span class="ow">in</span> <span class="n">nn</span><span class="o">.</span><span class="n">phenotype</span><span class="o">.</span><span class="n">structure</span><span class="o">.</span><span class="n">nodes</span><span class="p">}</span>
 
@@ -182,7 +194,7 @@
                 <span class="n">node_labels</span> <span class="o">=</span> <span class="p">{}</span>
 
                 <span class="c1"># Convert treelib tree to NetworkX graph</span>
-                <span class="n">tree_graph</span> <span class="o">=</span> <span class="bp">cls</span><span class="o">.</span><span class="n">treelib_to_nx</span><span class="p">(</span><span class="n">tree</span><span class="p">,</span> <span class="n">node_labels</span><span class="p">)</span>
+                <span class="n">tree_graph</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">treelib_to_nx</span><span class="p">(</span><span class="n">tree</span><span class="p">,</span> <span class="n">node_labels</span><span class="p">)</span>
 
                 <span class="c1"># Layout for tree graph</span>
                 <span class="n">tree_pos</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">bfs_layout</span><span class="p">(</span>
@@ -199,23 +211,22 @@
         <span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
         <span class="n">plt</span><span class="o">.</span><span class="n">subplots_adjust</span><span class="p">(</span><span class="n">hspace</span><span class="o">=</span><span class="mf">0.8</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">save</span><span class="p">:</span>
-            <span class="bp">cls</span><span class="o">.</span><span class="n">save_file_with_name</span><span class="p">(</span><span class="s1">&#39;innovative_networks_&#39;</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">save_file_with_name</span><span class="p">(</span><span class="s1">&#39;innovative_networks_&#39;</span><span class="p">)</span>
         <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span></div>
 
 
 <div class="viewcode-block" id="Visualizer.treelib_to_nx">
 <a class="viewcode-back" href="../../utils.html#utils.visualizer.Visualizer.treelib_to_nx">[docs]</a>
-    <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">treelib_to_nx</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tree</span><span class="p">,</span> <span class="n">node_labels</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Convert a tree structure from treelib to a NetworkX directed graph.</span>
 
-<span class="sd">        Args:</span>
-<span class="sd">            tree (treelib.Tree): The tree structure to convert.</span>
-<span class="sd">            node_labels (dict): A dictionary to store node labels.</span>
-
-<span class="sd">        Returns:</span>
-<span class="sd">            networkx.DiGraph: The converted directed graph.</span>
+<span class="sd">        :param tree: The tree structure to convert.</span>
+<span class="sd">        :type tree: treelib.Tree</span>
+<span class="sd">        :param node_labels: A dictionary to store node labels.</span>
+<span class="sd">        :type node_labels: dict</span>
+<span class="sd">        :return: The converted directed graph.</span>
+<span class="sd">        :rtype: networkx.DiGraph</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">graph</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">DiGraph</span><span class="p">()</span>  <span class="c1"># Create a directed graph</span>
 
@@ -239,13 +250,12 @@
 
 <div class="viewcode-block" id="Visualizer.print_population">
 <a class="viewcode-back" href="../../utils.html#utils.visualizer.Visualizer.print_population">[docs]</a>
-    <span class="nd">@classmethod</span>
-    <span class="k">def</span> <span class="nf">print_population</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">population</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">print_population</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">population</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Print the details of each individual in the population.</span>
 
-<span class="sd">        Args:</span>
-<span class="sd">            population (list): A list of individuals in the population.</span>
+<span class="sd">        :param population: A list of individuals in the population.</span>
+<span class="sd">        :type population: list</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">for</span> <span class="n">individual</span> <span class="ow">in</span> <span class="n">population</span><span class="p">:</span>
             <span class="n">individual</span><span class="o">.</span><span class="n">print</span><span class="p">()</span></div>
@@ -253,17 +263,17 @@
 
 <div class="viewcode-block" id="Visualizer.print_phenotype">
 <a class="viewcode-back" href="../../utils.html#utils.visualizer.Visualizer.print_phenotype">[docs]</a>
-    <span class="nd">@classmethod</span>
-    <span class="k">def</span> <span class="nf">print_phenotype</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">phenotype</span><span class="p">,</span> <span class="n">save</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">print_phenotype</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">phenotype</span><span class="p">,</span> <span class="n">save</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Print and optionally save the phenotype structure.</span>
 
-<span class="sd">        Args:</span>
-<span class="sd">            phenotype (Phenotype): The phenotype to print.</span>
-<span class="sd">            save (bool, optional): Whether to save the plot. Default is False.</span>
+<span class="sd">        :param phenotype: The phenotype to print.</span>
+<span class="sd">        :type phenotype: Phenotype</span>
+<span class="sd">        :param save: Whether to save the plot. Default is False.</span>
+<span class="sd">        :type save: bool, optional</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">try</span><span class="p">:</span>
-            <span class="n">pos</span> <span class="o">=</span> <span class="bp">cls</span><span class="o">.</span><span class="n">_calculate_node_positions</span><span class="p">(</span><span class="n">phenotype</span><span class="o">.</span><span class="n">structure</span><span class="p">)</span>
+            <span class="n">pos</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_calculate_node_positions</span><span class="p">(</span><span class="n">phenotype</span><span class="o">.</span><span class="n">structure</span><span class="p">)</span>
 
             <span class="n">node_labels</span> <span class="o">=</span> <span class="p">{</span><span class="n">node</span><span class="p">:</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">node</span><span class="si">}</span><span class="s2">[</span><span class="si">{</span><span class="n">phenotype</span><span class="o">.</span><span class="n">structure</span><span class="o">.</span><span class="n">nodes</span><span class="p">[</span><span class="n">node</span><span class="p">][</span><span class="s1">&#39;threshold&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">]&quot;</span>
                            <span class="k">for</span> <span class="n">node</span> <span class="ow">in</span> <span class="n">phenotype</span><span class="o">.</span><span class="n">structure</span><span class="o">.</span><span class="n">nodes</span><span class="p">}</span>
@@ -283,22 +293,21 @@
             <span class="n">nx</span><span class="o">.</span><span class="n">draw_networkx_edge_labels</span><span class="p">(</span>
                 <span class="n">phenotype</span><span class="o">.</span><span class="n">structure</span><span class="p">,</span> <span class="n">pos</span><span class="p">,</span> <span class="n">edge_labels</span><span class="o">=</span><span class="n">labels</span><span class="p">)</span>
             <span class="k">if</span> <span class="n">save</span><span class="p">:</span>
-                <span class="bp">cls</span><span class="o">.</span><span class="n">save_file_with_name</span><span class="p">(</span><span class="s1">&#39;phenotype_&#39;</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">save_file_with_name</span><span class="p">(</span><span class="s1">&#39;phenotype_&#39;</span><span class="p">)</span>
             <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
         <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
             <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Cannot set positions&quot;</span><span class="p">)</span>
-            <span class="bp">cls</span><span class="o">.</span><span class="n">print_no_position</span><span class="p">(</span><span class="n">phenotype</span><span class="p">)</span></div>
+            <span class="bp">self</span><span class="o">.</span><span class="n">print_no_position</span><span class="p">(</span><span class="n">phenotype</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="Visualizer.save_file_with_name">
 <a class="viewcode-back" href="../../utils.html#utils.visualizer.Visualizer.save_file_with_name">[docs]</a>
-    <span class="nd">@classmethod</span>
-    <span class="k">def</span> <span class="nf">save_file_with_name</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">save_file_with_name</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Save the current plot with a given name.</span>
 
-<span class="sd">        Args:</span>
-<span class="sd">            name (str): The base name for the file to save.</span>
+<span class="sd">        :param name: The base name for the file to save.</span>
+<span class="sd">        :type name: str</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="s1">&#39;img&#39;</span><span class="p">,</span> <span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
         <span class="n">timestamp</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s2">&quot;%Y%m</span><span class="si">%d</span><span class="s2">_%H%M%S&quot;</span><span class="p">)</span>
@@ -308,23 +317,27 @@
 <div class="viewcode-block" id="Visualizer.print_no_position">
 <a class="viewcode-back" href="../../utils.html#utils.visualizer.Visualizer.print_no_position">[docs]</a>
     <span class="k">def</span> <span class="nf">print_no_position</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">phenotype</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Print the phenotype without positioning information.</span>
+
+<span class="sd">        :param phenotype: The phenotype to print.</span>
+<span class="sd">        :type phenotype: Phenotype</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">nx</span><span class="o">.</span><span class="n">draw</span><span class="p">(</span><span class="n">phenotype</span><span class="o">.</span><span class="n">structure</span><span class="p">,</span> <span class="n">with_labels</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
         <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span></div>
 
 
 <div class="viewcode-block" id="Visualizer.plot_all_runs">
 <a class="viewcode-back" href="../../utils.html#utils.visualizer.Visualizer.plot_all_runs">[docs]</a>
-    <span class="nd">@classmethod</span>
-    <span class="k">def</span> <span class="nf">plot_all_runs</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">json_file_path</span><span class="p">,</span> <span class="n">save</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">plot_all_runs</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">json_file_path</span><span class="p">,</span> <span class="n">save</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Plot the fitness of all runs from a JSON file.</span>
 
-<span class="sd">        Args:</span>
-<span class="sd">            json_file_path (str): The path to the JSON file containing the run data.</span>
-<span class="sd">            save (bool, optional): Whether to save the plot. Default is False.</span>
-
-<span class="sd">        Raises:</span>
-<span class="sd">            FileNotFoundError: If the JSON file does not exist.</span>
+<span class="sd">        :param json_file_path: The path to the JSON file containing the run data.</span>
+<span class="sd">        :type json_file_path: str</span>
+<span class="sd">        :param save: Whether to save the plot. Default is False.</span>
+<span class="sd">        :type save: bool, optional</span>
+<span class="sd">        :raises FileNotFoundError: If the JSON file does not exist.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">json_file_path</span><span class="p">):</span>
             <span class="k">raise</span> <span class="ne">FileNotFoundError</span><span class="p">(</span>
@@ -356,23 +369,21 @@
         <span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
 
         <span class="k">if</span> <span class="n">save</span><span class="p">:</span>
-            <span class="bp">cls</span><span class="o">.</span><span class="n">save_file_with_name</span><span class="p">(</span><span class="s1">&#39;runs_&#39;</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">save_file_with_name</span><span class="p">(</span><span class="s1">&#39;runs_&#39;</span><span class="p">)</span>
         <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span></div>
 
 
 <div class="viewcode-block" id="Visualizer.plot_all_times">
 <a class="viewcode-back" href="../../utils.html#utils.visualizer.Visualizer.plot_all_times">[docs]</a>
-    <span class="nd">@classmethod</span>
-    <span class="k">def</span> <span class="nf">plot_all_times</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">json_file_path</span><span class="p">,</span> <span class="n">save</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">plot_all_times</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">json_file_path</span><span class="p">,</span> <span class="n">save</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Plot the fitness of all runs from a JSON file.</span>
 
-<span class="sd">        Args:</span>
-<span class="sd">            json_file_path (str): The path to the JSON file containing the run data.</span>
-<span class="sd">            save (bool, optional): Whether to save the plot. Default is False.</span>
-
-<span class="sd">        Raises:</span>
-<span class="sd">            FileNotFoundError: If the JSON file does not exist.</span>
+<span class="sd">        :param json_file_path: The path to the JSON file containing the run data.</span>
+<span class="sd">        :type json_file_path: str</span>
+<span class="sd">        :param save: Whether to save the plot. Default is False.</span>
+<span class="sd">        :type save: bool, optional</span>
+<span class="sd">        :raises FileNotFoundError: If the JSON file does not exist.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">json_file_path</span><span class="p">):</span>
             <span class="k">raise</span> <span class="ne">FileNotFoundError</span><span class="p">(</span>
@@ -404,20 +415,20 @@
         <span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
 
         <span class="k">if</span> <span class="n">save</span><span class="p">:</span>
-            <span class="bp">cls</span><span class="o">.</span><span class="n">save_file_with_name</span><span class="p">(</span><span class="s1">&#39;runs_&#39;</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">save_file_with_name</span><span class="p">(</span><span class="s1">&#39;runs_&#39;</span><span class="p">)</span>
         <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span></div>
 
 
 <div class="viewcode-block" id="Visualizer.save_lineage">
 <a class="viewcode-back" href="../../utils.html#utils.visualizer.Visualizer.save_lineage">[docs]</a>
-    <span class="nd">@classmethod</span>
-    <span class="k">def</span> <span class="nf">save_lineage</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">json_path</span><span class="p">,</span> <span class="n">show</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">save_lineage</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">json_path</span><span class="p">,</span> <span class="n">show</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Print and optionally save the innovative neural networks.</span>
 
-<span class="sd">        Args:</span>
-<span class="sd">            innovative_individuals (list): A list of innovative individuals.</span>
-<span class="sd">            save (bool, optional): Whether to save the plots. Default is False.</span>
+<span class="sd">        :param json_path: Path to the JSON file containing lineage data.</span>
+<span class="sd">        :type json_path: str</span>
+<span class="sd">        :param show: Whether to display the plots. Defaults to False.</span>
+<span class="sd">        :type show: bool, optional</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
         <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">json_path</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">file</span><span class="p">:</span>
@@ -444,7 +455,7 @@
                                  <span class="n">outputs</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
 
                 <span class="c1"># Neural network plot (col 0)</span>
-                <span class="n">pos</span> <span class="o">=</span> <span class="bp">cls</span><span class="o">.</span><span class="n">_calculate_node_positions</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">phenotype</span><span class="o">.</span><span class="n">structure</span><span class="p">)</span>
+                <span class="n">pos</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_calculate_node_positions</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">phenotype</span><span class="o">.</span><span class="n">structure</span><span class="p">)</span>
                 <span class="n">node_labels</span> <span class="o">=</span> <span class="p">{</span><span class="n">node</span><span class="p">:</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">node</span><span class="si">}</span><span class="s2">[</span><span class="si">{</span><span class="n">nn</span><span class="o">.</span><span class="n">phenotype</span><span class="o">.</span><span class="n">structure</span><span class="o">.</span><span class="n">nodes</span><span class="p">[</span><span class="n">node</span><span class="p">][</span><span class="s1">&#39;threshold&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">]&quot;</span>
                                <span class="k">for</span> <span class="n">node</span> <span class="ow">in</span> <span class="n">nn</span><span class="o">.</span><span class="n">phenotype</span><span class="o">.</span><span class="n">structure</span><span class="o">.</span><span class="n">nodes</span><span class="p">}</span>
 
@@ -465,7 +476,7 @@
                     <span class="n">node_labels</span> <span class="o">=</span> <span class="p">{}</span>
 
                     <span class="c1"># Convert treelib tree to NetworkX graph</span>
-                    <span class="n">tree_graph</span> <span class="o">=</span> <span class="bp">cls</span><span class="o">.</span><span class="n">treelib_to_nx</span><span class="p">(</span><span class="n">tree</span><span class="p">,</span> <span class="n">node_labels</span><span class="p">)</span>
+                    <span class="n">tree_graph</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">treelib_to_nx</span><span class="p">(</span><span class="n">tree</span><span class="p">,</span> <span class="n">node_labels</span><span class="p">)</span>
 
                     <span class="c1"># Layout for tree graph</span>
                     <span class="n">tree_pos</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">bfs_layout</span><span class="p">(</span>
@@ -481,21 +492,23 @@
 
             <span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
             <span class="n">plt</span><span class="o">.</span><span class="n">subplots_adjust</span><span class="p">(</span><span class="n">hspace</span><span class="o">=</span><span class="mf">0.8</span><span class="p">)</span>
-            <span class="bp">cls</span><span class="o">.</span><span class="n">save_file_with_name</span><span class="p">(</span><span class="s1">&#39;innovative_networks_&#39;</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">save_file_with_name</span><span class="p">(</span><span class="s1">&#39;innovative_networks_&#39;</span><span class="p">)</span>
             <span class="k">if</span> <span class="n">show</span><span class="p">:</span>
                 <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span></div>
 
 
 <div class="viewcode-block" id="Visualizer.plot_times">
 <a class="viewcode-back" href="../../utils.html#utils.visualizer.Visualizer.plot_times">[docs]</a>
-    <span class="nd">@classmethod</span>
-    <span class="k">def</span> <span class="nf">plot_times</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">json_file_paths</span><span class="p">,</span> <span class="n">save</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">plot_times</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">json_file_paths</span><span class="p">,</span> <span class="n">save</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Plot the time taken for each generation for multiple JSON files.</span>
 
-<span class="sd">        Args:</span>
-<span class="sd">            json_file_paths (list): A list of paths to JSON files.</span>
-<span class="sd">            save (bool, optional): Whether to save the plot. Default is False.</span>
+<span class="sd">        :param json_file_paths: A list of paths to JSON files.</span>
+<span class="sd">        :type json_file_paths: list of str</span>
+<span class="sd">        :param save: Whether to save the plot. Defaults to False.</span>
+<span class="sd">        :type save: bool, optional</span>
+<span class="sd">        :raises ValueError: If `json_file_paths` is not a list of file paths.</span>
+<span class="sd">        :raises FileNotFoundError: If any of the specified JSON files do not exist.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">json_file_paths</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;json_file_paths should be a list of file paths.&quot;</span><span class="p">)</span>
@@ -550,20 +563,22 @@
         <span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
 
         <span class="k">if</span> <span class="n">save</span><span class="p">:</span>
-            <span class="bp">cls</span><span class="o">.</span><span class="n">save_file_with_name</span><span class="p">(</span><span class="s1">&#39;runs_&#39;</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">save_file_with_name</span><span class="p">(</span><span class="s1">&#39;runs_&#39;</span><span class="p">)</span>
         <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span></div>
 
 
 <div class="viewcode-block" id="Visualizer.plot_avg_fitness">
 <a class="viewcode-back" href="../../utils.html#utils.visualizer.Visualizer.plot_avg_fitness">[docs]</a>
-    <span class="nd">@classmethod</span>
-    <span class="k">def</span> <span class="nf">plot_avg_fitness</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">json_file_paths</span><span class="p">,</span> <span class="n">save</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">plot_avg_fitness</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">json_file_paths</span><span class="p">,</span> <span class="n">save</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Plot the average fitness over generations with standard deviation for multiple JSON files.</span>
 
-<span class="sd">        Args:</span>
-<span class="sd">            json_file_paths (list): A list of paths to JSON files.</span>
-<span class="sd">            save (bool, optional): Whether to save the plot. Default is False.</span>
+<span class="sd">        :param json_file_paths: A list of paths to JSON files.</span>
+<span class="sd">        :type json_file_paths: list of str</span>
+<span class="sd">        :param save: Whether to save the plot. Defaults to False.</span>
+<span class="sd">        :type save: bool, optional</span>
+<span class="sd">        :raises ValueError: If `json_file_paths` is not a list of file paths.</span>
+<span class="sd">        :raises FileNotFoundError: If any of the specified JSON files do not exist.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">json_file_paths</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;json_file_paths should be a list of file paths.&quot;</span><span class="p">)</span>
@@ -615,28 +630,22 @@
         <span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Average Fitness per Generation&#39;</span><span class="p">)</span>
         <span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
         <span class="k">if</span> <span class="n">save</span><span class="p">:</span>
-            <span class="bp">cls</span><span class="o">.</span><span class="n">save_file_with_name</span><span class="p">(</span><span class="s1">&#39;fitness_multiple_files_&#39;</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">save_file_with_name</span><span class="p">(</span><span class="s1">&#39;fitness_multiple_files_&#39;</span><span class="p">)</span>
         <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span></div>
 
 
 <div class="viewcode-block" id="Visualizer.create_boxplots">
 <a class="viewcode-back" href="../../utils.html#utils.visualizer.Visualizer.create_boxplots">[docs]</a>
-    <span class="nd">@classmethod</span>
-    <span class="k">def</span> <span class="nf">create_boxplots</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">json_file_paths</span><span class="p">,</span> <span class="n">save</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">create_boxplots</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">json_file_paths</span><span class="p">,</span> <span class="n">save</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Creates boxplots to visualize the average number of generations required to achieve optimal results across different input configurations from multiple JSON files. This method aggregates data from the specified JSON files and generates a bar plot with error bars representing the standard deviation.</span>
 
-<span class="sd">        Args:</span>
-<span class="sd">            json_file_paths (list of str): A list of paths to the JSON files containing the data.</span>
-<span class="sd">            save (bool): If True, saves the generated plot to a file. Defaults to False.</span>
-
-<span class="sd">        Returns:</span>
-<span class="sd">            None</span>
-
-<span class="sd">        Raises:</span>
-<span class="sd">            FileNotFoundError: If any of the specified JSON files do not exist.</span>
-
-<span class="sd">        Examples:</span>
+<span class="sd">        :param json_file_paths: A list of paths to the JSON files containing the data.</span>
+<span class="sd">        :type json_file_paths: list of str</span>
+<span class="sd">        :param save: If True, saves the generated plot to a file. Defaults to False.</span>
+<span class="sd">        :type save: bool</span>
+<span class="sd">        :raises FileNotFoundError: If any of the specified JSON files do not exist.</span>
+<span class="sd">        :examples:</span>
 <span class="sd">            &gt;&gt;&gt; Visualizer.create_boxplots([&#39;logs/6i.json&#39;, &#39;logs/36i.json&#39;], save=True)</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">all_data</span> <span class="o">=</span> <span class="p">{}</span>
@@ -716,7 +725,7 @@
         <span class="n">plt</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="s1">&#39;y&#39;</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;-&#39;</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">zorder</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
 
         <span class="k">if</span> <span class="n">save</span><span class="p">:</span>
-            <span class="bp">cls</span><span class="o">.</span><span class="n">save_file_with_name</span><span class="p">(</span><span class="s1">&#39;boxplot_&#39;</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">save_file_with_name</span><span class="p">(</span><span class="s1">&#39;boxplot_&#39;</span><span class="p">)</span>
 
         <span class="c1"># Show plot</span>
         <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span></div>
@@ -724,21 +733,17 @@
 
 <div class="viewcode-block" id="Visualizer.save_best_networks">
 <a class="viewcode-back" href="../../utils.html#utils.visualizer.Visualizer.save_best_networks">[docs]</a>
-    <span class="nd">@classmethod</span>
-    <span class="k">def</span> <span class="nf">save_best_networks</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">json_path</span><span class="p">,</span> <span class="n">show</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">save_best_networks</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">json_path</span><span class="p">,</span> <span class="n">show</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">            Saves visual representations of the best neural networks and their associated trees from a JSON file. </span>
-<span class="sd">            This method reads the JSON data, processes the neural networks and trees, and generates plots for each iteration.</span>
+<span class="sd">        Saves visual representations of the best neural networks and their associated trees from a JSON file. This method reads the JSON data, processes the neural networks and trees, and generates plots for each iteration.</span>
 
-<span class="sd">            Args:</span>
-<span class="sd">                json_path (str): The path to the JSON file containing network data.</span>
-<span class="sd">                show (bool): If True, displays the generated plots. Defaults to False.</span>
-
-<span class="sd">            Returns:</span>
-<span class="sd">                None</span>
-
-<span class="sd">            Examples:</span>
-<span class="sd">                &gt;&gt;&gt; Visualizer.save_best_networks(&#39;path/to/json_file.json&#39;, show=True)</span>
+<span class="sd">        :param json_path: The path to the JSON file containing network data.</span>
+<span class="sd">        :type json_path: str</span>
+<span class="sd">        :param show: If True, displays the generated plots. Defaults to False.</span>
+<span class="sd">        :type show: bool</span>
+<span class="sd">        :returns: None</span>
+<span class="sd">        :examples:</span>
+<span class="sd">            &gt;&gt;&gt; Visualizer.save_best_networks(&#39;path/to/json_file.json&#39;, show=True)</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">json_path</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">file</span><span class="p">:</span>
             <span class="n">json_file</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">file</span><span class="p">)</span>
@@ -770,7 +775,7 @@
                                  <span class="n">outputs</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
 
                 <span class="c1"># Neural network plot (col 0)</span>
-                <span class="n">pos</span> <span class="o">=</span> <span class="bp">cls</span><span class="o">.</span><span class="n">_calculate_node_positions</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">phenotype</span><span class="o">.</span><span class="n">structure</span><span class="p">)</span>
+                <span class="n">pos</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_calculate_node_positions</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">phenotype</span><span class="o">.</span><span class="n">structure</span><span class="p">)</span>
                 <span class="n">node_labels</span> <span class="o">=</span> <span class="p">{</span><span class="n">node</span><span class="p">:</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">node</span><span class="si">}</span><span class="s2">[</span><span class="si">{</span><span class="n">nn</span><span class="o">.</span><span class="n">phenotype</span><span class="o">.</span><span class="n">structure</span><span class="o">.</span><span class="n">nodes</span><span class="p">[</span><span class="n">node</span><span class="p">][</span><span class="s1">&#39;threshold&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">]&quot;</span>
                                <span class="k">for</span> <span class="n">node</span> <span class="ow">in</span> <span class="n">nn</span><span class="o">.</span><span class="n">phenotype</span><span class="o">.</span><span class="n">structure</span><span class="o">.</span><span class="n">nodes</span><span class="p">}</span>
 
@@ -791,7 +796,7 @@
                     <span class="n">node_labels</span> <span class="o">=</span> <span class="p">{}</span>
 
                     <span class="c1"># Convert treelib tree to NetworkX graph</span>
-                    <span class="n">tree_graph</span> <span class="o">=</span> <span class="bp">cls</span><span class="o">.</span><span class="n">treelib_to_nx</span><span class="p">(</span><span class="n">tree</span><span class="p">,</span> <span class="n">node_labels</span><span class="p">)</span>
+                    <span class="n">tree_graph</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">treelib_to_nx</span><span class="p">(</span><span class="n">tree</span><span class="p">,</span> <span class="n">node_labels</span><span class="p">)</span>
 
                     <span class="c1"># Layout for tree graph</span>
                     <span class="n">tree_pos</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">bfs_layout</span><span class="p">(</span>
@@ -807,7 +812,7 @@
 
             <span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
             <span class="n">plt</span><span class="o">.</span><span class="n">subplots_adjust</span><span class="p">(</span><span class="n">hspace</span><span class="o">=</span><span class="mf">0.8</span><span class="p">)</span>
-            <span class="bp">cls</span><span class="o">.</span><span class="n">save_file_with_name</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;champions_</span><span class="si">{</span><span class="n">iteration</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">save_file_with_name</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;champions_</span><span class="si">{</span><span class="n">iteration</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
             <span class="k">if</span> <span class="n">show</span><span class="p">:</span>
                 <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span></div>
 </div>

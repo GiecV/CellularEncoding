@@ -232,24 +232,6 @@ It utilizes the indices of the parents to facilitate the crossover process.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="core.evolution.Evolution.edit_population_size">
-<span class="sig-name descname"><span class="pre">edit_population_size</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">acceptable_time</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">30</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/core/evolution.html#Evolution.edit_population_size"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#core.evolution.Evolution.edit_population_size" title="Link to this definition"></a></dt>
-<dd><p>Adjust the population size based on the time taken for the last generation.</p>
-<p>This method modifies the population size to ensure efficient evolution based on the time taken
-for the last generation. If the generation time exceeds the acceptable limit, the population size
-is reduced; if it is below the limit, the population size is increased, within defined minimum
-and maximum bounds.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>acceptable_time</strong> (<em>int</em><em>, </em><em>optional</em>) – The threshold time for generation in seconds. Defaults to 30.</p>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>None</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
 <dt class="sig sig-object py" id="core.evolution.Evolution.evolve">
 <span class="sig-name descname"><span class="pre">evolve</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">info</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">stop</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/core/evolution.html#Evolution.evolve"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#core.evolution.Evolution.evolve" title="Link to this definition"></a></dt>
 <dd><p>Evolve the population over a specified number of generations.</p>
@@ -270,6 +252,11 @@ process and stops if the maximum allowed time is exceeded.</p>
 <dd class="field-odd"><p>tuple</p>
 </dd>
 </dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">evolution</span> <span class="o">=</span> <span class="n">Evolution</span><span class="p">(</span><span class="n">population_size</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span> <span class="n">generations</span><span class="o">=</span><span class="mi">300</span><span class="p">,</span> <span class="n">mutation_rate</span><span class="o">=</span><span class="mf">0.05</span><span class="p">,</span> <span class="n">inputs</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">best_individual</span><span class="p">,</span> <span class="n">generations_completed</span> <span class="o">=</span> <span class="n">evolution</span><span class="o">.</span><span class="n">evolve</span><span class="p">()</span>
+</pre></div>
+</div>
 </dd></dl>
 
 <dl class="py method">
@@ -404,15 +391,17 @@ It also updates the fitness history with the best score from the current selecti
 <dt class="sig sig-object py" id="core.genome.Genome">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">core.genome.</span></span><span class="sig-name descname"><span class="pre">Genome</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">trees</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">parents</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/core/genome.html#Genome"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#core.genome.Genome" title="Link to this definition"></a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
-<p>Represents a genome consisting of multiple trees. The nodes are operations to be performed on a NN.</p>
-<p>The Genome class manages a collection of trees, allowing for operations such as symbol changes, subtree retrieval, and printing of tree structures. It provides methods to manipulate and access the genetic information represented in the trees.</p>
+<p>Represents a genome consisting of multiple trees. The nodes are operations to be performed on a neural network (NN).</p>
+<p>The Genome class manages a collection of trees, allowing for operations such as symbol changes, subtree retrieval,
+and printing of tree structures. It provides methods to manipulate and access the genetic information represented
+in the trees.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="core.genome.Genome.change_symbol">
 <span class="sig-name descname"><span class="pre">change_symbol</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">level</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">node_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">symbol</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/core/genome.html#Genome.change_symbol"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#core.genome.Genome.change_symbol" title="Link to this definition"></a></dt>
 <dd><p>Changes the symbol of a specified gene and creates child nodes as necessary.</p>
-<p>This method updates the symbol of a gene at a given level and node ID.
-If the new symbol is not terminal, it creates additional child nodes based on the symbol type, ensuring the tree structure remains valid.</p>
-<dl class="field-list simple">
+<p>This method updates the symbol of a gene at a given level and node ID. If the new symbol is not terminal,
+it creates additional child nodes based on the symbol type, ensuring the tree structure remains valid.</p>
+<dl class="field-list">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>level</strong> (<em>int</em>) – The level of the tree where the gene is located.</p></li>
@@ -423,6 +412,11 @@ If the new symbol is not terminal, it creates additional child nodes based on th
 <dt class="field-even">Raises<span class="colon">:</span></dt>
 <dd class="field-even"><p><strong>ValueError</strong> – If the provided symbol is not valid.</p>
 </dd>
+<dt class="field-odd">Example<span class="colon">:</span></dt>
+<dd class="field-odd"><div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">genome</span><span class="o">.</span><span class="n">change_symbol</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="s2">&quot;node0&quot;</span><span class="p">,</span> <span class="s2">&quot;w&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd>
 </dl>
 </dd></dl>
 
@@ -430,13 +424,20 @@ If the new symbol is not terminal, it creates additional child nodes based on th
 <dt class="sig sig-object py" id="core.genome.Genome.from_json_pickle">
 <span class="sig-name descname"><span class="pre">from_json_pickle</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">json_individual</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/core/genome.html#Genome.from_json_pickle"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#core.genome.Genome.from_json_pickle" title="Link to this definition"></a></dt>
 <dd><p>Deserializes the genome data from a pickled format.</p>
-<p>This method reconstructs the genome data from a pickled representation. It converts each pickled tree back into a tree object and updates the genome’s tree list.</p>
-<dl class="field-list simple">
+<dl class="field-list">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>json_individual</strong> (<em>dict</em>) – A dictionary containing the pickled representation of the genome and parent information.</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>None</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Noneß</p>
+</dd>
+<dt class="field-even">Example<span class="colon">:</span></dt>
+<dd class="field-even"><div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">genome</span><span class="o">.</span><span class="n">from_json_pickle</span><span class="p">({</span><span class="s1">&#39;genome&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;...&#39;</span><span class="p">,</span> <span class="s1">&#39;...&#39;</span><span class="p">,</span> <span class="s1">&#39;...&#39;</span><span class="p">],</span> <span class="s1">&#39;parents&#39;</span><span class="p">:</span> <span class="kc">None</span><span class="p">})</span>
+</pre></div>
+</div>
 </dd>
 </dl>
 </dd></dl>
@@ -445,8 +446,6 @@ If the new symbol is not terminal, it creates additional child nodes based on th
 <dt class="sig sig-object py" id="core.genome.Genome.get_genome_from_starting_point">
 <span class="sig-name descname"><span class="pre">get_genome_from_starting_point</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">node_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/core/genome.html#Genome.get_genome_from_starting_point"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#core.genome.Genome.get_genome_from_starting_point" title="Link to this definition"></a></dt>
 <dd><p>Retrieves the subtree of the genome starting from a specified node.</p>
-<p>This method collects and returns the subtree from the first tree at the given node ID while including the remaining trees unchanged.
-It allows for focused exploration of the genome structure from a specific starting point.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>node_id</strong> (<em>str</em>) – The identifier of the node from which to start the subtree retrieval.</p>
@@ -464,8 +463,6 @@ It allows for focused exploration of the genome structure from a specific starti
 <dt class="sig sig-object py" id="core.genome.Genome.get_left_child_genome">
 <span class="sig-name descname"><span class="pre">get_left_child_genome</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/core/genome.html#Genome.get_left_child_genome"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#core.genome.Genome.get_left_child_genome" title="Link to this definition"></a></dt>
 <dd><p>Retrieves the genome structure starting from the left child of the root node.</p>
-<p>This method identifies the left child of the root node in the first tree and returns the subtree starting from that child.
-It provides a way to explore the genetic information specifically from the left branch of the genome.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>A list containing the subtree from the left child and the other trees.</p>
@@ -479,14 +476,21 @@ It provides a way to explore the genetic information specifically from the left 
 <dl class="py method">
 <dt class="sig sig-object py" id="core.genome.Genome.get_levels">
 <span class="sig-name descname"><span class="pre">get_levels</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/core/genome.html#Genome.get_levels"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#core.genome.Genome.get_levels" title="Link to this definition"></a></dt>
-<dd></dd></dl>
+<dd><p>Retrieves the number of levels in the genome.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The total number of levels in the genome.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>int</p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="core.genome.Genome.get_right_child_genome">
 <span class="sig-name descname"><span class="pre">get_right_child_genome</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/core/genome.html#Genome.get_right_child_genome"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#core.genome.Genome.get_right_child_genome" title="Link to this definition"></a></dt>
 <dd><p>Retrieves the genome structure starting from the right child of the root node.</p>
-<p>This method identifies the right child of the root node in the first tree and returns the subtree starting from that child.
-It allows for focused exploration of the genetic information specifically from the right branch of the genome.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>A list containing the subtree from the right child and the other trees.</p>
@@ -500,14 +504,21 @@ It allows for focused exploration of the genetic information specifically from t
 <dl class="py method">
 <dt class="sig sig-object py" id="core.genome.Genome.get_root_symbol">
 <span class="sig-name descname"><span class="pre">get_root_symbol</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/core/genome.html#Genome.get_root_symbol"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#core.genome.Genome.get_root_symbol" title="Link to this definition"></a></dt>
-<dd></dd></dl>
+<dd><p>Retrieves the symbol of the root node.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The symbol of the root node in the first tree.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="core.genome.Genome.get_symbol">
 <span class="sig-name descname"><span class="pre">get_symbol</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">level</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">node_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/core/genome.html#Genome.get_symbol"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#core.genome.Genome.get_symbol" title="Link to this definition"></a></dt>
 <dd><p>Retrieves the symbol of a specified gene from a given tree level.</p>
-<p>This method accesses the tree structure to obtain the symbol associated with a gene identified by its node ID at the specified level.
-It provides a straightforward way to query the genetic information stored in the genome.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
@@ -527,18 +538,16 @@ It provides a straightforward way to query the genetic information stored in the
 <dl class="py method">
 <dt class="sig sig-object py" id="core.genome.Genome.get_tree">
 <span class="sig-name descname"><span class="pre">get_tree</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">level</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/core/genome.html#Genome.get_tree"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#core.genome.Genome.get_tree" title="Link to this definition"></a></dt>
-<dd><p>Retrieve the trees associated with the genome.</p>
-<p>This method returns the internal representation of trees stored in the genome.
-It provides access to the data structure that holds the trees for further processing or analysis.</p>
+<dd><p>Retrieves the tree at a specific level.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>self</strong> – The instance of the class.</p>
+<dd class="field-odd"><p><strong>level</strong> (<em>int</em>) – The level of the tree to retrieve.</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>The trees associated with the genome.</p>
+<dd class="field-even"><p>The tree at the specified level.</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>list</p>
+<dd class="field-odd"><p>Tree</p>
 </dd>
 </dl>
 </dd></dl>
@@ -546,19 +555,33 @@ It provides access to the data structure that holds the trees for further proces
 <dl class="py method">
 <dt class="sig sig-object py" id="core.genome.Genome.get_trees">
 <span class="sig-name descname"><span class="pre">get_trees</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/core/genome.html#Genome.get_trees"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#core.genome.Genome.get_trees" title="Link to this definition"></a></dt>
-<dd></dd></dl>
+<dd><p>Retrieves the genome’s tree structure.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>A list of all trees within the genome.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>list</p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="core.genome.Genome.json_pickle">
 <span class="sig-name descname"><span class="pre">json_pickle</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/core/genome.html#Genome.json_pickle"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#core.genome.Genome.json_pickle" title="Link to this definition"></a></dt>
 <dd><p>Serializes the genome data using pickle.</p>
-<p>This method prepares the genome data for serialization by converting each tree into a pickled representation. It also includes the parent information, making it suitable for storage or transmission in a binary format.</p>
-<dl class="field-list simple">
+<dl class="field-list">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>A dictionary containing the pickled representation of the genome and parent information.</p>
 </dd>
 <dt class="field-even">Return type<span class="colon">:</span></dt>
 <dd class="field-even"><p>dict</p>
+</dd>
+<dt class="field-odd">Example<span class="colon">:</span></dt>
+<dd class="field-odd"><div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">genome</span><span class="o">.</span><span class="n">json_pickle</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># {&#39;genome&#39;: [&#39;...&#39;, &#39;...&#39;, &#39;...&#39;], &#39;parents&#39;: None}</span>
+</pre></div>
+</div>
 </dd>
 </dl>
 </dd></dl>
@@ -567,8 +590,6 @@ It provides access to the data structure that holds the trees for further proces
 <dt class="sig sig-object py" id="core.genome.Genome.jump">
 <span class="sig-name descname"><span class="pre">jump</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/core/genome.html#Genome.jump"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#core.genome.Genome.jump" title="Link to this definition"></a></dt>
 <dd><p>Cuts off the first level of the genome and adds a new tree.</p>
-<p>This method removes the first tree from the genome and creates a new tree initialized with a starting symbol.
-It effectively allows for a reset of the first level while retaining the remaining structure of the genome.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>A list containing the remaining trees and the newly created tree.</p>
@@ -583,11 +604,9 @@ It effectively allows for a reset of the first level while retaining the remaini
 <dt class="sig sig-object py" id="core.genome.Genome.print">
 <span class="sig-name descname"><span class="pre">print</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">level</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/core/genome.html#Genome.print"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#core.genome.Genome.print" title="Link to this definition"></a></dt>
 <dd><p>Prints the structure of the genome’s trees at a specified level or all levels.</p>
-<p>This method displays the tree structures contained within the genome.
-If a specific level is provided, it prints only that level; otherwise, it prints all of them.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>level</strong> (<em>int</em><em>, </em><em>optional</em>) – The level of the tree to print. If None, all levels are printed. Defaults to None.</p>
+<dd class="field-odd"><p><strong>level</strong> (<em>int</em><em>, </em><em>optional</em>) – The level of the tree to print. If None, all levels are printed.</p>
 </dd>
 </dl>
 </dd></dl>
@@ -596,10 +615,13 @@ If a specific level is provided, it prints only that level; otherwise, it prints
 <dt class="sig sig-object py" id="core.genome.Genome.update_ids">
 <span class="sig-name descname"><span class="pre">update_ids</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/core/genome.html#Genome.update_ids"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#core.genome.Genome.update_ids" title="Link to this definition"></a></dt>
 <dd><p>Updates the identifiers of all nodes in the genome’s trees.</p>
-<p>This method iterates through each tree in the genome and assigns new unique identifiers to all nodes. It ensures that each node has a fresh identifier, which can be useful for maintaining uniqueness in the genome structure.</p>
+<p>This method assigns new unique identifiers to all nodes in each tree of the genome.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>None</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>None</p>
 </dd>
 </dl>
 </dd></dl>

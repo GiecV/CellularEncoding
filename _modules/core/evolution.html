@@ -199,6 +199,10 @@
 
 <span class="sd">        Returns:</span>
 <span class="sd">            tuple: A tuple containing the best individual from the final population and the number of generations completed.</span>
+
+<span class="sd">        Examples:</span>
+<span class="sd">            &gt;&gt;&gt; evolution = Evolution(population_size=1000, generations=300, mutation_rate=0.05, inputs=2)</span>
+<span class="sd">            &gt;&gt;&gt; best_individual, generations_completed = evolution.evolve()</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
         <span class="n">best_score</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="s1">&#39;-inf&#39;</span><span class="p">)</span>
@@ -305,31 +309,6 @@
 
         <span class="bp">self</span><span class="o">.</span><span class="n">fitness_history</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">best_fitness_scores</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
         <span class="k">return</span> <span class="n">best_individuals</span><span class="p">,</span> <span class="n">best_fitness_scores</span></div>
-
-
-<div class="viewcode-block" id="Evolution.edit_population_size">
-<a class="viewcode-back" href="../../core.html#core.evolution.Evolution.edit_population_size">[docs]</a>
-    <span class="k">def</span> <span class="nf">edit_population_size</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">acceptable_time</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">30</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Adjust the population size based on the time taken for the last generation.</span>
-
-<span class="sd">        This method modifies the population size to ensure efficient evolution based on the time taken </span>
-<span class="sd">        for the last generation. If the generation time exceeds the acceptable limit, the population size </span>
-<span class="sd">        is reduced; if it is below the limit, the population size is increased, within defined minimum </span>
-<span class="sd">        and maximum bounds.</span>
-
-<span class="sd">        Args:</span>
-<span class="sd">            acceptable_time (int, optional): The threshold time for generation in seconds. Defaults to 30.</span>
-
-<span class="sd">        Returns:</span>
-<span class="sd">            None</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">generation_time</span> <span class="o">&gt;</span> <span class="n">acceptable_time</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">population_size</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">min_population_size</span><span class="p">,</span> <span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">population_size</span> <span class="o">*</span> <span class="mf">.9</span><span class="p">))</span>
-        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">generation_time</span> <span class="o">&lt;</span> <span class="n">acceptable_time</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">population_size</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">max_population_size</span><span class="p">,</span> <span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">population_size</span> <span class="o">*</span> <span class="mf">1.1</span><span class="p">))</span></div>
 
 
 <div class="viewcode-block" id="Evolution.crossover">

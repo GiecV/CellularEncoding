@@ -79,21 +79,24 @@
 <a class="viewcode-back" href="../../core.html#core.genome.Genome">[docs]</a>
 <span class="k">class</span> <span class="nc">Genome</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Represents a genome consisting of multiple trees. The nodes are operations to be performed on a NN.</span>
+<span class="sd">    Represents a genome consisting of multiple trees. The nodes are operations to be performed on a neural network (NN).</span>
 
-<span class="sd">    The Genome class manages a collection of trees, allowing for operations such as symbol changes, subtree retrieval, and printing of tree structures. It provides methods to manipulate and access the genetic information represented in the trees.</span>
+<span class="sd">    The Genome class manages a collection of trees, allowing for operations such as symbol changes, subtree retrieval,</span>
+<span class="sd">    and printing of tree structures. It provides methods to manipulate and access the genetic information represented </span>
+<span class="sd">    in the trees.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">trees</span><span class="p">:</span> <span class="nb">list</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">parents</span><span class="p">:</span> <span class="nb">list</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Initializes a genome with a specified number of trees or uses provided trees.</span>
 
-<span class="sd">        This constructor sets up the genome&#39;s tree structure. </span>
-<span class="sd">        If no trees are provided, it creates a default set of trees, each initialized with a single gene node.</span>
+<span class="sd">        This constructor sets up the genome&#39;s tree structure. If no trees are provided, it creates a default set of </span>
+<span class="sd">        trees, each initialized with a single gene node.</span>
 
-<span class="sd">        Args:</span>
-<span class="sd">            trees (list, optional): A list of trees to initialize the genome with. Defaults to None.</span>
-<span class="sd">            parents (optional): A parameter to specify parent relationships. Defaults to None.</span>
+<span class="sd">        :param trees: A list of trees to initialize the genome with. Defaults to None.</span>
+<span class="sd">        :type trees: list, optional</span>
+<span class="sd">        :param parents: A parameter to specify parent relationships. Defaults to None.</span>
+<span class="sd">        :type parents: list, optional</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">LEVELS</span> <span class="o">=</span> <span class="mi">3</span>  <span class="c1"># How many trees to consider</span>
@@ -128,16 +131,18 @@
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Changes the symbol of a specified gene and creates child nodes as necessary.</span>
 
-<span class="sd">        This method updates the symbol of a gene at a given level and node ID. </span>
-<span class="sd">        If the new symbol is not terminal, it creates additional child nodes based on the symbol type, ensuring the tree structure remains valid.</span>
+<span class="sd">        This method updates the symbol of a gene at a given level and node ID. If the new symbol is not terminal, </span>
+<span class="sd">        it creates additional child nodes based on the symbol type, ensuring the tree structure remains valid.</span>
 
-<span class="sd">        Args:</span>
-<span class="sd">            level (int): The level of the tree where the gene is located.</span>
-<span class="sd">            node_id (str): The identifier of the node whose symbol is to be changed.</span>
-<span class="sd">            symbol (str): The new symbol to assign to the gene.</span>
-
-<span class="sd">        Raises:</span>
-<span class="sd">            ValueError: If the provided symbol is not valid.</span>
+<span class="sd">        :param level: The level of the tree where the gene is located.</span>
+<span class="sd">        :type level: int</span>
+<span class="sd">        :param node_id: The identifier of the node whose symbol is to be changed.</span>
+<span class="sd">        :type node_id: str</span>
+<span class="sd">        :param symbol: The new symbol to assign to the gene.</span>
+<span class="sd">        :type symbol: str</span>
+<span class="sd">        :raises ValueError: If the provided symbol is not valid.</span>
+<span class="sd">        :example: </span>
+<span class="sd">            &gt;&gt;&gt; genome.change_symbol(0, &quot;node0&quot;, &quot;w&quot;)</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="n">symbol</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">SYMBOLS</span> <span class="ow">and</span> <span class="n">symbol</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">OPERATIONAL_SYMBOLS</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Invalid symbol: </span><span class="si">{</span><span class="n">symbol</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
@@ -169,16 +174,12 @@
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Retrieves the symbol of a specified gene from a given tree level.</span>
 
-<span class="sd">        This method accesses the tree structure to obtain the symbol associated with a gene identified by its node ID at the specified level. </span>
-<span class="sd">        It provides a straightforward way to query the genetic information stored in the genome.</span>
-
-<span class="sd">        Args:</span>
-<span class="sd">            level (int): The level of the tree from which to retrieve the symbol.</span>
-<span class="sd">            node_id (str): The identifier of the node whose symbol is to be retrieved.</span>
-
-<span class="sd">        Returns:</span>
-<span class="sd">            str: The symbol of the specified gene.</span>
-
+<span class="sd">        :param level: The level of the tree from which to retrieve the symbol.</span>
+<span class="sd">        :type level: int</span>
+<span class="sd">        :param node_id: The identifier of the node whose symbol is to be retrieved.</span>
+<span class="sd">        :type node_id: str</span>
+<span class="sd">        :return: The symbol of the specified gene.</span>
+<span class="sd">        :rtype: str</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_trees</span><span class="p">[</span><span class="n">level</span><span class="p">]</span><span class="o">.</span><span class="n">get_node</span><span class="p">(</span><span class="n">node_id</span><span class="p">)</span><span class="o">.</span><span class="n">tag</span></div>
 
@@ -189,12 +190,8 @@
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Prints the structure of the genome&#39;s trees at a specified level or all levels.</span>
 
-<span class="sd">        This method displays the tree structures contained within the genome. </span>
-<span class="sd">        If a specific level is provided, it prints only that level; otherwise, it prints all of them.</span>
-
-<span class="sd">        Args:</span>
-<span class="sd">            level (int, optional): The level of the tree to print. If None, all levels are printed. Defaults to None.</span>
-
+<span class="sd">        :param level: The level of the tree to print. If None, all levels are printed.</span>
+<span class="sd">        :type level: int, optional</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="n">level</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">for</span> <span class="n">tree</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_trees</span><span class="p">:</span>
@@ -210,15 +207,10 @@
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Retrieves the subtree of the genome starting from a specified node.</span>
 
-<span class="sd">        This method collects and returns the subtree from the first tree at the given node ID while including the remaining trees unchanged.</span>
-<span class="sd">        It allows for focused exploration of the genome structure from a specific starting point.</span>
-
-<span class="sd">        Args:</span>
-<span class="sd">            node_id (str): The identifier of the node from which to start the subtree retrieval.</span>
-
-<span class="sd">        Returns:</span>
-<span class="sd">            list: A list containing the subtree from the starting node and the other trees.</span>
-
+<span class="sd">        :param node_id: The identifier of the node from which to start the subtree retrieval.</span>
+<span class="sd">        :type node_id: str</span>
+<span class="sd">        :return: A list containing the subtree from the starting node and the other trees.</span>
+<span class="sd">        :rtype: list</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">trees</span> <span class="o">=</span> <span class="p">[]</span>
 
@@ -237,12 +229,8 @@
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Retrieves the genome structure starting from the left child of the root node.</span>
 
-<span class="sd">        This method identifies the left child of the root node in the first tree and returns the subtree starting from that child. </span>
-<span class="sd">        It provides a way to explore the genetic information specifically from the left branch of the genome.</span>
-
-<span class="sd">        Returns:</span>
-<span class="sd">            list: A list containing the subtree from the left child and the other trees.</span>
-
+<span class="sd">        :return: A list containing the subtree from the left child and the other trees.</span>
+<span class="sd">        :rtype: list</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
         <span class="n">root</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_trees</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">root</span>
@@ -257,12 +245,8 @@
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Retrieves the genome structure starting from the right child of the root node.</span>
 
-<span class="sd">        This method identifies the right child of the root node in the first tree and returns the subtree starting from that child.</span>
-<span class="sd">        It allows for focused exploration of the genetic information specifically from the right branch of the genome.</span>
-
-<span class="sd">        Returns:</span>
-<span class="sd">            list: A list containing the subtree from the right child and the other trees.</span>
-
+<span class="sd">        :return: A list containing the subtree from the right child and the other trees.</span>
+<span class="sd">        :rtype: list</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">root</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_trees</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">root</span>
 
@@ -273,6 +257,12 @@
 <div class="viewcode-block" id="Genome.get_root_symbol">
 <a class="viewcode-back" href="../../core.html#core.genome.Genome.get_root_symbol">[docs]</a>
     <span class="k">def</span> <span class="nf">get_root_symbol</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Retrieves the symbol of the root node.</span>
+
+<span class="sd">        :return: The symbol of the root node in the first tree.</span>
+<span class="sd">        :rtype: str</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_trees</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">get_node</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_trees</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">root</span><span class="p">)</span><span class="o">.</span><span class="n">tag</span></div>
 
 
@@ -282,12 +272,8 @@
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Cuts off the first level of the genome and adds a new tree.</span>
 
-<span class="sd">        This method removes the first tree from the genome and creates a new tree initialized with a starting symbol.</span>
-<span class="sd">        It effectively allows for a reset of the first level while retaining the remaining structure of the genome.</span>
-
-<span class="sd">        Returns:</span>
-<span class="sd">            list: A list containing the remaining trees and the newly created tree.</span>
-
+<span class="sd">        :return: A list containing the remaining trees and the newly created tree.</span>
+<span class="sd">        :rtype: list</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">tree</span> <span class="o">=</span> <span class="n">Tree</span><span class="p">()</span>
         <span class="n">tree</span><span class="o">.</span><span class="n">create_node</span><span class="p">(</span>
@@ -301,12 +287,24 @@
 <div class="viewcode-block" id="Genome.get_trees">
 <a class="viewcode-back" href="../../core.html#core.genome.Genome.get_trees">[docs]</a>
     <span class="k">def</span> <span class="nf">get_trees</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Retrieves the genome&#39;s tree structure.</span>
+
+<span class="sd">        :return: A list of all trees within the genome.</span>
+<span class="sd">        :rtype: list</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_trees</span></div>
 
 
 <div class="viewcode-block" id="Genome.get_levels">
 <a class="viewcode-back" href="../../core.html#core.genome.Genome.get_levels">[docs]</a>
     <span class="k">def</span> <span class="nf">get_levels</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Retrieves the number of levels in the genome.</span>
+
+<span class="sd">        :return: The total number of levels in the genome.</span>
+<span class="sd">        :rtype: int</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">LEVELS</span></div>
 
 
@@ -315,16 +313,12 @@
 <a class="viewcode-back" href="../../core.html#core.genome.Genome.get_tree">[docs]</a>
     <span class="k">def</span> <span class="nf">get_tree</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">level</span><span class="p">:</span> <span class="nb">int</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Retrieve the trees associated with the genome.</span>
+<span class="sd">        Retrieves the tree at a specific level.</span>
 
-<span class="sd">        This method returns the internal representation of trees stored in the genome. </span>
-<span class="sd">        It provides access to the data structure that holds the trees for further processing or analysis.</span>
-
-<span class="sd">        Args:</span>
-<span class="sd">            self: The instance of the class.</span>
-
-<span class="sd">        Returns:</span>
-<span class="sd">            list: The trees associated with the genome.</span>
+<span class="sd">        :param level: The level of the tree to retrieve.</span>
+<span class="sd">        :type level: int</span>
+<span class="sd">        :return: The tree at the specified level.</span>
+<span class="sd">        :rtype: Tree</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_trees</span><span class="p">[</span><span class="n">level</span><span class="p">]</span></div>
 
@@ -336,12 +330,11 @@
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Updates the identifiers of all nodes in the genome&#39;s trees.</span>
 
-<span class="sd">        This method iterates through each tree in the genome and assigns new unique identifiers to all nodes. It ensures that each node has a fresh identifier, which can be useful for maintaining uniqueness in the genome structure.</span>
+<span class="sd">        This method assigns new unique identifiers to all nodes in each tree of the genome.</span>
 
-<span class="sd">        Returns:</span>
-<span class="sd">            None</span>
+<span class="sd">        :return: None</span>
+<span class="sd">        :rtype: None</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-
         <span class="k">for</span> <span class="n">tree</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_trees</span><span class="p">:</span>
             <span class="n">node_ids</span> <span class="o">=</span> <span class="p">[</span><span class="n">node</span><span class="o">.</span><span class="n">identifier</span> <span class="k">for</span> <span class="n">node</span> <span class="ow">in</span> <span class="n">tree</span><span class="o">.</span><span class="n">all_nodes_itr</span><span class="p">()]</span>
             <span class="k">for</span> <span class="n">node_id</span> <span class="ow">in</span> <span class="n">node_ids</span><span class="p">:</span>
@@ -354,12 +347,12 @@
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Serializes the genome data using pickle.</span>
 
-<span class="sd">        This method prepares the genome data for serialization by converting each tree into a pickled representation. It also includes the parent information, making it suitable for storage or transmission in a binary format.</span>
-
-<span class="sd">        Returns:</span>
-<span class="sd">            dict: A dictionary containing the pickled representation of the genome and parent information.</span>
+<span class="sd">        :return: A dictionary containing the pickled representation of the genome and parent information.</span>
+<span class="sd">        :rtype: dict</span>
+<span class="sd">        :example: </span>
+<span class="sd">            &gt;&gt;&gt; genome.json_pickle()</span>
+<span class="sd">            &gt;&gt;&gt; # {&#39;genome&#39;: [&#39;...&#39;, &#39;...&#39;, &#39;...&#39;], &#39;parents&#39;: None}</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-
         <span class="n">encoded_trees</span> <span class="o">=</span> <span class="p">[</span><span class="n">pickle</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">tree</span><span class="p">)</span> <span class="k">for</span> <span class="n">tree</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_trees</span><span class="p">]</span>
         <span class="n">encoded_trees</span> <span class="o">=</span> <span class="p">[</span><span class="n">base64</span><span class="o">.</span><span class="n">b64encode</span><span class="p">(</span><span class="n">tree</span><span class="p">)</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span>
             <span class="s1">&#39;utf-8&#39;</span><span class="p">)</span> <span class="k">for</span> <span class="n">tree</span> <span class="ow">in</span> <span class="n">encoded_trees</span><span class="p">]</span>
@@ -376,13 +369,12 @@
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Deserializes the genome data from a pickled format.</span>
 
-<span class="sd">        This method reconstructs the genome data from a pickled representation. It converts each pickled tree back into a tree object and updates the genome&#39;s tree list.</span>
-
-<span class="sd">        Args:</span>
-<span class="sd">            json_individual (dict): A dictionary containing the pickled representation of the genome and parent information.</span>
-
-<span class="sd">        Returns:</span>
-<span class="sd">            None</span>
+<span class="sd">        :param json_individual: A dictionary containing the pickled representation of the genome and parent information.</span>
+<span class="sd">        :type json_individual: dict</span>
+<span class="sd">        :return: None</span>
+<span class="sd">        :rtype: Noneß</span>
+<span class="sd">        :example: </span>
+<span class="sd">            &gt;&gt;&gt; genome.from_json_pickle({&#39;genome&#39;: [&#39;...&#39;, &#39;...&#39;, &#39;...&#39;], &#39;parents&#39;: None})</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_trees</span> <span class="o">=</span> <span class="p">[</span><span class="n">base64</span><span class="o">.</span><span class="n">b64decode</span><span class="p">(</span><span class="n">tree</span><span class="p">)</span>
                        <span class="k">for</span> <span class="n">tree</span> <span class="ow">in</span> <span class="n">json_individual</span><span class="p">[</span><span class="s1">&#39;genome&#39;</span><span class="p">]]</span>

@@ -607,6 +607,9 @@ class Visualizer:
 
         plt.grid(axis='y', linestyle='-', linewidth=0.5, zorder=1)
 
+        if save:
+            cls.save_file_with_name('boxplot_')
+
         # Show plot
         plt.show()
 
@@ -693,6 +696,6 @@ class Visualizer:
 
             plt.tight_layout()
             plt.subplots_adjust(hspace=0.8)
-            cls.save_file_with_name('best_networks_')
+            cls.save_file_with_name(f'champions_{iteration}')
             if show:
                 plt.show()

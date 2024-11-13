@@ -9,12 +9,15 @@ def target_function(x, y):
     """
     Compute the XOR of two binary inputs.
 
-    Args:
-        x (int): The first binary input.
-        y (int): The second binary input.
+    The XOR function outputs 1 when the inputs are different, and 0 when they are the same.
 
-    Returns:
-        int: The XOR of the inputs.
+    :param x: The first binary input (either 0 or 1).
+    :type x: int
+    :param y: The second binary input (either 0 or 1).
+    :type y: int
+
+    :return: The XOR of the two inputs.
+    :rtype: int
     """
     return x ^ y
 
@@ -23,19 +26,27 @@ def compute_fitness(individual):
     """
     Compute the fitness of an individual for the XOR problem.
 
-    Args:
-        individual: The individual whose fitness is to be computed.
+    The fitness is calculated by comparing the neural network's outputs with the 
+    expected results for all possible input combinations. The fitness value is 
+    the proportion of correct outputs for the XOR problem.
 
-    Returns:
-        float: The fitness value, which is the proportion of correct outputs.
+    :param individual: The individual whose fitness is to be computed. 
+                       It is expected to be an object that can be converted 
+                       into a `Phenotype` for neural network evaluation.
+    :type individual: Any (typically an individual in an evolutionary algorithm)
+
+    :return: The fitness value, which is the proportion of correct outputs.
+    :rtype: float
     """
     p = Phenotype(individual)
     nn = NNFromGraph(p)
     inputs = [[x, y] for x in range(2) for y in range(2)]
     targets = [target_function(x, y) for x, y in inputs]
-    outputs = [nn.forward(torch.tensor([x, y]).float()).item() for x, y in inputs]
+    outputs = [nn.forward(torch.tensor([x, y]).float()).item()
+               for x, y in inputs]
 
-    fitness_outputs = sum(outputs[i] == targets[i] for i in range(len(outputs)))
+    fitness_outputs = sum(outputs[i] == targets[i]
+                          for i in range(len(outputs)))
     return fitness_outputs / 4
 
 
@@ -43,11 +54,16 @@ def compute_fitness_information_formula(individual):
     """
     Compute the fitness of an individual using an information-theoretic formula.
 
-    Args:
-        individual: The individual whose fitness is to be computed.
+    The fitness is based on the mutual information between the neural network's outputs 
+    and the expected targets, with a regularization term for the complexity of the network. 
+    This combines the accuracy of the network's predictions and its complexity to provide 
+    a more robust measure of fitness.
 
-    Returns:
-        float: The fitness value based on mutual information and neural network complexity.
+    :param individual: The individual whose fitness is to be computed.
+    :type individual: Any (typically an individual in an evolutionary algorithm)
+
+    :return: The fitness value based on mutual information and neural network complexity.
+    :rtype: float
     """
     p = Phenotype(individual)
     nn = NNFromGraph(p)
@@ -71,12 +87,21 @@ def compute_fitness_target(individual, print_info=False):
     """
     Compute the fitness of an individual with an option to print detailed information.
 
-    Args:
-        individual: The individual whose fitness is to be computed.
-        print_info (bool, optional): Whether to print detailed information. Default is False.
+    This function computes the fitness by comparing the individual’s tree structure 
+    to a target tree structure. The fitness is based on several factors including 
+    depth, number of nodes, common tags, and successors. The more similar the individual's 
+    tree structure is to the target, the higher the fitness.
 
-    Returns:
-        float: The fitness value.
+    :param individual: The individual whose fitness is to be computed. 
+                       It is expected to be an object that can be converted 
+                       into a `Genome` and compared with a target genome.
+    :type individual: Genome
+    :param print_info: Whether to print detailed information about the fitness 
+                       calculation. Default is False.
+    :type print_info: bool, optional
+
+    :return: The fitness value based on the similarity of the tree structures.
+    :rtype: float
     """
     target = Genome()
     root = target.get_tree(0).root
@@ -136,8 +161,10 @@ def compute_fitness_target(individual, print_info=False):
     depth_similarity = 1 - abs(depth1 - depth2) / max(depth1, depth2)
     nodes_similarity = 1 - abs(n_nodes1 - n_nodes2) / max(n_nodes1, n_nodes2)
     tags_similarity = (common_tags - tag_difference) / target_tags
-    successors_similarity = (common_successors - successors_difference) / target_successors
-    fitness = (depth_similarity + nodes_similarity + tags_similarity + successors_similarity) / 4
+    successors_similarity = (
+        common_successors - successors_difference) / target_successors
+    fitness = (depth_similarity + nodes_similarity +
+               tags_similarity + successors_similarity) / 4
 
     if print_info:
         print(f"Depth similarity: {depth_similarity}")

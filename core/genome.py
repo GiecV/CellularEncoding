@@ -258,7 +258,7 @@ class Genome:
         :param json_individual: A dictionary containing the pickled representation of the genome and parent information.
         :type json_individual: dict
         :return: None
-        :rtype: Noneß
+        :rtype: None
         :example: 
             >>> genome.from_json_pickle({'genome': ['...', '...', '...'], 'parents': None})
         """

@@ -15,26 +15,24 @@ torch.set_num_threads(1)
 
 class Evolution:
     """
-    Manage the evolution of a population of genomes over multiple generations.
+    Manages the evolution of a population of genomes over multiple generations.
 
     This class implements an evolutionary algorithm that evolves a population of genomes through selection, 
     crossover, and mutation. It tracks fitness scores, maintains a history of fitness, and allows for the 
     generation of offspring based on the best individuals in the population.
 
-    Args:
-        population_size (int, optional): The size of the population. Defaults to 1000.
-        generations (int, optional): The number of generations to evolve. Defaults to 300.
-        mutation_rate (float, optional): The rate of mutation for individuals. Defaults to 0.05.
-        inputs (int, optional): The number of inputs for the genomes. Defaults to 2.
-        population (list, optional): An optional initial population. Defaults to None.
+    :param population_size: The size of the population (default is 1000).
+    :param generations: The number of generations to evolve (default is 300).
+    :param mutation_rate: The rate of mutation for individuals (default is 0.05).
+    :param inputs: The number of inputs for the genomes (default is 2).
+    :param population: An optional initial population (default is None).
 
-    Attributes:
-        fitness_history (list): A history of the best fitness scores over generations.
-        innovative_individuals (list): A list of individuals that achieved the best fitness scores.
-        fitness_grids (dict): A dictionary to store fitness grids.
-        fitness_scores (list): A list of fitness scores for the current population.
-        logs (list): A log of the evolution process.
-        lineage (list): A record of the lineage of the best individuals.
+    :ivar fitness_history: A history of the best fitness scores over generations.
+    :ivar innovative_individuals: A list of individuals that achieved the best fitness scores.
+    :ivar fitness_grids: A dictionary to store fitness grids.
+    :ivar fitness_scores: A list of fitness scores for the current population.
+    :ivar logs: A log of the evolution process.
+    :ivar lineage: A record of the lineage of the best individuals.
     """
 
     def __init__(self, population_size: int = 1000, generations: int = 300, mutation_rate: float = 0.05, inputs: int = 2, population: list = None):
@@ -45,15 +43,13 @@ class Evolution:
         the number of generations to evolve, and the mutation rate. It also initializes various attributes to track 
         the fitness history, innovative individuals, and the current population.
 
-        Args:
-            population_size (int, optional): The size of the population. Defaults to 1000.
-            generations (int, optional): The number of generations to evolve. Defaults to 300.
-            mutation_rate (float, optional): The rate of mutation for individuals. Defaults to 0.05.
-            inputs (int, optional): The number of inputs for the genomes. Defaults to 2.
-            population (list, optional): An optional initial population. Defaults to None.
+        :param population_size: The size of the population (default is 1000).
+        :param generations: The number of generations to evolve (default is 300).
+        :param mutation_rate: The rate of mutation for individuals (default is 0.05).
+        :param inputs: The number of inputs for the genomes (default is 2).
+        :param population: An optional initial population (default is None).
 
-        Returns:
-            None
+        :return: None
         """
         self.population_size = population_size
         self.generations = generations
@@ -74,11 +70,7 @@ class Evolution:
         This method generates a list of individuals for the population by calling the method to create each individual. 
         It ensures that the population is ready for the evolutionary process.
 
-        Args:
-            self: The instance of the class.
-
-        Returns:
-            list: A list containing the initialized individuals in the population.
+        :return: A list containing the initialized individuals in the population.
         """
         return [self.create_individual() for _ in range(self.population_size)]
 
@@ -89,11 +81,7 @@ class Evolution:
         This method creates a new instance of a genome and assigns random symbols to the root nodes of each tree 
         within the genome. It ensures that each individual in the population starts with a unique genetic configuration.
 
-        Args:
-            self: The instance of the class.
-
-        Returns:
-            Genome: The newly created individual represented as a genome.
+        :return: The newly created individual represented as a genome.
         """
         genome = Genome()
         symbols = genome.SYMBOLS
@@ -112,18 +100,11 @@ class Evolution:
         and tracking the best fitness scores over generations. It also logs information about the evolution 
         process and stops if the maximum allowed time is exceeded.
 
-        Args:
-            info (bool, optional): Whether to log detailed information about each generation. Defaults to True.
-            max_time (int, optional): The maximum time allowed for the evolution process in seconds. Defaults to 2100.
+        :param info: Whether to log detailed information about each generation (default is True).
+        :param stop: Whether to stop if the best fitness score is 1 (default is True).
 
-        Returns:
-            tuple: A tuple containing the best individual from the final population and the number of generations completed.
-
-        Examples:
-            >>> evolution = Evolution(population_size=1000, generations=300, mutation_rate=0.05, inputs=2)
-            >>> best_individual, generations_completed = evolution.evolve()
+        :return: A tuple containing the best individual from the final population and the number of generations completed.
         """
-
         best_score = float('-inf')
         start_time = time.time()
 
@@ -171,11 +152,7 @@ class Evolution:
         and applies mutation to introduce variability. The resulting offspring are returned for inclusion in the 
         next generation.
 
-        Args:
-            self: The instance of the class.
-
-        Returns:
-            list: A list of mutated offspring generated from the current population.
+        :return: A list of mutated offspring generated from the current population.
         """
         start_time = time.time()
         offspring = []
@@ -202,11 +179,9 @@ class Evolution:
         sorts them by their fitness scores, and selects the top individuals to form the new population. 
         It also updates the fitness history with the best score from the current selection.
 
-        Args:
-            population (list): The population of individuals to evaluate.
+        :param population: The population of individuals to evaluate.
 
-        Returns:
-            tuple: A tuple containing two lists: the best individuals and their corresponding fitness scores.
+        :return: A tuple containing two lists: the best individuals and their corresponding fitness scores.
         """
         start_time = time.time()
         ns = [self.inputs for _ in range(len(population))]
@@ -230,13 +205,11 @@ class Evolution:
         This method generates two offspring by combining genetic information from the provided parent individuals. 
         It utilizes the indices of the parents to facilitate the crossover process.
 
-        Args:
-            parent1: The first parent individual.
-            parent2: The second parent individual.
-            parents_indexes (list): The indices of the parents in the population.
+        :param parent1: The first parent individual.
+        :param parent2: The second parent individual.
+        :param parents_indexes: The indices of the parents in the population.
 
-        Returns:
-            tuple: A tuple containing the two newly created child individuals.
+        :return: A tuple containing the two newly created child individuals.
         """
         child1, child2 = self.get_children(parent1, parent2, parents_indexes)
 
@@ -250,13 +223,11 @@ class Evolution:
         It selects random cut points in the trees of the parents and performs crossover to create offspring that 
         inherit characteristics from both parents.
 
-        Args:
-            parent1: The first parent individual.
-            parent2: The second parent individual.
-            parents_indexes (list): The indices of the parents in the population.
+        :param parent1: The first parent individual.
+        :param parent2: The second parent individual.
+        :param parents_indexes: The indices of the parents in the population.
 
-        Returns:
-            tuple: A tuple containing two newly created child genomes.
+        :return: A tuple containing the two newly created child individuals.
         """
         trees = []
         trees2 = []
@@ -298,17 +269,14 @@ class Evolution:
 
     def mutate(self, genome: Genome):
         """
-        Apply mutations to the given genome based on a mutation rate.
+        Apply mutation to an individual genome.
 
-        This method iterates through the trees in the genome and randomly alters the symbols of nodes 
-        according to the specified mutation rate. It introduces genetic diversity by changing certain 
-        node tags to new symbols, which can be either operational or division symbols.
+        This method introduces small random changes in the genome by modifying the genetic material of the individual. 
+        Mutation helps introduce genetic diversity and allows the evolutionary process to explore a larger solution space.
 
-        Args:
-            genome: The genome to be mutated.
+        :param individual: The individual genome to mutate.
 
-        Returns:
-            Genome: The mutated genome after applying the changes.
+        :return: The mutated individual genome.
         """
         for i, tree in enumerate(genome.get_trees()):
             nodes = list(tree.all_nodes_itr())
@@ -329,19 +297,13 @@ class Evolution:
 
     def get_lineage(self, gens_to_save: int = 5):
         """
-        Retrieve the lineage of the best individuals over a specified number of generations.
+        Generate a lineage of the best individuals over generations.
 
-        This method collects and returns the genomes of the best individuals from the evolution process, 
-        tracing back through their parent generations. It allows for the analysis of genetic progression 
-        by saving a specified number of generations in the lineage.
+        This method creates a record of the best individuals from each generation, which is useful for tracking 
+        the evolutionary progress and visualizing how the population has changed over time.
 
-        Args:
-            gens_to_save (int, optional): The number of generations to include in the lineage. Defaults to 5.
-
-        Returns:
-            list: A list of dictionaries containing the generation index and the corresponding genome of each individual.
+        :return: A list of the best individuals from each generation.
         """
-
         def traverse_generations(data: dict, generation_idx: int, individual_idx: int, genomes: list):
 
             individual = data[generation_idx]['individuals'][individual_idx]

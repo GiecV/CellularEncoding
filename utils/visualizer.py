@@ -12,29 +12,40 @@ import numpy as np
 
 
 class Visualizer:
+    """
+    A class for visualizing neural networks, phenotypes, and evolutionary runs.
 
-    @classmethod
-    def __init__(cls, inputs=2, outputs=1):
+    This class provides methods to visualize neural network structures, the
+    phenotype of individuals, and data from evolutionary runs. It supports
+    various types of plots including network graphs, tree visualizations,
+    and fitness over time.
+
+    :param inputs: The number of input nodes in the neural network. Default is 2.
+    :type inputs: int, optional
+    :param outputs: The number of output nodes in the neural network. Default is 1.
+    :type outputs: int, optional
+    """
+
+    def __init__(self, inputs=2, outputs=1):
         """
         Initialize the Visualizer with the number of inputs and outputs.
 
-        Args:
-            inputs (int, optional): The number of input nodes. Default is 2.
-            outputs (int, optional): The number of output nodes. Default is 1.
+        :param inputs: The number of input nodes. Default is 2.
+        :type inputs: int, optional
+        :param outputs: The number of output nodes. Default is 1.
+        :type outputs: int, optional
         """
-        cls.inputs = inputs
-        cls.outputs = outputs
+        self.inputs = inputs
+        self.outputs = outputs
 
-    @classmethod
-    def _calculate_node_positions(cls, structure):
+    def _calculate_node_positions(self, structure):
         """
         Calculate the positions of nodes in the neural network graph.
 
-        Args:
-            structure (networkx.DiGraph): The graph structure of the neural network.
-
-        Returns:
-            dict: A dictionary mapping nodes to their positions.
+        :param structure: The graph structure of the neural network.
+        :type structure: networkx.DiGraph
+        :return: A dictionary mapping nodes to their positions.
+        :rtype: dict
         """
         start_nodes = [
             node for node in structure.nodes if node.startswith("I")]
@@ -65,14 +76,14 @@ class Visualizer:
 
         return pos
 
-    @classmethod
-    def print_innovative_networks(cls, innovative_individuals, save=False):
+    def print_innovative_networks(self, innovative_individuals, save=False):
         """
         Print and optionally save the innovative neural networks.
 
-        Args:
-            innovative_individuals (list): A list of innovative individuals.
-            save (bool, optional): Whether to save the plots. Default is False.
+        :param innovative_individuals: A list of innovative individuals.
+        :type innovative_individuals: list
+        :param save: Whether to save the plots. Default is False.
+        :type save: bool, optional
         """
         num_individuals = len(innovative_individuals)
         rows = num_individuals
@@ -83,10 +94,11 @@ class Visualizer:
 
         for idx, (individual, fitness_score) in enumerate(innovative_individuals):
             phenotype = Phenotype(individual)
-            nn = NNFromGraph(phenotype, inputs=cls.inputs, outputs=cls.outputs)
+            nn = NNFromGraph(phenotype, inputs=self.inputs,
+                             outputs=self.outputs)
 
             # Neural network plot (col 0)
-            pos = cls._calculate_node_positions(nn.phenotype.structure)
+            pos = self._calculate_node_positions(nn.phenotype.structure)
             node_labels = {node: f"{node}[{nn.phenotype.structure.nodes[node]['threshold']}]"
                            for node in nn.phenotype.structure.nodes}
 
@@ -107,7 +119,7 @@ class Visualizer:
                 node_labels = {}
 
                 # Convert treelib tree to NetworkX graph
-                tree_graph = cls.treelib_to_nx(tree, node_labels)
+                tree_graph = self.treelib_to_nx(tree, node_labels)
 
                 # Layout for tree graph
                 tree_pos = nx.bfs_layout(
@@ -124,20 +136,19 @@ class Visualizer:
         plt.tight_layout()
         plt.subplots_adjust(hspace=0.8)
         if save:
-            cls.save_file_with_name('innovative_networks_')
+            self.save_file_with_name('innovative_networks_')
         plt.show()
 
-    @classmethod
     def treelib_to_nx(self, tree, node_labels):
         """
         Convert a tree structure from treelib to a NetworkX directed graph.
 
-        Args:
-            tree (treelib.Tree): The tree structure to convert.
-            node_labels (dict): A dictionary to store node labels.
-
-        Returns:
-            networkx.DiGraph: The converted directed graph.
+        :param tree: The tree structure to convert.
+        :type tree: treelib.Tree
+        :param node_labels: A dictionary to store node labels.
+        :type node_labels: dict
+        :return: The converted directed graph.
+        :rtype: networkx.DiGraph
         """
         graph = nx.DiGraph()  # Create a directed graph
 
@@ -158,28 +169,27 @@ class Visualizer:
             graph.add_node(root_node.identifier)
         return graph
 
-    @classmethod
-    def print_population(cls, population):
+    def print_population(self, population):
         """
         Print the details of each individual in the population.
 
-        Args:
-            population (list): A list of individuals in the population.
+        :param population: A list of individuals in the population.
+        :type population: list
         """
         for individual in population:
             individual.print()
 
-    @classmethod
-    def print_phenotype(cls, phenotype, save=False):
+    def print_phenotype(self, phenotype, save=False):
         """
         Print and optionally save the phenotype structure.
 
-        Args:
-            phenotype (Phenotype): The phenotype to print.
-            save (bool, optional): Whether to save the plot. Default is False.
+        :param phenotype: The phenotype to print.
+        :type phenotype: Phenotype
+        :param save: Whether to save the plot. Default is False.
+        :type save: bool, optional
         """
         try:
-            pos = cls._calculate_node_positions(phenotype.structure)
+            pos = self._calculate_node_positions(phenotype.structure)
 
             node_labels = {node: f"{node}[{phenotype.structure.nodes[node]['threshold']}]"
                            for node in phenotype.structure.nodes}
@@ -199,39 +209,42 @@ class Visualizer:
             nx.draw_networkx_edge_labels(
                 phenotype.structure, pos, edge_labels=labels)
             if save:
-                cls.save_file_with_name('phenotype_')
+                self.save_file_with_name('phenotype_')
             plt.show()
         except Exception:
             print("Cannot set positions")
-            cls.print_no_position(phenotype)
+            self.print_no_position(phenotype)
 
-    @classmethod
-    def save_file_with_name(cls, name):
+    def save_file_with_name(self, name):
         """
         Save the current plot with a given name.
 
-        Args:
-            name (str): The base name for the file to save.
+        :param name: The base name for the file to save.
+        :type name: str
         """
         os.makedirs('img', exist_ok=True)
         timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
         plt.savefig(os.path.join('img', f'{name}{timestamp}.png'))
 
     def print_no_position(self, phenotype):
+        """
+        Print the phenotype without positioning information.
+
+        :param phenotype: The phenotype to print.
+        :type phenotype: Phenotype
+        """
         nx.draw(phenotype.structure, with_labels=True)
         plt.show()
 
-    @classmethod
-    def plot_all_runs(cls, json_file_path, save=False):
+    def plot_all_runs(self, json_file_path, save=False):
         """
         Plot the fitness of all runs from a JSON file.
 
-        Args:
-            json_file_path (str): The path to the JSON file containing the run data.
-            save (bool, optional): Whether to save the plot. Default is False.
-
-        Raises:
-            FileNotFoundError: If the JSON file does not exist.
+        :param json_file_path: The path to the JSON file containing the run data.
+        :type json_file_path: str
+        :param save: Whether to save the plot. Default is False.
+        :type save: bool, optional
+        :raises FileNotFoundError: If the JSON file does not exist.
         """
         if not os.path.exists(json_file_path):
             raise FileNotFoundError(
@@ -263,20 +276,18 @@ class Visualizer:
         plt.legend()
 
         if save:
-            cls.save_file_with_name('runs_')
+            self.save_file_with_name('runs_')
         plt.show()
 
-    @classmethod
-    def plot_all_times(cls, json_file_path, save=False):
+    def plot_all_times(self, json_file_path, save=False):
         """
         Plot the fitness of all runs from a JSON file.
 
-        Args:
-            json_file_path (str): The path to the JSON file containing the run data.
-            save (bool, optional): Whether to save the plot. Default is False.
-
-        Raises:
-            FileNotFoundError: If the JSON file does not exist.
+        :param json_file_path: The path to the JSON file containing the run data.
+        :type json_file_path: str
+        :param save: Whether to save the plot. Default is False.
+        :type save: bool, optional
+        :raises FileNotFoundError: If the JSON file does not exist.
         """
         if not os.path.exists(json_file_path):
             raise FileNotFoundError(
@@ -308,17 +319,17 @@ class Visualizer:
         plt.legend()
 
         if save:
-            cls.save_file_with_name('runs_')
+            self.save_file_with_name('runs_')
         plt.show()
 
-    @classmethod
-    def save_lineage(cls, json_path, show=False):
+    def save_lineage(self, json_path, show=False):
         """
         Print and optionally save the innovative neural networks.
 
-        Args:
-            innovative_individuals (list): A list of innovative individuals.
-            save (bool, optional): Whether to save the plots. Default is False.
+        :param json_path: Path to the JSON file containing lineage data.
+        :type json_path: str
+        :param show: Whether to display the plots. Defaults to False.
+        :type show: bool, optional
         """
 
         with open(json_path, 'r') as file:
@@ -345,7 +356,7 @@ class Visualizer:
                                  outputs=1)
 
                 # Neural network plot (col 0)
-                pos = cls._calculate_node_positions(nn.phenotype.structure)
+                pos = self._calculate_node_positions(nn.phenotype.structure)
                 node_labels = {node: f"{node}[{nn.phenotype.structure.nodes[node]['threshold']}]"
                                for node in nn.phenotype.structure.nodes}
 
@@ -366,7 +377,7 @@ class Visualizer:
                     node_labels = {}
 
                     # Convert treelib tree to NetworkX graph
-                    tree_graph = cls.treelib_to_nx(tree, node_labels)
+                    tree_graph = self.treelib_to_nx(tree, node_labels)
 
                     # Layout for tree graph
                     tree_pos = nx.bfs_layout(
@@ -382,18 +393,20 @@ class Visualizer:
 
             plt.tight_layout()
             plt.subplots_adjust(hspace=0.8)
-            cls.save_file_with_name('innovative_networks_')
+            self.save_file_with_name('innovative_networks_')
             if show:
                 plt.show()
 
-    @classmethod
-    def plot_times(cls, json_file_paths, save=False):
+    def plot_times(self, json_file_paths, save=False):
         """
         Plot the time taken for each generation for multiple JSON files.
 
-        Args:
-            json_file_paths (list): A list of paths to JSON files.
-            save (bool, optional): Whether to save the plot. Default is False.
+        :param json_file_paths: A list of paths to JSON files.
+        :type json_file_paths: list of str
+        :param save: Whether to save the plot. Defaults to False.
+        :type save: bool, optional
+        :raises ValueError: If `json_file_paths` is not a list of file paths.
+        :raises FileNotFoundError: If any of the specified JSON files do not exist.
         """
         if not isinstance(json_file_paths, list):
             raise ValueError("json_file_paths should be a list of file paths.")
@@ -448,17 +461,19 @@ class Visualizer:
         plt.legend()
 
         if save:
-            cls.save_file_with_name('runs_')
+            self.save_file_with_name('runs_')
         plt.show()
 
-    @classmethod
-    def plot_avg_fitness(cls, json_file_paths, save=False):
+    def plot_avg_fitness(self, json_file_paths, save=False):
         """
         Plot the average fitness over generations with standard deviation for multiple JSON files.
 
-        Args:
-            json_file_paths (list): A list of paths to JSON files.
-            save (bool, optional): Whether to save the plot. Default is False.
+        :param json_file_paths: A list of paths to JSON files.
+        :type json_file_paths: list of str
+        :param save: Whether to save the plot. Defaults to False.
+        :type save: bool, optional
+        :raises ValueError: If `json_file_paths` is not a list of file paths.
+        :raises FileNotFoundError: If any of the specified JSON files do not exist.
         """
         if not isinstance(json_file_paths, list):
             raise ValueError("json_file_paths should be a list of file paths.")
@@ -510,25 +525,19 @@ class Visualizer:
         plt.title('Average Fitness per Generation')
         plt.legend()
         if save:
-            cls.save_file_with_name('fitness_multiple_files_')
+            self.save_file_with_name('fitness_multiple_files_')
         plt.show()
 
-    @classmethod
-    def create_boxplots(cls, json_file_paths, save=False):
+    def create_boxplots(self, json_file_paths, save=False):
         """
         Creates boxplots to visualize the average number of generations required to achieve optimal results across different input configurations from multiple JSON files. This method aggregates data from the specified JSON files and generates a bar plot with error bars representing the standard deviation.
 
-        Args:
-            json_file_paths (list of str): A list of paths to the JSON files containing the data.
-            save (bool): If True, saves the generated plot to a file. Defaults to False.
-
-        Returns:
-            None
-
-        Raises:
-            FileNotFoundError: If any of the specified JSON files do not exist.
-
-        Examples:
+        :param json_file_paths: A list of paths to the JSON files containing the data.
+        :type json_file_paths: list of str
+        :param save: If True, saves the generated plot to a file. Defaults to False.
+        :type save: bool
+        :raises FileNotFoundError: If any of the specified JSON files do not exist.
+        :examples:
             >>> Visualizer.create_boxplots(['logs/6i.json', 'logs/36i.json'], save=True)
         """
         all_data = {}
@@ -608,26 +617,22 @@ class Visualizer:
         plt.grid(axis='y', linestyle='-', linewidth=0.5, zorder=1)
 
         if save:
-            cls.save_file_with_name('boxplot_')
+            self.save_file_with_name('boxplot_')
 
         # Show plot
         plt.show()
 
-    @classmethod
-    def save_best_networks(cls, json_path, show=False):
+    def save_best_networks(self, json_path, show=False):
         """
-            Saves visual representations of the best neural networks and their associated trees from a JSON file. 
-            This method reads the JSON data, processes the neural networks and trees, and generates plots for each iteration.
+        Saves visual representations of the best neural networks and their associated trees from a JSON file. This method reads the JSON data, processes the neural networks and trees, and generates plots for each iteration.
 
-            Args:
-                json_path (str): The path to the JSON file containing network data.
-                show (bool): If True, displays the generated plots. Defaults to False.
-
-            Returns:
-                None
-
-            Examples:
-                >>> Visualizer.save_best_networks('path/to/json_file.json', show=True)
+        :param json_path: The path to the JSON file containing network data.
+        :type json_path: str
+        :param show: If True, displays the generated plots. Defaults to False.
+        :type show: bool
+        :returns: None
+        :examples:
+            >>> Visualizer.save_best_networks('path/to/json_file.json', show=True)
         """
         with open(json_path, 'r') as file:
             json_file = json.load(file)
@@ -659,7 +664,7 @@ class Visualizer:
                                  outputs=1)
 
                 # Neural network plot (col 0)
-                pos = cls._calculate_node_positions(nn.phenotype.structure)
+                pos = self._calculate_node_positions(nn.phenotype.structure)
                 node_labels = {node: f"{node}[{nn.phenotype.structure.nodes[node]['threshold']}]"
                                for node in nn.phenotype.structure.nodes}
 
@@ -680,7 +685,7 @@ class Visualizer:
                     node_labels = {}
 
                     # Convert treelib tree to NetworkX graph
-                    tree_graph = cls.treelib_to_nx(tree, node_labels)
+                    tree_graph = self.treelib_to_nx(tree, node_labels)
 
                     # Layout for tree graph
                     tree_pos = nx.bfs_layout(
@@ -696,6 +701,6 @@ class Visualizer:
 
             plt.tight_layout()
             plt.subplots_adjust(hspace=0.8)
-            cls.save_file_with_name(f'champions_{iteration}')
+            self.save_file_with_name(f'champions_{iteration}')
             if show:
                 plt.show()

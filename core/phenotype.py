@@ -5,31 +5,25 @@ import copy
 
 class Phenotype:
     """
-    Represent the phenotype of a genome in a directed graph structure.
+    Represents the phenotype of a genome in a directed graph structure.
 
-    This class manages the structure and behavior of a phenotype, including the creation and manipulation of nodes 
-    that represent cells. It provides methods for developing the phenotype based on its genome, adding cells, 
-    and modifying connections between nodes.
+    This class manages the creation and manipulation of nodes representing cells, providing methods for 
+    developing the phenotype based on its genome, adding cells, and modifying connections.
 
-    Attributes:
-        structure (nx.DiGraph): The directed graph representing the phenotype's structure.
-        genome: The genome associated with this phenotype.
-        cell_count (int): The count of cells in the phenotype.
-        internal_register (int): A register used for internal operations within the phenotype.
+    :ivar structure: Directed graph representing the phenotype's structure.
+    :ivar genome: The genome associated with this phenotype.
+    :ivar cell_count: Count of cells in the phenotype.
+    :ivar internal_register: Register used for internal operations within the phenotype.
     """
 
     def __init__(self, genome: Genome) -> None:
         """
-        Initialize a Phenotype instance with a given genome.
+        Initializes a Phenotype instance with a given genome.
 
-        This constructor sets up the initial structure of the phenotype, including input and output nodes, 
-        and establishes connections between them. It also initializes various attributes related to the phenotype's structure.
+        Sets up the initial structure of the phenotype, including input and output nodes, 
+        and establishes connections between them.
 
-        Args:
-            genome: The genome associated with this phenotype.
-
-        Returns:
-            None
+        :param genome: The genome associated with this phenotype.
         """
         self.structure = nx.DiGraph()
         self.genome = genome
@@ -48,16 +42,12 @@ class Phenotype:
     # * Add a new cell to the structure
     def add_cell(self):
         """
-        Add a new cell to the phenotype's structure.
+        Adds a new cell to the phenotype's structure.
 
-        This method creates a new hidden cell node in the phenotype's structure and increments the cell count. 
-        It returns the identifier of the newly added cell.
+        Creates a new hidden cell node and increments the cell count.
 
-        Args:
-            self: The instance of the class.
-
-        Returns:
-            str: The identifier of the newly added cell.
+        :return: Identifier of the newly added cell.
+        :rtype: str
         """
         genome = self.genome
         self.structure.add_node(str(self.cell_count),
@@ -69,17 +59,10 @@ class Phenotype:
     # * Divide cells or do operations
     def develop(self):
         """
-        Develop the phenotype's structure based on its genome.
+        Develops the phenotype's structure based on its genome.
 
-        This method modifies the phenotype's structure by iterating through its nodes and applying operations
-        based on the associated genome. It skips the input and output nodes, focusing on the hidden nodes to
-        evolve the structure further.
-
-        Args:
-            self: The instance of the class.
-
-        Returns:
-            None
+        Modifies the phenotype's structure by applying operations based on the associated genome, 
+        focusing on hidden nodes to evolve the structure.
         """
 
         old_structure = copy.deepcopy(self.structure)
@@ -96,18 +79,15 @@ class Phenotype:
     # * Perform the proper operation according to the symbol
     def perform_operation(self, structural_node, symbol, genome):
         """
-        Perform an operation on a structural node based on the given symbol.
+        Performs an operation on a structural node based on the given symbol.
 
-        This method interprets the provided symbol to determine the appropriate operation to execute on the 
-        specified structural node. It may modify the node's properties or structure and returns a new node if applicable.
+        Interprets the symbol to determine the appropriate operation for the specified node, 
+        modifying the node's properties or structure as needed.
 
-        Args:
-            structural_node: The node on which the operation is to be performed.
-            symbol: A character representing the operation to be executed.
-            genome: The genome associated with the structural node.
-
-        Returns:
-            The newly created node if applicable; otherwise, None.
+        :param structural_node: Node on which the operation is performed.
+        :param symbol: Character representing the operation.
+        :param genome: Genome associated with the structural node.
+        :return: Newly created node if applicable; otherwise, None.
         """
         new_node = None
 
@@ -139,48 +119,33 @@ class Phenotype:
     # * Edit threshold of a cell
     def edit_threshold(self, structural_node):
         """
-        Set the threshold of a specified structural node to 1.
+        Sets the threshold of a specified node to 1.
 
-        This method updates the threshold attribute of the given structural node in the phenotype's structure.
-        It is typically used to modify the behavior of the node during the development process.
+        Updates the threshold attribute of the node to modify its behavior.
 
-        Args:
-            structural_node: The node whose threshold is to be edited.
-
-        Returns:
-            None
+        :param structural_node: Node whose threshold is edited.
         """
         self.structure.nodes[structural_node]["threshold"] = 1
 
     # * Jump to the next level
     def jump(self, structural_node, genome):
         """
-        Perform a jump operation on the specified structural node.
+        Performs a jump operation on the specified node.
 
-        This method is intended to modify the behavior or state of the given structural node based on the associated genome. 
-        The specific implementation details of the jump operation are not defined in this method.
-
-        Args:
-            structural_node: The node on which the jump operation is to be performed.
-            genome: The genome associated with the structural node.
-
-        Returns:
-            None
+        :param structural_node: Node on which the jump operation is performed.
+        :param genome: Genome associated with the structural node.
         """
         pass
 
     def split_parallel(self, structural_node):
         """
-        Create a new node that splits the connections of the specified structural node in parallel.
+        Creates a new node that splits connections in parallel.
 
-        This method adds a new cell and establishes connections from the new node to the predecessors and successors 
-        of the given structural node. It also handles any recurrent links associated with the original node.
+        Adds a new cell, connecting it to the predecessors and successors of the given node.
 
-        Args:
-            structural_node: The node to be split in parallel.
-
-        Returns:
-            The newly created node that represents the split.
+        :param structural_node: Node to be split in parallel.
+        :return: Identifier of the newly created node.
+        :rtype: str
         """
         new_node = self.add_cell()
 
@@ -218,16 +183,14 @@ class Phenotype:
     # * Perform a sequential split
     def split_sequential(self, structural_node):
         """
-        Create a new node that splits the connections of the specified structural node sequentially.
+        Creates a new node that splits connections sequentially.
 
-        This method adds a new cell and modifies the connections of the original structural node by transferring 
-        its successors to the new node. It also handles any recurrent links associated with the original node.
+        Adds a new cell and modifies the connections of the original node, transferring its 
+        successors to the new node.
 
-        Args:
-            structural_node: The node to be split sequentially.
-
-        Returns:
-            The newly created node that represents the split.
+        :param structural_node: Node to be split sequentially.
+        :return: Identifier of the newly created node.
+        :rtype: str
         """
         new_node = self.add_cell()
 
@@ -263,16 +226,9 @@ class Phenotype:
     # * Add a recurrent edge
     def add_recurrent_edge(self, structural_node):
         """
-        Add a recurrent edge to the specified structural node.
+        Adds a recurrent edge to the specified node by creating a self-loop.
 
-        This method creates a self-loop on the given structural node by adding an edge that connects the node to itself.
-        This is typically used to represent recurrent connections in the phenotype's structure.
-
-        Args:
-            structural_node: The node to which the recurrent edge will be added.
-
-        Returns:
-            None
+        :param structural_node: Node to which the recurrent edge is added.
         """
         self.structure.add_edge(
             structural_node,
@@ -283,35 +239,20 @@ class Phenotype:
     # * Set self.internal_register to value
     def edit_register(self, value):
         """
-        Modify the internal register by adding a specified value.
+        Modifies the internal register by adding a specified value.
 
-        This method updates the internal register by incrementing it with the provided value. 
-        It is typically used to adjust the state of the register during the phenotype's operations.
-
-        Args:
-            value: The amount to add to the internal register.
-
-        Returns:
-            None
+        :param value: Amount to add to the internal register.
         """
         self.internal_register += value
 
     def read_genome(self, structural_node, new_node, symbol, genome):
         """
-        Process the genome based on the specified symbol and update the structural node accordingly.
+        Processes the genome based on the specified symbol and updates the node accordingly.
 
-        This method interprets the provided symbol to determine the appropriate action to take on the structural node, 
-        which may involve splitting the node, continuing the reading process, or updating the node's attributes. 
-        It facilitates the interaction between the genome and the phenotype's structure.
-
-        Args:
-            structural_node: The node to be processed based on the genome.
-            new_node: The new node that may be created or modified during the process.
-            symbol: A character representing the action to be taken.
-            genome: The genome associated with the structural node.
-
-        Returns:
-            None
+        :param structural_node: Node to be processed.
+        :param new_node: New node that may be created or modified.
+        :param symbol: Character representing the action.
+        :param genome: Genome associated with the structural node.
         """
         if symbol in ["p", "s"]:
             self.split(structural_node, new_node, genome)
@@ -325,18 +266,13 @@ class Phenotype:
     # * Choose next symbols for the new cells
     def split(self, structural_node, new_node, genome):
         """
-        Split the genome attributes between the specified structural nodes.
+        Splits genome attributes between specified nodes.
 
-        This method assigns the right and left child genomes to the new and original structural nodes, respectively. 
-        It facilitates the division of genetic information during the development of the phenotype.
+        Assigns the right and left child genomes to the new and original nodes.
 
-        Args:
-            structural_node: The original node whose genome will be updated.
-            new_node: The new node that will receive the right child genome.
-            genome: The genome from which the child genomes are derived.
-
-        Returns:
-            None
+        :param structural_node: Original node whose genome will be updated.
+        :param new_node: New node receiving the right child genome.
+        :param genome: Genome from which child genomes are derived.
         """
         self.structure.nodes[new_node]["attr"] = Genome(
             genome.get_right_child_genome()
@@ -348,17 +284,10 @@ class Phenotype:
     # * Move to the next symbol
     def continue_reading(self, structural_node, genome):
         """
-        Update the genome attribute of the specified structural node.
+        Updates the genome attribute of the specified node, continuing the genome reading process.
 
-        This method assigns the left child genome to the given structural node, effectively continuing the reading 
-        process of the genome. It is used to progress through the genetic information associated with the phenotype.
-
-        Args:
-            structural_node: The node whose genome attribute will be updated.
-            genome: The genome from which the left child genome is derived.
-
-        Returns:
-            None
+        :param structural_node: Node whose genome attribute is updated.
+        :param genome: Genome from which the left child genome is derived.
         """
         self.structure.nodes[structural_node]["attr"] = Genome(
             genome.get_left_child_genome()
@@ -367,18 +296,12 @@ class Phenotype:
     # * Set weight as the weight of the input edge pointed by the internal register
     def change_weight(self, structural_node, weight):
         """
-        Update the weight of the edge connecting a predecessor to the specified structural node.
+        Updates the weight of the edge connecting a predecessor to the specified node.
 
-        This method modifies the weight of the edge from a selected predecessor node to the given structural node 
-        based on the current internal register. It ensures that the connection reflects the desired weight for the 
-        phenotype's structure.
+        Modifies the edge weight from a selected predecessor to the node based on the internal register.
 
-        Args:
-            structural_node: The node whose incoming edge weight will be changed.
-            weight: The new weight to assign to the edge.
-
-        Returns:
-            None
+        :param structural_node: Node whose incoming edge weight is changed.
+        :param weight: New weight to assign to the edge.
         """
         link_to_edit = self.internal_register
 
@@ -401,18 +324,11 @@ class Phenotype:
     # * Return True if every cell finished developing, otherwise False
     def development_finished(self):
         """
-        Check if the development of all cells in the phenotype is complete.
+        Checks if development of all cells is complete.
 
-        This method iterates through the nodes in the phenotype's structure to determine if all non-terminal nodes 
-        have reached a terminal state. It returns True if all cells have finished developing, and False otherwise.
-
-        Args:
-            self: The instance of the class.
-
-        Returns:
-            bool: True if all cells have finished developing, otherwise False.
+        :return: True if all cells have finished developing; otherwise, False.
+        :rtype: bool
         """
-
         for node in self.structure.nodes:
             if node[0] not in ["I", "O"]:
                 genome = self.structure.nodes[node]["attr"]
@@ -428,24 +344,14 @@ class Phenotype:
     # * Expand the single input and output to match the number of neurons in the first layer
     def expand_inputs_and_outputs(self, inputs, outputs):
         """
-        Expand the input and output nodes of the phenotype's structure.
+        Expands the input and output nodes of the structure, ensuring validity of connections.
 
-        This method adds the specified number of input and output nodes to the phenotype's structure, 
-        connecting them to the existing nodes while ensuring the structure remains valid. It also 
-        removes the original input and output nodes and checks the development status of the phenotype.
-
-        Args:
-            inputs: The number of input nodes to add.
-            outputs: The number of output nodes to add.
-
-        Raises:
-            ValueError: If the structure has already been expanded.
-
-        Returns:
-            tuple: A tuple containing two values, t and r, which represent specific metrics 
-            related to the structure's configuration.
+        :param inputs: Number of input nodes to add.
+        :param outputs: Number of output nodes to add.
+        :raises ValueError: If the structure has already been expanded.
+        :return: Tuple containing two metrics related to the structure configuration.
+        :rtype: tuple
         """
-
         if "O" not in self.structure.nodes:
             print("Structure already expanded")
             raise ValueError("Structure already expanded")

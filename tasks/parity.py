@@ -12,12 +12,22 @@ def compute_fitness(individual, n=2):
     """
     Compute the fitness of an individual in the parity problem.
 
-    Args:
-        individual: The individual whose fitness is to be computed.
-        n (int, optional): The number of binary inputs. Default is 2.
+    The fitness is evaluated by computing the normalized mutual information score 
+    between the outputs of a neural network and the expected parity targets 
+    for all possible binary input combinations. The network is evaluated with 
+    `n` binary inputs, and the fitness is a measure of how well the network 
+    predicts the parity of the inputs.
 
-    Returns:
-        float: The normalized mutual information score between the outputs and the targets.
+    :param individual: The individual whose fitness is to be computed. 
+                       It is expected to be an object that can be converted 
+                       into a `Phenotype` for neural network evaluation.
+    :type individual: Any (typically an individual in an evolutionary algorithm)
+    :param n: The number of binary inputs to the neural network. Default is 2.
+    :type n: int, optional
+
+    :return: The normalized mutual information score between the network's 
+             outputs and the expected targets.
+    :rtype: float
     """
     p = Phenotype(individual)
     nn = NNFromGraph(p, inputs=n, outputs=1)

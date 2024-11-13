@@ -9,35 +9,43 @@ torch.set_num_threads(1)
 
 class NNFromGraph(nn.Module):
     """
-    Neural network implementation based on a phenotype's graph structure.
+    A neural network model constructed from a graph representation of a phenotype.
 
-    This class constructs a neural network using the structure defined in a phenotype, allowing for 
-    the propagation of inputs through the network. It initializes the network parameters and manages 
-    the forward pass of data through the network layers.
+    This class creates a neural network based on a given graph structure, assigning
+    weights, thresholds, and other properties to the nodes and edges of the graph.
+    The `forward` method performs a custom feedforward pass through the network 
+    based on the graph structure.
 
-    Args:
-        phenotype (Phenotype): The phenotype that defines the structure of the neural network.
-        depth (int, optional): The number of propagation layers in the network. Defaults to 7.
-        inputs (int, optional): The number of input nodes. Defaults to 2.
-        outputs (int, optional): The number of output nodes. Defaults to 1.
+    :param Phenotype phenotype: The phenotype object containing the graph structure.
+    :param int depth: The number of iterations for forward propagation (default is 7).
+    :param int inputs: The number of input nodes (default is 2).
+    :param int outputs: The number of output nodes (default is 1).
+
+    **Attributes:**
+
+    - **phenotype** (*Phenotype*): The phenotype object containing the graph structure.
+    - **input_ids** (*list*): List of input node indices in the graph.
+    - **output_ids** (*list*): List of output node indices in the graph.
+    - **depth** (*int*): Number of iterations for the forward propagation.
+    - **t** (*int*): 
+    - **r** (*int*): 
+    - **A** (*torch.Tensor*): Adjacency matrix of the graph.
+    - **W** (*torch.Tensor*): Trainable weight matrix for the graph.
+    - **thresholds** (*torch.Tensor*): Thresholds for each node in the graph.
     """
 
     def __init__(self, phenotype: Phenotype, depth: int = 7, inputs: int = 2, outputs: int = 1):
         """
-        Initialize the neural network from a phenotype's graph structure.
+        Initializes the NNFromGraph model with a phenotype and graph parameters.
 
-        This constructor sets up the neural network by extracting the structure from the provided phenotype,
-        initializing parameters, and preparing the adjacency matrix for the network. It also identifies input
-        and output nodes based on the phenotype's configuration.
+        This method sets up the model's graph structure, adjacency matrix,
+        weight matrix, and node thresholds.
 
         Args:
-            phenotype (Phenotype): The phenotype that defines the structure of the neural network.
-            depth (int, optional): The number of propagation layers in the network. Defaults to 7.
-            inputs (int, optional): The number of input nodes. Defaults to 2.
-            outputs (int, optional): The number of output nodes. Defaults to 1.
-
-        Returns:
-            None
+            phenotype (Phenotype): The phenotype object containing the structure of the graph.
+            depth (int, optional): Number of iterations for the forward propagation. Defaults to 7.
+            inputs (int, optional): Number of input nodes. Defaults to 2.
+            outputs (int, optional): Number of output nodes. Defaults to 1.
         """
         super(NNFromGraph, self).__init__()
 
@@ -66,20 +74,26 @@ class NNFromGraph(nn.Module):
 
     def forward(self, obs: torch.Tensor) -> torch.Tensor:
         """
-        Propagate the input observations through the neural network.
+        Performs the forward pass for the NNFromGraph model.
 
-        This method takes the input observations and processes them through the network for a specified number 
-        of layers, applying weights and thresholds to determine the output. It raises an error if the input 
-        observations exceed the expected size.
+        The forward method propagates the input tensor through the graph-based
+        network, updating node activations based on thresholds and adjacency
+        weights for each depth iteration.
 
         Args:
-            obs: A tensor containing the input observations to be processed by the network.
-
-        Raises:
-            ValueError: If the observation size is larger than the expected input size.
+            obs (torch.Tensor): Input tensor with observations for each input node.
 
         Returns:
-            Tensor: The output of the network corresponding to the specified output nodes.
+            torch.Tensor: Output tensor representing the activations of the output nodes.
+
+        Raises:
+            ValueError: If the observation tensor has more elements than input nodes.
+
+        Example:
+            >>> phenotype = Phenotype()
+            >>> model = NNFromGraph(phenotype)
+            >>> obs = torch.tensor([1.0, 0.0])
+            >>> output = model.forward(obs)
         """
         if len(self.input_ids) < len(obs):
             raise ValueError('The observation is larger than the input')

@@ -762,18 +762,13 @@
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Generates boxplots to visualize the average number of generations required to achieve optimal results across different input configurations from multiple JSON files. This method aggregates data from the specified JSON files, computes averages and standard deviations, and creates a bar plot with error bars.</span>
 
-<span class="sd">        Args:</span>
-<span class="sd">            json_file_paths (list of str): A list of paths to the JSON files containing the data.</span>
-<span class="sd">            save (bool): If True, saves the generated plot to a file. Defaults to False.</span>
-
-<span class="sd">        Returns:</span>
-<span class="sd">            None</span>
-
-<span class="sd">        Raises:</span>
-<span class="sd">            FileNotFoundError: If any of the specified JSON files do not exist.</span>
-
-<span class="sd">        Examples:</span>
-<span class="sd">            &gt;&gt;&gt; create_sum_boxplots([&#39;logs/6i.json&#39;, &#39;logs/36i.json&#39;], save=True)</span>
+<span class="sd">        :param json_file_paths: A list of paths to the JSON files containing the data.</span>
+<span class="sd">        :type json_file_paths: list of str</span>
+<span class="sd">        :param save: If True, saves the generated plot to a file. Defaults to False.</span>
+<span class="sd">        :type save: bool</span>
+<span class="sd">        :raises FileNotFoundError: If any of the specified JSON files do not exist.</span>
+<span class="sd">        :examples:</span>
+<span class="sd">            &gt;&gt;&gt; Visualizer.create_sum_boxplots([&#39;logs/6i.json&#39;, &#39;logs/36i.json&#39;], save=True)</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">all_data</span> <span class="o">=</span> <span class="p">{}</span>
 

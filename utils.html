@@ -187,24 +187,22 @@ and fitness over time.</p>
 <dt class="sig sig-object py" id="utils.visualizer.Visualizer.create_sum_boxplots">
 <span class="sig-name descname"><span class="pre">create_sum_boxplots</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">json_file_paths</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">save</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/utils/visualizer.html#Visualizer.create_sum_boxplots"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#utils.visualizer.Visualizer.create_sum_boxplots" title="Link to this definition"></a></dt>
 <dd><p>Generates boxplots to visualize the average number of generations required to achieve optimal results across different input configurations from multiple JSON files. This method aggregates data from the specified JSON files, computes averages and standard deviations, and creates a bar plot with error bars.</p>
-<dl class="field-list simple">
+<dl class="field-list">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>json_file_paths</strong> (<em>list</em><em> of </em><em>str</em>) – A list of paths to the JSON files containing the data.</p></li>
 <li><p><strong>save</strong> (<em>bool</em>) – If True, saves the generated plot to a file. Defaults to False.</p></li>
 </ul>
 </dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>None</p>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>FileNotFoundError</strong> – If any of the specified JSON files do not exist.</p>
 </dd>
-<dt class="field-odd">Raises<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>FileNotFoundError</strong> – If any of the specified JSON files do not exist.</p>
-</dd>
-</dl>
-<p class="rubric">Examples</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">create_sum_boxplots</span><span class="p">([</span><span class="s1">&#39;logs/6i.json&#39;</span><span class="p">,</span> <span class="s1">&#39;logs/36i.json&#39;</span><span class="p">],</span> <span class="n">save</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<dt class="field-odd">Examples<span class="colon">:</span></dt>
+<dd class="field-odd"><div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">Visualizer</span><span class="o">.</span><span class="n">create_sum_boxplots</span><span class="p">([</span><span class="s1">&#39;logs/6i.json&#39;</span><span class="p">,</span> <span class="s1">&#39;logs/36i.json&#39;</span><span class="p">],</span> <span class="n">save</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 </pre></div>
 </div>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py method">

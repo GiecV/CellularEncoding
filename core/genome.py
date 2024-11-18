@@ -1,7 +1,8 @@
 from treelib import Tree
-from utils.counter import GlobalCounter
+# from utils.counter import GlobalCounter
 import base64
 import pickle
+import uuid
 
 
 class Genome:
@@ -42,7 +43,7 @@ class Genome:
 
                 self._trees[level].create_node(
                     tag=self.STARTING_SYMBOL,
-                    identifier=GlobalCounter.next(),
+                    identifier=uuid.uuid4(),
                     parent=None,
                 )
 
@@ -81,14 +82,14 @@ class Genome:
 
             self._trees[level].create_node(
                 tag=end_symbol,
-                identifier=GlobalCounter.next(),
+                identifier=uuid.uuid4(),
                 parent=node_id,
             )
 
             if symbol in self.DIVISION_SYMBOLS:
                 self._trees[level].create_node(
                     tag=end_symbol,
-                    identifier=GlobalCounter.next(),
+                    identifier=uuid.uuid4(),
                     parent=node_id,
                 )
 
@@ -182,7 +183,7 @@ class Genome:
         tree = Tree()
         tree.create_node(
             tag=self.STARTING_SYMBOL,
-            identifier=GlobalCounter.next(),
+            identifier=uuid.uuid4(),
             parent=None,
         )
         return self._trees[1:] + [tree]
@@ -230,7 +231,7 @@ class Genome:
         for tree in self._trees:
             node_ids = [node.identifier for node in tree.all_nodes_itr()]
             for node_id in node_ids:
-                tree.update_node(node_id, identifier=GlobalCounter.next())
+                tree.update_node(node_id, identifier=uuid.uuid4())
 
     def json_pickle(self):
         """

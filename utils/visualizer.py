@@ -648,18 +648,13 @@ class Visualizer:
         """
         Generates boxplots to visualize the average number of generations required to achieve optimal results across different input configurations from multiple JSON files. This method aggregates data from the specified JSON files, computes averages and standard deviations, and creates a bar plot with error bars.
 
-        Args:
-            json_file_paths (list of str): A list of paths to the JSON files containing the data.
-            save (bool): If True, saves the generated plot to a file. Defaults to False.
-
-        Returns:
-            None
-
-        Raises:
-            FileNotFoundError: If any of the specified JSON files do not exist.
-
-        Examples:
-            >>> create_sum_boxplots(['logs/6i.json', 'logs/36i.json'], save=True)
+        :param json_file_paths: A list of paths to the JSON files containing the data.
+        :type json_file_paths: list of str
+        :param save: If True, saves the generated plot to a file. Defaults to False.
+        :type save: bool
+        :raises FileNotFoundError: If any of the specified JSON files do not exist.
+        :examples:
+            >>> Visualizer.create_sum_boxplots(['logs/6i.json', 'logs/36i.json'], save=True)
         """
         all_data = {}
 

@@ -731,6 +731,108 @@
         <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span></div>
 
 
+<div class="viewcode-block" id="Visualizer.compute_averages">
+<a class="viewcode-back" href="../../utils.html#utils.visualizer.Visualizer.compute_averages">[docs]</a>
+    <span class="k">def</span> <span class="nf">compute_averages</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">all_data</span><span class="p">):</span>
+        <span class="n">averages</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">std_devs</span> <span class="o">=</span> <span class="p">{}</span>
+
+        <span class="k">for</span> <span class="n">file</span><span class="p">,</span> <span class="n">data</span> <span class="ow">in</span> <span class="n">all_data</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="c1"># Find the maximum length of the lists in the file</span>
+            <span class="n">max_length</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">values</span><span class="p">)</span> <span class="k">for</span> <span class="n">values</span> <span class="ow">in</span> <span class="n">data</span><span class="o">.</span><span class="n">values</span><span class="p">())</span>
+
+            <span class="c1"># Initialize a list to store the summed values</span>
+            <span class="n">summed_values</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">max_length</span>
+
+            <span class="c1"># Sum the values with different keys but the same index</span>
+            <span class="k">for</span> <span class="n">values</span> <span class="ow">in</span> <span class="n">data</span><span class="o">.</span><span class="n">values</span><span class="p">():</span>
+                <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">values</span><span class="p">):</span>
+                    <span class="n">summed_values</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">+=</span> <span class="n">value</span>
+
+            <span class="c1"># Compute the average for each index</span>
+            <span class="n">averages</span><span class="p">[</span><span class="n">file</span><span class="p">]</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="n">summed_values</span><span class="p">)</span> <span class="o">/</span> <span class="nb">len</span><span class="p">(</span><span class="n">summed_values</span><span class="p">)</span>
+            <span class="n">std_devs</span><span class="p">[</span><span class="n">file</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">std</span><span class="p">(</span><span class="n">summed_values</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">averages</span><span class="p">,</span> <span class="n">std_devs</span></div>
+
+
+<div class="viewcode-block" id="Visualizer.create_sum_boxplots">
+<a class="viewcode-back" href="../../utils.html#utils.visualizer.Visualizer.create_sum_boxplots">[docs]</a>
+    <span class="k">def</span> <span class="nf">create_sum_boxplots</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">json_file_paths</span><span class="p">,</span> <span class="n">save</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Generates boxplots to visualize the average number of generations required to achieve optimal results across different input configurations from multiple JSON files. This method aggregates data from the specified JSON files, computes averages and standard deviations, and creates a bar plot with error bars.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            json_file_paths (list of str): A list of paths to the JSON files containing the data.</span>
+<span class="sd">            save (bool): If True, saves the generated plot to a file. Defaults to False.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            None</span>
+
+<span class="sd">        Raises:</span>
+<span class="sd">            FileNotFoundError: If any of the specified JSON files do not exist.</span>
+
+<span class="sd">        Examples:</span>
+<span class="sd">            &gt;&gt;&gt; create_sum_boxplots([&#39;logs/6i.json&#39;, &#39;logs/36i.json&#39;], save=True)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">all_data</span> <span class="o">=</span> <span class="p">{}</span>
+
+        <span class="k">for</span> <span class="n">json_file_path</span> <span class="ow">in</span> <span class="n">json_file_paths</span><span class="p">:</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">json_file_path</span><span class="p">):</span>
+                <span class="k">raise</span> <span class="ne">FileNotFoundError</span><span class="p">(</span>
+                    <span class="sa">f</span><span class="s2">&quot;The file </span><span class="si">{</span><span class="n">json_file_path</span><span class="si">}</span><span class="s2"> does not exist.&quot;</span><span class="p">)</span>
+
+            <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">json_file_path</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">file</span><span class="p">:</span>
+                <span class="n">all_data</span><span class="p">[</span><span class="n">json_file_path</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
+                <span class="n">data</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">file</span><span class="p">)</span>
+                <span class="k">for</span> <span class="n">run</span> <span class="ow">in</span> <span class="n">data</span><span class="p">:</span>
+                    <span class="n">inputs</span> <span class="o">=</span> <span class="n">run</span><span class="p">[</span><span class="s1">&#39;inputs&#39;</span><span class="p">]</span>
+                    <span class="n">generations</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">run</span><span class="p">[</span><span class="s1">&#39;log&#39;</span><span class="p">])</span>
+                    <span class="k">if</span> <span class="n">inputs</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">all_data</span><span class="p">[</span><span class="n">json_file_path</span><span class="p">]:</span>
+                        <span class="n">all_data</span><span class="p">[</span><span class="n">json_file_path</span><span class="p">][</span><span class="n">inputs</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+                    <span class="n">all_data</span><span class="p">[</span><span class="n">json_file_path</span><span class="p">][</span><span class="n">inputs</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">generations</span><span class="p">)</span>
+
+        <span class="n">averages</span><span class="p">,</span> <span class="n">std_devs</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">compute_averages</span><span class="p">(</span><span class="n">all_data</span><span class="p">)</span>
+
+        <span class="n">color_map</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;logs/6i.json&#39;</span><span class="p">:</span> <span class="s1">&#39;#d9e7dc&#39;</span><span class="p">,</span> <span class="s1">&#39;logs/36i.json&#39;</span><span class="p">:</span> <span class="s1">&#39;#eb3e56&#39;</span><span class="p">,</span>
+                     <span class="s1">&#39;logs/23456i.json&#39;</span><span class="p">:</span> <span class="s1">&#39;#8296b5&#39;</span><span class="p">}</span>
+        <span class="n">names</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;1 stage&#39;</span><span class="p">,</span> <span class="s1">&#39;2 stages&#39;</span><span class="p">,</span> <span class="s1">&#39;5 stages&#39;</span><span class="p">]</span>
+
+        <span class="c1"># Prepare figure and axes</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">6</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
+
+        <span class="n">current_pos</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">for</span> <span class="n">file</span> <span class="ow">in</span> <span class="n">averages</span><span class="p">:</span>
+            <span class="n">current_pos</span> <span class="o">+=</span> <span class="mf">0.35</span>
+            <span class="n">plt</span><span class="o">.</span><span class="n">bar</span><span class="p">(</span><span class="n">current_pos</span><span class="p">,</span> <span class="n">averages</span><span class="p">[</span><span class="n">file</span><span class="p">],</span> <span class="n">yerr</span><span class="o">=</span><span class="n">std_devs</span><span class="p">[</span><span class="n">file</span><span class="p">],</span> <span class="n">color</span><span class="o">=</span><span class="n">color_map</span><span class="p">[</span><span class="n">file</span><span class="p">],</span>
+                    <span class="n">width</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span> <span class="n">capsize</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">edgecolor</span><span class="o">=</span><span class="s1">&#39;black&#39;</span><span class="p">,</span> <span class="n">zorder</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+
+            <span class="c1"># Annotate each bar with mean ± std deviation</span>
+            <span class="n">plt</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="n">current_pos</span><span class="p">,</span> <span class="n">averages</span><span class="p">[</span><span class="n">file</span><span class="p">]</span> <span class="o">+</span> <span class="n">std_devs</span><span class="p">[</span><span class="n">file</span><span class="p">]</span> <span class="o">+</span> <span class="mi">2</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">averages</span><span class="p">[</span><span class="n">file</span><span class="p">]</span><span class="si">:</span><span class="s2">.1f</span><span class="si">}</span><span class="s2">±</span><span class="si">{</span><span class="n">std_devs</span><span class="p">[</span><span class="n">file</span><span class="p">]</span><span class="si">:</span><span class="s2">.1f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
+                     <span class="n">ha</span><span class="o">=</span><span class="s1">&#39;center&#39;</span><span class="p">,</span> <span class="n">va</span><span class="o">=</span><span class="s1">&#39;bottom&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">fontweight</span><span class="o">=</span><span class="s1">&#39;bold&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;black&#39;</span><span class="p">,</span> <span class="n">zorder</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
+
+        <span class="n">handles</span> <span class="o">=</span> <span class="p">[</span><span class="n">plt</span><span class="o">.</span><span class="n">Line2D</span><span class="p">([</span><span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">color</span><span class="o">=</span><span class="n">color_map</span><span class="p">[</span><span class="n">file</span><span class="p">],</span> <span class="n">lw</span><span class="o">=</span><span class="mi">6</span><span class="p">)</span>
+                   <span class="k">for</span> <span class="n">file</span> <span class="ow">in</span> <span class="n">color_map</span><span class="p">]</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">handles</span><span class="p">,</span> <span class="n">names</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="s2">&quot;Curriculums&quot;</span><span class="p">,</span> <span class="n">loc</span><span class="o">=</span><span class="s2">&quot;upper right&quot;</span><span class="p">)</span>
+
+        <span class="n">plt</span><span class="o">.</span><span class="n">xticks</span><span class="p">([])</span>
+
+        <span class="c1"># Custom legend and labels</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">&quot;Number of Inputs&quot;</span><span class="p">)</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">&quot;Avg Generations ± Std Dev&quot;</span><span class="p">)</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">&quot;Average Generations to Achieve the Optimum at Each Stage&quot;</span><span class="p">)</span>
+
+        <span class="n">plt</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="s1">&#39;y&#39;</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;-&#39;</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">zorder</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">save</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">save_file_with_name</span><span class="p">(</span><span class="s1">&#39;boxplot_&#39;</span><span class="p">)</span>
+
+        <span class="c1"># Show plot</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+
+        <span class="n">averages</span><span class="p">,</span> <span class="n">std_devs</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">compute_averages</span><span class="p">(</span><span class="n">all_data</span><span class="p">)</span></div>
+
+
 <div class="viewcode-block" id="Visualizer.save_best_networks">
 <a class="viewcode-back" href="../../utils.html#utils.visualizer.Visualizer.save_best_networks">[docs]</a>
     <span class="k">def</span> <span class="nf">save_best_networks</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">json_path</span><span class="p">,</span> <span class="n">show</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>

@@ -70,10 +70,9 @@
              
   <h1>Source code for core.genome</h1><div class="highlight"><pre>
 <span></span><span class="kn">from</span> <span class="nn">treelib</span> <span class="kn">import</span> <span class="n">Tree</span>
-<span class="c1"># from utils.counter import GlobalCounter</span>
+<span class="kn">from</span> <span class="nn">utils.counter</span> <span class="kn">import</span> <span class="n">GlobalCounter</span>
 <span class="kn">import</span> <span class="nn">base64</span>
 <span class="kn">import</span> <span class="nn">pickle</span>
-<span class="kn">import</span> <span class="nn">uuid</span>
 
 
 <div class="viewcode-block" id="Genome">
@@ -116,7 +115,7 @@
 
                 <span class="bp">self</span><span class="o">.</span><span class="n">_trees</span><span class="p">[</span><span class="n">level</span><span class="p">]</span><span class="o">.</span><span class="n">create_node</span><span class="p">(</span>
                     <span class="n">tag</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">STARTING_SYMBOL</span><span class="p">,</span>
-                    <span class="n">identifier</span><span class="o">=</span><span class="n">uuid</span><span class="o">.</span><span class="n">uuid4</span><span class="p">(),</span>
+                    <span class="n">identifier</span><span class="o">=</span><span class="n">GlobalCounter</span><span class="o">.</span><span class="n">next</span><span class="p">(),</span>
                     <span class="n">parent</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
                 <span class="p">)</span>
 
@@ -157,14 +156,14 @@
 
             <span class="bp">self</span><span class="o">.</span><span class="n">_trees</span><span class="p">[</span><span class="n">level</span><span class="p">]</span><span class="o">.</span><span class="n">create_node</span><span class="p">(</span>
                 <span class="n">tag</span><span class="o">=</span><span class="n">end_symbol</span><span class="p">,</span>
-                <span class="n">identifier</span><span class="o">=</span><span class="n">uuid</span><span class="o">.</span><span class="n">uuid4</span><span class="p">(),</span>
+                <span class="n">identifier</span><span class="o">=</span><span class="n">GlobalCounter</span><span class="o">.</span><span class="n">next</span><span class="p">(),</span>
                 <span class="n">parent</span><span class="o">=</span><span class="n">node_id</span><span class="p">,</span>
             <span class="p">)</span>
 
             <span class="k">if</span> <span class="n">symbol</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">DIVISION_SYMBOLS</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">_trees</span><span class="p">[</span><span class="n">level</span><span class="p">]</span><span class="o">.</span><span class="n">create_node</span><span class="p">(</span>
                     <span class="n">tag</span><span class="o">=</span><span class="n">end_symbol</span><span class="p">,</span>
-                    <span class="n">identifier</span><span class="o">=</span><span class="n">uuid</span><span class="o">.</span><span class="n">uuid4</span><span class="p">(),</span>
+                    <span class="n">identifier</span><span class="o">=</span><span class="n">GlobalCounter</span><span class="o">.</span><span class="n">next</span><span class="p">(),</span>
                     <span class="n">parent</span><span class="o">=</span><span class="n">node_id</span><span class="p">,</span>
                 <span class="p">)</span></div>
 
@@ -279,7 +278,7 @@
         <span class="n">tree</span> <span class="o">=</span> <span class="n">Tree</span><span class="p">()</span>
         <span class="n">tree</span><span class="o">.</span><span class="n">create_node</span><span class="p">(</span>
             <span class="n">tag</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">STARTING_SYMBOL</span><span class="p">,</span>
-            <span class="n">identifier</span><span class="o">=</span><span class="n">uuid</span><span class="o">.</span><span class="n">uuid4</span><span class="p">(),</span>
+            <span class="n">identifier</span><span class="o">=</span><span class="n">GlobalCounter</span><span class="o">.</span><span class="n">next</span><span class="p">(),</span>
             <span class="n">parent</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="p">)</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_trees</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span> <span class="o">+</span> <span class="p">[</span><span class="n">tree</span><span class="p">]</span></div>
@@ -339,7 +338,7 @@
         <span class="k">for</span> <span class="n">tree</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_trees</span><span class="p">:</span>
             <span class="n">node_ids</span> <span class="o">=</span> <span class="p">[</span><span class="n">node</span><span class="o">.</span><span class="n">identifier</span> <span class="k">for</span> <span class="n">node</span> <span class="ow">in</span> <span class="n">tree</span><span class="o">.</span><span class="n">all_nodes_itr</span><span class="p">()]</span>
             <span class="k">for</span> <span class="n">node_id</span> <span class="ow">in</span> <span class="n">node_ids</span><span class="p">:</span>
-                <span class="n">tree</span><span class="o">.</span><span class="n">update_node</span><span class="p">(</span><span class="n">node_id</span><span class="p">,</span> <span class="n">identifier</span><span class="o">=</span><span class="n">uuid</span><span class="o">.</span><span class="n">uuid4</span><span class="p">())</span></div>
+                <span class="n">tree</span><span class="o">.</span><span class="n">update_node</span><span class="p">(</span><span class="n">node_id</span><span class="p">,</span> <span class="n">identifier</span><span class="o">=</span><span class="n">GlobalCounter</span><span class="o">.</span><span class="n">next</span><span class="p">())</span></div>
 
 
 <div class="viewcode-block" id="Genome.json_pickle">

@@ -622,6 +622,102 @@ class Visualizer:
         # Show plot
         plt.show()
 
+    def compute_averages(self, all_data):
+        averages = {}
+        std_devs = {}
+
+        for file, data in all_data.items():
+            # Find the maximum length of the lists in the file
+            max_length = max(len(values) for values in data.values())
+
+            # Initialize a list to store the summed values
+            summed_values = [0] * max_length
+
+            # Sum the values with different keys but the same index
+            for values in data.values():
+                for i, value in enumerate(values):
+                    summed_values[i] += value
+
+            # Compute the average for each index
+            averages[file] = sum(summed_values) / len(summed_values)
+            std_devs[file] = np.std(summed_values)
+
+        return averages, std_devs
+
+    def create_sum_boxplots(self, json_file_paths, save=False):
+        """
+        Generates boxplots to visualize the average number of generations required to achieve optimal results across different input configurations from multiple JSON files. This method aggregates data from the specified JSON files, computes averages and standard deviations, and creates a bar plot with error bars.
+
+        Args:
+            json_file_paths (list of str): A list of paths to the JSON files containing the data.
+            save (bool): If True, saves the generated plot to a file. Defaults to False.
+
+        Returns:
+            None
+
+        Raises:
+            FileNotFoundError: If any of the specified JSON files do not exist.
+
+        Examples:
+            >>> create_sum_boxplots(['logs/6i.json', 'logs/36i.json'], save=True)
+        """
+        all_data = {}
+
+        for json_file_path in json_file_paths:
+            if not os.path.exists(json_file_path):
+                raise FileNotFoundError(
+                    f"The file {json_file_path} does not exist.")
+
+            with open(json_file_path, 'r') as file:
+                all_data[json_file_path] = {}
+                data = json.load(file)
+                for run in data:
+                    inputs = run['inputs']
+                    generations = len(run['log'])
+                    if inputs not in all_data[json_file_path]:
+                        all_data[json_file_path][inputs] = []
+                    all_data[json_file_path][inputs].append(generations)
+
+        averages, std_devs = self.compute_averages(all_data)
+
+        color_map = {'logs/6i.json': '#d9e7dc', 'logs/36i.json': '#eb3e56',
+                     'logs/23456i.json': '#8296b5'}
+        names = ['1 stage', '2 stages', '5 stages']
+
+        # Prepare figure and axes
+        plt.figure(figsize=(6, 6))
+
+        current_pos = 0
+        for file in averages:
+            current_pos += 0.35
+            plt.bar(current_pos, averages[file], yerr=std_devs[file], color=color_map[file],
+                    width=0.1, capsize=5, edgecolor='black', zorder=3)
+
+            # Annotate each bar with mean ± std deviation
+            plt.text(current_pos, averages[file] + std_devs[file] + 2, f"{averages[file]:.1f}±{std_devs[file]:.1f}",
+                     ha='center', va='bottom', fontsize=10, fontweight='bold', color='black', zorder=4)
+
+        handles = [plt.Line2D([0], [0], color=color_map[file], lw=6)
+                   for file in color_map]
+        plt.legend(handles, names, title="Curriculums", loc="upper right")
+
+        plt.xticks([])
+
+        # Custom legend and labels
+        plt.xlabel("Number of Inputs")
+        plt.ylabel("Avg Generations ± Std Dev")
+        plt.title("Average Generations to Achieve the Optimum at Each Stage")
+
+        plt.grid(axis='y', linestyle='-', linewidth=0.5, zorder=1)
+
+        if save:
+            self.save_file_with_name('boxplot_')
+
+        # Show plot
+        plt.show()
+
+        averages, std_devs = self.compute_averages(all_data)
+
     def save_best_networks(self, json_path, show=False):
         """
         Saves visual representations of the best neural networks and their associated trees from a JSON file. This method reads the JSON data, processes the neural networks and trees, and generates plots for each iteration.

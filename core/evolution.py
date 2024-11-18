@@ -33,6 +33,7 @@ class Evolution:
     :ivar fitness_scores: A list of fitness scores for the current population.
     :ivar logs: A log of the evolution process.
     :ivar lineage: A record of the lineage of the best individuals.
+    :ivar fitness_function: The function used to compute the fitness of individuals.
     """
 
     def __init__(self, population_size: int = 1000, generations: int = 300, mutation_rate: float = 0.05, inputs: int = 2, population: list = None):
@@ -54,6 +55,7 @@ class Evolution:
         self.population_size = population_size
         self.generations = generations
         self.mutation_rate = mutation_rate
+        self.fitness_function = compute_fitness
         self.fitness_history = []
         self.innovative_individuals = []
         self.fitness_grids = {}
@@ -186,7 +188,8 @@ class Evolution:
         start_time = time.time()
         ns = [self.inputs for _ in range(len(population))]
         with ProcessPoolExecutor(cpus) as executor:
-            fitness_list = list(executor.map(compute_fitness, population, ns))
+            fitness_list = list(executor.map(
+                self.fitness_function, population, ns))
         # print('Selection time:', time.time() - start_time)
         individuals_and_fitness = sorted(
             zip(population, fitness_list), key=lambda x: x[1], reverse=True)

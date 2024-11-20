@@ -6,7 +6,7 @@ from concurrent.futures import ProcessPoolExecutor
 import warnings
 import torch
 import os
-from tasks.parity import compute_fitness
+from tasks.cartpole import compute_fitness
 
 warnings.filterwarnings("ignore")
 cpus = os.cpu_count()
@@ -137,7 +137,7 @@ class Evolution:
 
             print(f'{self.generation_time} s')
 
-            if stop and self.fitness_scores[0] == 1:
+            if stop and self.fitness_scores[0] == 200:
                 break
 
             print('Elapsed time:', (time.time() - start_time) / 60, 'min')
@@ -189,7 +189,7 @@ class Evolution:
         ns = [self.inputs for _ in range(len(population))]
         with ProcessPoolExecutor(cpus) as executor:
             fitness_list = list(executor.map(
-                self.fitness_function, population, ns))
+                self.fitness_function, population))  # , ns))
         # print('Selection time:', time.time() - start_time)
         individuals_and_fitness = sorted(
             zip(population, fitness_list), key=lambda x: x[1], reverse=True)
@@ -245,7 +245,7 @@ class Evolution:
             parent = tree1.parent(cutpoint1)
             if parent is not None:
                 root = tree2.root
-                tree2.get_node(root).parent = parent.identifier  # type: ignore
+                tree2.get_node(root).parent = parent.identifier
                 tree1.remove_node(cutpoint1)
                 tree1.paste(parent.identifier, tree2)
                 tree = Tree(tree=tree1, deep=True)
@@ -260,7 +260,7 @@ class Evolution:
             if parent2_node is not None:
                 root = subtree1.root
                 subtree1.get_node(
-                    root).parent = parent2_node.identifier  # type: ignore
+                    root).parent = parent2_node.identifier
                 tree2.remove_node(cutpoint2)
                 tree2.paste(parent2_node.identifier, subtree1)
                 new_tree2 = Tree(tree=tree2, deep=True)

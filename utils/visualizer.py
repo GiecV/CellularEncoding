@@ -673,6 +673,7 @@ class Visualizer:
                         all_data[json_file_path][inputs] = []
                     all_data[json_file_path][inputs].append(generations)
 
+        print(all_data)
         averages, std_devs = self.compute_averages(all_data)
 
         color_map = {'logs/6i.json': '#d9e7dc', 'logs/36i.json': '#eb3e56',
@@ -699,7 +700,7 @@ class Visualizer:
         plt.xticks([])
 
         # Custom legend and labels
-        plt.xlabel("Number of Inputs")
+        plt.xlabel("Number of Stages")
         plt.ylabel("Avg Generations ± Std Dev")
         plt.title("Average Generations to Achieve the Optimum at Each Stage")
 

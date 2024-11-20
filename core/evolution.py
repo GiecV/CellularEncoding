@@ -3,13 +3,14 @@ import time
 from treelib import Tree
 from core.genome import Genome
 from concurrent.futures import ProcessPoolExecutor
+import multiprocessing
 import warnings
 import torch
 import os
 from tasks.cartpole import compute_fitness
 
 warnings.filterwarnings("ignore")
-cpus = os.cpu_count()
+cpus = multiprocessing.cpu_count()
 torch.set_num_threads(1)
 
 
@@ -187,7 +188,7 @@ class Evolution:
         """
         start_time = time.time()
         ns = [self.inputs for _ in range(len(population))]
-        with ProcessPoolExecutor(cpus) as executor:
+        with multiprocessing.Pool(processes=cpus) as executor:
             fitness_list = list(executor.map(
                 self.fitness_function, population))  # , ns))
         # print('Selection time:', time.time() - start_time)

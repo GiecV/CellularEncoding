@@ -74,13 +74,14 @@
 <span class="kn">from</span> <span class="nn">treelib</span> <span class="kn">import</span> <span class="n">Tree</span>
 <span class="kn">from</span> <span class="nn">core.genome</span> <span class="kn">import</span> <span class="n">Genome</span>
 <span class="kn">from</span> <span class="nn">concurrent.futures</span> <span class="kn">import</span> <span class="n">ProcessPoolExecutor</span>
+<span class="kn">import</span> <span class="nn">multiprocessing</span>
 <span class="kn">import</span> <span class="nn">warnings</span>
 <span class="kn">import</span> <span class="nn">torch</span>
 <span class="kn">import</span> <span class="nn">os</span>
 <span class="kn">from</span> <span class="nn">tasks.cartpole</span> <span class="kn">import</span> <span class="n">compute_fitness</span>
 
 <span class="n">warnings</span><span class="o">.</span><span class="n">filterwarnings</span><span class="p">(</span><span class="s2">&quot;ignore&quot;</span><span class="p">)</span>
-<span class="n">cpus</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">cpu_count</span><span class="p">()</span>
+<span class="n">cpus</span> <span class="o">=</span> <span class="n">multiprocessing</span><span class="o">.</span><span class="n">cpu_count</span><span class="p">()</span>
 <span class="n">torch</span><span class="o">.</span><span class="n">set_num_threads</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
 
 
@@ -274,7 +275,7 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">start_time</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
         <span class="n">ns</span> <span class="o">=</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">inputs</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">population</span><span class="p">))]</span>
-        <span class="k">with</span> <span class="n">ProcessPoolExecutor</span><span class="p">(</span><span class="n">cpus</span><span class="p">)</span> <span class="k">as</span> <span class="n">executor</span><span class="p">:</span>
+        <span class="k">with</span> <span class="n">multiprocessing</span><span class="o">.</span><span class="n">Pool</span><span class="p">(</span><span class="n">processes</span><span class="o">=</span><span class="n">cpus</span><span class="p">)</span> <span class="k">as</span> <span class="n">executor</span><span class="p">:</span>
             <span class="n">fitness_list</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">executor</span><span class="o">.</span><span class="n">map</span><span class="p">(</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">fitness_function</span><span class="p">,</span> <span class="n">population</span><span class="p">))</span>  <span class="c1"># , ns))</span>
         <span class="c1"># print(&#39;Selection time:&#39;, time.time() - start_time)</span>

@@ -681,7 +681,7 @@ class Visualizer:
         names = ['1 stage', '2 stages', '5 stages']
 
         # Prepare figure and axes
-        plt.figure(figsize=(6, 6))
+        plt.figure(figsize=(10, 6))
 
         current_pos = 0
         for file in averages:
@@ -702,7 +702,7 @@ class Visualizer:
         # Custom legend and labels
         plt.xlabel("Number of Stages")
         plt.ylabel("Avg Generations ± Std Dev")
-        plt.title("Average Generations to Achieve the Optimum at Each Stage")
+        plt.title("Average Generations to Achieve the Optimum")
 
         plt.grid(axis='y', linestyle='-', linewidth=0.5, zorder=1)
 

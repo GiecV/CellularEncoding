@@ -31,6 +31,9 @@ def compute_fitness(individual):
     max_steps = 200
     trials = 5
 
+    if nn.r == 0:
+        return 0
+
     for _ in range(trials):
         obs = env.reset()  # Reset the environment
         obs = obs[0]

@@ -55,6 +55,7 @@
 </li>
 <li class="toctree-l3"><a class="reference internal" href="#module-tasks.parity">tasks.parity module</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="#tasks.parity.compute_fitness"><code class="docutils literal notranslate"><span class="pre">compute_fitness()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#tasks.parity.compute_fitness_range"><code class="docutils literal notranslate"><span class="pre">compute_fitness_range()</span></code></a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="#module-tasks.xor_gate">tasks.xor_gate module</a><ul>
@@ -177,6 +178,33 @@ outputs and the expected targets.</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="tasks.parity.compute_fitness_range">
+<span class="sig-prename descclassname"><span class="pre">tasks.parity.</span></span><span class="sig-name descname"><span class="pre">compute_fitness_range</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">individual</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">5</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/tasks/parity.html#compute_fitness_range"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tasks.parity.compute_fitness_range" title="Link to this definition"></a></dt>
+<dd><p>Compute the fitness of an individual in the parity problem for a range of inputs.</p>
+<p>The fitness is evaluated by computing the normalized mutual information score
+between the outputs of a neural network and the expected parity targets
+for all possible binary input combinations. The network is evaluated with
+binary inputs ranging from 2 to <cite>n</cite>, and the fitness is a measure of how well
+the network predicts the parity of the inputs.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>individual</strong> (<em>Any</em><em> (</em><em>typically an individual in an evolutionary algorithm</em><em>)</em>) – The individual whose fitness is to be computed.
+It is expected to be an object that can be converted
+into a <cite>Phenotype</cite> for neural network evaluation.</p></li>
+<li><p><strong>n</strong> (<em>int</em><em>, </em><em>optional</em>) – The maximum number of binary inputs to the neural network. Default is 5.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A list of normalized mutual information scores for each input size.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>list of float</p>
 </dd>
 </dl>
 </dd></dl>

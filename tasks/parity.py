@@ -51,3 +51,51 @@ def compute_fitness(individual, n=2):
         targets.append(expected_parity)
 
     return normalized_mutual_info_score(outputs, targets)
+
+
+def compute_fitness_range(individual, n=5):
+    """
+    Compute the fitness of an individual in the parity problem for a range of inputs.
+
+    The fitness is evaluated by computing the normalized mutual information score 
+    between the outputs of a neural network and the expected parity targets 
+    for all possible binary input combinations. The network is evaluated with 
+    binary inputs ranging from 2 to `n`, and the fitness is a measure of how well 
+    the network predicts the parity of the inputs.
+
+    :param individual: The individual whose fitness is to be computed. 
+                       It is expected to be an object that can be converted 
+                       into a `Phenotype` for neural network evaluation.
+    :type individual: Any (typically an individual in an evolutionary algorithm)
+    :param n: The maximum number of binary inputs to the neural network. Default is 5.
+    :type n: int, optional
+
+    :return: A list of normalized mutual information scores for each input size.
+    :rtype: list of float
+    """
+    p = Phenotype(individual)
+    fitness_scores = []
+
+    for inputs in range(2, n + 1):
+        nn = NNFromGraph(p, inputs=inputs, outputs=1)
+
+        if nn.r == 0:
+            fitness_scores.append(0)
+            continue
+
+        outputs = []
+        targets = []
+
+        # Assuming some function to generate all possible binary combinations for given inputs
+        binary_combinations = itertools.product([0, 1], repeat=inputs)
+
+        for combination in binary_combinations:
+            output = nn.evaluate(combination)
+            target = sum(combination) % 2
+            outputs.append(output)
+            targets.append(target)
+
+        fitness_score = normalized_mutual_info_score(outputs, targets)
+        fitness_scores.append(fitness_score)
+
+    return fitness_scores

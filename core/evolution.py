@@ -7,7 +7,7 @@ import multiprocessing
 import warnings
 import torch
 import os
-from tasks.cartpole import compute_fitness
+from tasks.stepping_gates import compute_fitness
 
 warnings.filterwarnings("ignore")
 cpus = multiprocessing.cpu_count()
@@ -132,18 +132,22 @@ class Evolution:
                 self.logs.append({
                     'best_score': best_score,
                     'generation_time': self.generation_time,
-                    'individuals': [individual.json_pickle() for individual in self.population],
+                    # 'individuals': [individual.json_pickle() for individual in self.population],
                     # 'fitness_scores': self.fitness_scores
                 })
 
             print(f'{self.generation_time} s')
 
-            if stop and self.fitness_scores[0] == 200:
+            if stop and self.fitness_scores[0] == 1:
                 break
 
             print('Elapsed time:', (time.time() - start_time) / 60, 'min')
 
-        self.lineage = self.get_lineage()
+        # self.lineage = self.get_lineage()
+
+        self.saved_individuals = [individual.json_pickle() for individual in self.population[:10]] + \
+            [individual.json_pickle()
+             for individual in random.sample(self.population[10:], 10)]
 
         return self.population[0], generation + 1
 
@@ -188,9 +192,10 @@ class Evolution:
         """
         start_time = time.time()
         ns = [self.inputs for _ in range(len(population))]
-        with multiprocessing.Pool(processes=cpus) as executor:
+        # ns = [1 for _ in range(len(population))]
+        with ProcessPoolExecutor(cpus) as executor:
             fitness_list = list(executor.map(
-                self.fitness_function, population))  # , ns))
+                self.fitness_function, population, ns))
         # print('Selection time:', time.time() - start_time)
         individuals_and_fitness = sorted(
             zip(population, fitness_list), key=lambda x: x[1], reverse=True)

@@ -6,9 +6,9 @@ import torch
 
 torch.set_num_threads(1)
 
-inputs = [4]  # [3,6]
-iterations = 10
-gen_budget = [70] * iterations
+inputs = [1]  # [3,6]
+iterations = 1
+gen_budget = [1000] * iterations
 
 
 def run():
@@ -66,7 +66,8 @@ def evolve_stage(ins, iterations, log, pops=None):
             'iteration': i,
             'inputs': ins,
             'log': evolution.logs,
-            'lineage': evolution.lineage
+            # 'lineage': evolution.lineage,
+            'individuals': evolution.saved_individuals
         })
 
         gen_budget[i] -= len(evolution.logs)

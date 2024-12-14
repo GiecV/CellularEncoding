@@ -27,22 +27,22 @@ def compute_fitness(individual, max_gate=3):
     def copy_2(inputs):
         return inputs[1]
 
-    def nand(inputs):
-        return not (inputs[0] and inputs[1])
+    def nand_gate(inputs):
+        return int(not (inputs[0] and inputs[1]))
 
     def not_gate(inputs):
-        return not inputs[0]
+        return int(not inputs[0])
 
     def and_gate(inputs):
-        return inputs[0] and inputs[1]
+        return int(inputs[0] and inputs[1])
 
     def or_gate(inputs):
-        return inputs[0] or inputs[1]
+        return int(inputs[0] or inputs[1])
 
     def xor_gate(inputs):
-        return inputs[0] != inputs[1]
+        return int(inputs[0] != inputs[1])
 
-    gates = [copy_1, copy_2, nand, not_gate, and_gate, or_gate, xor_gate]
+    gates = [copy_1, copy_2, nand_gate, not_gate, and_gate, or_gate, xor_gate]
     if max_gate > len(gates):
         raise ValueError("max_gate exceeds the number of available gates")
 

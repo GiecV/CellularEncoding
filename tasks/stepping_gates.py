@@ -42,7 +42,8 @@ def compute_fitness(individual, max_gate=3):
     def xor_gate(inputs):
         return int(inputs[0] != inputs[1])
 
-    gates = [copy_1, copy_2, nand_gate, not_gate, and_gate, or_gate, xor_gate]
+    # gates = [copy_1, copy_2, nand_gate, not_gate, and_gate, or_gate, xor_gate]
+    gates = [nand_gate, not_gate, and_gate, or_gate, xor_gate]
     if max_gate > len(gates):
         raise ValueError("max_gate exceeds the number of available gates")
 

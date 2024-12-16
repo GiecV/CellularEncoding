@@ -63,6 +63,7 @@ class Evolution:
         self.inputs = inputs
         self.fitness_scores = [None] * self.population_size
         self.logs = []
+        self.saved_individuals = []
 
         self.population = population or self.initialize_population()
 

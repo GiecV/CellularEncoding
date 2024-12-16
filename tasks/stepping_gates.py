@@ -15,7 +15,7 @@ def compute_fitness(individual, max_gate=3):
     """
     # Create the Phenotype and neural network from the individual
     p = Phenotype(individual)
-    nn = NNFromGraph(p, inputs=8, outputs=1)
+    nn = NNFromGraph(p, inputs=6, outputs=1)
 
     if nn.r == 0:  # Check if the neural network is functional
         return 0
@@ -56,7 +56,7 @@ def compute_fitness(individual, max_gate=3):
 
     for control, gate_function in zip(control_bits, gates[:max_gate]):
         # Generate all combinations of 4 input bits
-        for inputs in itertools.product([0, 1], repeat=4):
+        for inputs in itertools.product([0, 1], repeat=2):
             # Full input to the neural network: control bits + inputs
             full_input = torch.tensor(
                 control + list(inputs), dtype=torch.float32)
@@ -73,10 +73,8 @@ def compute_fitness(individual, max_gate=3):
                 correct_outputs += 1
             total_tests += 1
 
-            print(f'Control: {control}')
-            print(f'Input: {inputs}')
-            print(f'Expected: {expected_output}')
-            print(f'Predicted: {predicted_output}')
+            # print(f'Control: {control} Input: {inputs}')
+            # print(f'Expected: {expected_output} Predicted: {predicted_output}')
 
     # Compute the fitness as the proportion of correct outputs
     fitness = correct_outputs / total_tests

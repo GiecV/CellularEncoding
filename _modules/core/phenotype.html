@@ -110,7 +110,8 @@
 
         <span class="c1"># Connect the initial structure</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">structure</span><span class="o">.</span><span class="n">add_edge</span><span class="p">(</span><span class="s2">&quot;I&quot;</span><span class="p">,</span> <span class="n">identificator</span><span class="p">,</span> <span class="n">weight</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">structure</span><span class="o">.</span><span class="n">add_edge</span><span class="p">(</span><span class="n">identificator</span><span class="p">,</span> <span class="s2">&quot;O&quot;</span><span class="p">,</span> <span class="n">weight</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span>
+        <span class="c1"># ! Set to -1 to go back to usual setting</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">structure</span><span class="o">.</span><span class="n">add_edge</span><span class="p">(</span><span class="n">identificator</span><span class="p">,</span> <span class="s2">&quot;O&quot;</span><span class="p">,</span> <span class="n">weight</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
 
     <span class="c1"># * Add a new cell to the structure</span>
 <div class="viewcode-block" id="Phenotype.add_cell">

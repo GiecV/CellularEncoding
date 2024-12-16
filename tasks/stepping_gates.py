@@ -73,6 +73,11 @@ def compute_fitness(individual, max_gate=3):
                 correct_outputs += 1
             total_tests += 1
 
+            print(f'Control: {control}')
+            print(f'Input: {inputs}')
+            print(f'Expected: {expected_output}')
+            print(f'Predicted: {predicted_output}')
+
     # Compute the fitness as the proportion of correct outputs
     fitness = correct_outputs / total_tests
     return fitness

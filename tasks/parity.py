@@ -53,49 +53,49 @@ def compute_fitness(individual, n=2):
     return normalized_mutual_info_score(outputs, targets)
 
 
-def compute_fitness_range(individual, n=5):
+def compute_fitness_up_to_n(individual, n=2):
     """
-    Compute the fitness of an individual in the parity problem for a range of inputs.
+    Compute the fitness of an individual in the parity problem.
 
     The fitness is evaluated by computing the normalized mutual information score 
     between the outputs of a neural network and the expected parity targets 
     for all possible binary input combinations. The network is evaluated with 
-    binary inputs ranging from 2 to `n`, and the fitness is a measure of how well 
-    the network predicts the parity of the inputs.
+    `n` binary inputs, and the fitness is a measure of how well the network 
+    predicts the parity of the inputs.
 
     :param individual: The individual whose fitness is to be computed. 
                        It is expected to be an object that can be converted 
                        into a `Phenotype` for neural network evaluation.
     :type individual: Any (typically an individual in an evolutionary algorithm)
-    :param n: The maximum number of binary inputs to the neural network. Default is 5.
+    :param n: The number of binary inputs to the neural network. Default is 2.
     :type n: int, optional
 
-    :return: A list of normalized mutual information scores for each input size.
-    :rtype: list of float
+    :return: The normalized mutual information score between the network's 
+             outputs and the expected targets.
+    :rtype: float
     """
-    p = Phenotype(individual)
-    fitness_scores = []
 
-    for inputs in range(2, n + 1):
+    outputs = []
+    targets = []
+
+    for inputs in range(2, n+1):
+
+        p = Phenotype(individual)
         nn = NNFromGraph(p, inputs=inputs, outputs=1)
 
         if nn.r == 0:
-            fitness_scores.append(0)
-            continue
+            return 0
 
-        outputs = []
-        targets = []
+        # Generate all possible combinations of n binary inputs
+        for combination in itertools.product([0, 1], repeat=inputs):
+            input_data = torch.tensor(combination, dtype=torch.float32)
 
-        # Assuming some function to generate all possible binary combinations for given inputs
-        binary_combinations = itertools.product([0, 1], repeat=inputs)
+            # Get the output from the neural network
+            output = nn(input_data)
+            outputs.append(output.item())
 
-        for combination in binary_combinations:
-            output = nn.evaluate(combination)
-            target = sum(combination) % 2
-            outputs.append(output)
-            targets.append(target)
+            # Compute the expected parity of the input combination
+            expected_parity = sum(combination) % 2
+            targets.append(expected_parity)
 
-        fitness_score = normalized_mutual_info_score(outputs, targets)
-        fitness_scores.append(fitness_score)
-
-    return fitness_scores
+    return normalized_mutual_info_score(outputs, targets)

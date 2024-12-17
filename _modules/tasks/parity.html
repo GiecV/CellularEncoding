@@ -127,54 +127,54 @@
 
 
 
-<div class="viewcode-block" id="compute_fitness_range">
-<a class="viewcode-back" href="../../tasks.html#tasks.parity.compute_fitness_range">[docs]</a>
-<span class="k">def</span> <span class="nf">compute_fitness_range</span><span class="p">(</span><span class="n">individual</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="mi">5</span><span class="p">):</span>
+<div class="viewcode-block" id="compute_fitness_up_to_n">
+<a class="viewcode-back" href="../../tasks.html#tasks.parity.compute_fitness_up_to_n">[docs]</a>
+<span class="k">def</span> <span class="nf">compute_fitness_up_to_n</span><span class="p">(</span><span class="n">individual</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="mi">2</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Compute the fitness of an individual in the parity problem for a range of inputs.</span>
+<span class="sd">    Compute the fitness of an individual in the parity problem.</span>
 
 <span class="sd">    The fitness is evaluated by computing the normalized mutual information score </span>
 <span class="sd">    between the outputs of a neural network and the expected parity targets </span>
 <span class="sd">    for all possible binary input combinations. The network is evaluated with </span>
-<span class="sd">    binary inputs ranging from 2 to `n`, and the fitness is a measure of how well </span>
-<span class="sd">    the network predicts the parity of the inputs.</span>
+<span class="sd">    `n` binary inputs, and the fitness is a measure of how well the network </span>
+<span class="sd">    predicts the parity of the inputs.</span>
 
 <span class="sd">    :param individual: The individual whose fitness is to be computed. </span>
 <span class="sd">                       It is expected to be an object that can be converted </span>
 <span class="sd">                       into a `Phenotype` for neural network evaluation.</span>
 <span class="sd">    :type individual: Any (typically an individual in an evolutionary algorithm)</span>
-<span class="sd">    :param n: The maximum number of binary inputs to the neural network. Default is 5.</span>
+<span class="sd">    :param n: The number of binary inputs to the neural network. Default is 2.</span>
 <span class="sd">    :type n: int, optional</span>
 
-<span class="sd">    :return: A list of normalized mutual information scores for each input size.</span>
-<span class="sd">    :rtype: list of float</span>
+<span class="sd">    :return: The normalized mutual information score between the network&#39;s </span>
+<span class="sd">             outputs and the expected targets.</span>
+<span class="sd">    :rtype: float</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">p</span> <span class="o">=</span> <span class="n">Phenotype</span><span class="p">(</span><span class="n">individual</span><span class="p">)</span>
-    <span class="n">fitness_scores</span> <span class="o">=</span> <span class="p">[]</span>
 
-    <span class="k">for</span> <span class="n">inputs</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="n">n</span> <span class="o">+</span> <span class="mi">1</span><span class="p">):</span>
+    <span class="n">outputs</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">targets</span> <span class="o">=</span> <span class="p">[]</span>
+
+    <span class="k">for</span> <span class="n">inputs</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="n">n</span><span class="o">+</span><span class="mi">1</span><span class="p">):</span>
+
+        <span class="n">p</span> <span class="o">=</span> <span class="n">Phenotype</span><span class="p">(</span><span class="n">individual</span><span class="p">)</span>
         <span class="n">nn</span> <span class="o">=</span> <span class="n">NNFromGraph</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="n">inputs</span><span class="o">=</span><span class="n">inputs</span><span class="p">,</span> <span class="n">outputs</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
 
         <span class="k">if</span> <span class="n">nn</span><span class="o">.</span><span class="n">r</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
-            <span class="n">fitness_scores</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
-            <span class="k">continue</span>
+            <span class="k">return</span> <span class="mi">0</span>
 
-        <span class="n">outputs</span> <span class="o">=</span> <span class="p">[]</span>
-        <span class="n">targets</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="c1"># Generate all possible combinations of n binary inputs</span>
+        <span class="k">for</span> <span class="n">combination</span> <span class="ow">in</span> <span class="n">itertools</span><span class="o">.</span><span class="n">product</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">repeat</span><span class="o">=</span><span class="n">inputs</span><span class="p">):</span>
+            <span class="n">input_data</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="n">combination</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>
 
-        <span class="c1"># Assuming some function to generate all possible binary combinations for given inputs</span>
-        <span class="n">binary_combinations</span> <span class="o">=</span> <span class="n">itertools</span><span class="o">.</span><span class="n">product</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">repeat</span><span class="o">=</span><span class="n">inputs</span><span class="p">)</span>
+            <span class="c1"># Get the output from the neural network</span>
+            <span class="n">output</span> <span class="o">=</span> <span class="n">nn</span><span class="p">(</span><span class="n">input_data</span><span class="p">)</span>
+            <span class="n">outputs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">output</span><span class="o">.</span><span class="n">item</span><span class="p">())</span>
 
-        <span class="k">for</span> <span class="n">combination</span> <span class="ow">in</span> <span class="n">binary_combinations</span><span class="p">:</span>
-            <span class="n">output</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">evaluate</span><span class="p">(</span><span class="n">combination</span><span class="p">)</span>
-            <span class="n">target</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="n">combination</span><span class="p">)</span> <span class="o">%</span> <span class="mi">2</span>
-            <span class="n">outputs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">output</span><span class="p">)</span>
-            <span class="n">targets</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">target</span><span class="p">)</span>
+            <span class="c1"># Compute the expected parity of the input combination</span>
+            <span class="n">expected_parity</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="n">combination</span><span class="p">)</span> <span class="o">%</span> <span class="mi">2</span>
+            <span class="n">targets</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">expected_parity</span><span class="p">)</span>
 
-        <span class="n">fitness_score</span> <span class="o">=</span> <span class="n">normalized_mutual_info_score</span><span class="p">(</span><span class="n">outputs</span><span class="p">,</span> <span class="n">targets</span><span class="p">)</span>
-        <span class="n">fitness_scores</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">fitness_score</span><span class="p">)</span>
-
-    <span class="k">return</span> <span class="n">fitness_scores</span></div>
+    <span class="k">return</span> <span class="n">normalized_mutual_info_score</span><span class="p">(</span><span class="n">outputs</span><span class="p">,</span> <span class="n">targets</span><span class="p">)</span></div>
 
 </pre></div>
 

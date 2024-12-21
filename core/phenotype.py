@@ -93,7 +93,9 @@ class Phenotype:
         new_node = None
 
         if symbol == "t":
-            self.edit_threshold(structural_node)
+            self.edit_threshold(structural_node, delta=1)
+        if symbol == "u":
+            self.edit_threshold(structural_node, delta=-1)
         elif symbol == "w":
             pass
         elif symbol == "n":
@@ -118,7 +120,7 @@ class Phenotype:
         return new_node
 
     # * Edit threshold of a cell
-    def edit_threshold(self, structural_node):
+    def edit_threshold(self, structural_node, delta):
         """
         Sets the threshold of a specified node to 1.
 
@@ -126,7 +128,7 @@ class Phenotype:
 
         :param structural_node: Node whose threshold is edited.
         """
-        self.structure.nodes[structural_node]["threshold"] = 1
+        self.structure.nodes[structural_node]["threshold"] += delta
 
     # * Jump to the next level
     def jump(self, structural_node, genome):
@@ -257,7 +259,7 @@ class Phenotype:
         """
         if symbol in ["p", "s"]:
             self.split(structural_node, new_node, genome)
-        elif symbol in ["t", "w", "r", "i", "d", "+", "-", "c"]:
+        elif symbol in ["t", "u", "w", "r", "i", "d", "+", "-", "c"]:
             self.continue_reading(structural_node, genome)
         elif symbol == "n":
             self.structure.nodes[structural_node]["attr"] = Genome(

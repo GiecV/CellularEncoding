@@ -111,4 +111,5 @@ class NNFromGraph(nn.Module):
 
         # x[self.output_ids] = torch.where(
         #     x[self.output_ids] > 0, one_tensor, zero_tensor)
+        # print(f'Input: {obs} Output: {x[self.output_ids].int()}')
         return x[self.output_ids].int()

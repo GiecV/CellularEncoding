@@ -30,7 +30,8 @@ class Genome:
         self.STARTING_SYMBOL = "e"  # Each newborn gene will start with the end symbol
         self.TERMINAL_SYMBOLS = ["e", "n"]
         self.DIVISION_SYMBOLS = ["p", "s"]
-        self.OPERATIONAL_SYMBOLS = ["w", "i", "d", "+", "-", "c", "r", "t"]
+        self.OPERATIONAL_SYMBOLS = [
+            "w", "i", "d", "+", "-", "c", "r", "t", "u"]
 
         self.SYMBOLS = self.TERMINAL_SYMBOLS + \
             self.DIVISION_SYMBOLS + self.OPERATIONAL_SYMBOLS

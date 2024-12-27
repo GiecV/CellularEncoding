@@ -3,6 +3,8 @@ import itertools
 from core.phenotype import Phenotype
 from core.neural_network_from_graph import NNFromGraph
 
+torch.set_num_threads(1)
+
 
 def compute_fitness(individual, max_gate=3, print_output=False):
     """

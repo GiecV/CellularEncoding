@@ -7,7 +7,7 @@ import multiprocessing
 import warnings
 import torch
 import os
-from tasks.stepping_gates import compute_fitness_just_n as compute_fitness
+from tasks.stepping_gates import compute_fitness as compute_fitness
 
 warnings.filterwarnings("ignore")
 cpus = multiprocessing.cpu_count()

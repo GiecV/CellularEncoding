@@ -88,7 +88,7 @@ def compute_fitness(individual, max_gate=3, print_output=False):
     return fitness
 
 
-def compute_fitness_just_n(individual, gate_index=0, print_output=False):
+def compute_fitness_just_n(individual, gate_index=1, print_output=False):
     """
     Evaluate the fitness of an individual in the stepping gates task.
 
@@ -103,6 +103,8 @@ def compute_fitness_just_n(individual, gate_index=0, print_output=False):
 
     if nn.r == 0:  # Check if the neural network is functional
         return 0
+
+    gate_index -= 1  # Convert to 0-indexed
 
     # Define the gate functions
     def ex(inputs):

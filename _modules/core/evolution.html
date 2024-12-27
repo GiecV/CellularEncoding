@@ -1,0 +1,467 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>core.evolution &mdash; Cellular Encoding 0.1.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../_static/documentation_options.js?v=01f34227"></script>
+      <script src="../../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            Cellular Encoding
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../modules.html">Modules</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">Cellular Encoding</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">core.evolution</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for core.evolution</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">random</span>
+<span class="kn">import</span> <span class="nn">time</span>
+<span class="kn">from</span> <span class="nn">treelib</span> <span class="kn">import</span> <span class="n">Tree</span>
+<span class="kn">from</span> <span class="nn">core.genome</span> <span class="kn">import</span> <span class="n">Genome</span>
+<span class="kn">from</span> <span class="nn">concurrent.futures</span> <span class="kn">import</span> <span class="n">ProcessPoolExecutor</span>
+<span class="kn">import</span> <span class="nn">multiprocessing</span>
+<span class="kn">import</span> <span class="nn">warnings</span>
+<span class="kn">import</span> <span class="nn">torch</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">from</span> <span class="nn">tasks.stepping_gates</span> <span class="kn">import</span> <span class="n">compute_fitness</span> <span class="k">as</span> <span class="n">compute_fitness</span>
+
+<span class="n">warnings</span><span class="o">.</span><span class="n">filterwarnings</span><span class="p">(</span><span class="s2">&quot;ignore&quot;</span><span class="p">)</span>
+<span class="n">cpus</span> <span class="o">=</span> <span class="n">multiprocessing</span><span class="o">.</span><span class="n">cpu_count</span><span class="p">()</span>
+<span class="n">torch</span><span class="o">.</span><span class="n">set_num_threads</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="Evolution">
+<a class="viewcode-back" href="../../core.html#core.evolution.Evolution">[docs]</a>
+<span class="k">class</span> <span class="nc">Evolution</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Manages the evolution of a population of genomes over multiple generations.</span>
+
+<span class="sd">    This class implements an evolutionary algorithm that evolves a population of genomes through selection, </span>
+<span class="sd">    crossover, and mutation. It tracks fitness scores, maintains a history of fitness, and allows for the </span>
+<span class="sd">    generation of offspring based on the best individuals in the population.</span>
+
+<span class="sd">    :param population_size: The size of the population (default is 1000).</span>
+<span class="sd">    :param generations: The number of generations to evolve (default is 300).</span>
+<span class="sd">    :param mutation_rate: The rate of mutation for individuals (default is 0.05).</span>
+<span class="sd">    :param inputs: The number of inputs for the genomes (default is 2).</span>
+<span class="sd">    :param population: An optional initial population (default is None).</span>
+
+<span class="sd">    :ivar fitness_history: A history of the best fitness scores over generations.</span>
+<span class="sd">    :ivar innovative_individuals: A list of individuals that achieved the best fitness scores.</span>
+<span class="sd">    :ivar fitness_grids: A dictionary to store fitness grids.</span>
+<span class="sd">    :ivar fitness_scores: A list of fitness scores for the current population.</span>
+<span class="sd">    :ivar logs: A log of the evolution process.</span>
+<span class="sd">    :ivar lineage: A record of the lineage of the best individuals.</span>
+<span class="sd">    :ivar fitness_function: The function used to compute the fitness of individuals.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">population_size</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1000</span><span class="p">,</span> <span class="n">generations</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">300</span><span class="p">,</span> <span class="n">mutation_rate</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.05</span><span class="p">,</span> <span class="n">inputs</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">2</span><span class="p">,</span> <span class="n">population</span><span class="p">:</span> <span class="nb">list</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Initialize the Evolution class with specified parameters.</span>
+
+<span class="sd">        This constructor sets up the parameters for the evolutionary process, including the size of the population, </span>
+<span class="sd">        the number of generations to evolve, and the mutation rate. It also initializes various attributes to track </span>
+<span class="sd">        the fitness history, innovative individuals, and the current population.</span>
+
+<span class="sd">        :param population_size: The size of the population (default is 1000).</span>
+<span class="sd">        :param generations: The number of generations to evolve (default is 300).</span>
+<span class="sd">        :param mutation_rate: The rate of mutation for individuals (default is 0.05).</span>
+<span class="sd">        :param inputs: The number of inputs for the genomes (default is 2).</span>
+<span class="sd">        :param population: An optional initial population (default is None).</span>
+
+<span class="sd">        :return: None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">population_size</span> <span class="o">=</span> <span class="n">population_size</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">generations</span> <span class="o">=</span> <span class="n">generations</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">mutation_rate</span> <span class="o">=</span> <span class="n">mutation_rate</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">fitness_function</span> <span class="o">=</span> <span class="n">compute_fitness</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">fitness_history</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">innovative_individuals</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">fitness_grids</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">inputs</span> <span class="o">=</span> <span class="n">inputs</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">fitness_scores</span> <span class="o">=</span> <span class="p">[</span><span class="kc">None</span><span class="p">]</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">population_size</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">logs</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">saved_individuals</span> <span class="o">=</span> <span class="p">[]</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">population</span> <span class="o">=</span> <span class="n">population</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">initialize_population</span><span class="p">()</span>
+
+<div class="viewcode-block" id="Evolution.initialize_population">
+<a class="viewcode-back" href="../../core.html#core.evolution.Evolution.initialize_population">[docs]</a>
+    <span class="k">def</span> <span class="nf">initialize_population</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Create and initialize the population of individuals.</span>
+
+<span class="sd">        This method generates a list of individuals for the population by calling the method to create each individual. </span>
+<span class="sd">        It ensures that the population is ready for the evolutionary process.</span>
+
+<span class="sd">        :return: A list containing the initialized individuals in the population.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">create_individual</span><span class="p">()</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">population_size</span><span class="p">)]</span></div>
+
+
+<div class="viewcode-block" id="Evolution.create_individual">
+<a class="viewcode-back" href="../../core.html#core.evolution.Evolution.create_individual">[docs]</a>
+    <span class="k">def</span> <span class="nf">create_individual</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Generate a new individual with a randomly initialized genome.</span>
+
+<span class="sd">        This method creates a new instance of a genome and assigns random symbols to the root nodes of each tree </span>
+<span class="sd">        within the genome. It ensures that each individual in the population starts with a unique genetic configuration.</span>
+
+<span class="sd">        :return: The newly created individual represented as a genome.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">genome</span> <span class="o">=</span> <span class="n">Genome</span><span class="p">()</span>
+        <span class="n">symbols</span> <span class="o">=</span> <span class="n">genome</span><span class="o">.</span><span class="n">SYMBOLS</span>
+        <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">genome</span><span class="o">.</span><span class="n">get_levels</span><span class="p">()):</span>
+            <span class="n">symbol</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="n">symbols</span><span class="p">)</span>
+            <span class="n">root</span> <span class="o">=</span> <span class="n">genome</span><span class="o">.</span><span class="n">get_tree</span><span class="p">(</span><span class="n">n</span><span class="p">)</span><span class="o">.</span><span class="n">root</span>
+            <span class="n">genome</span><span class="o">.</span><span class="n">change_symbol</span><span class="p">(</span><span class="n">level</span><span class="o">=</span><span class="n">n</span><span class="p">,</span> <span class="n">node_id</span><span class="o">=</span><span class="n">root</span><span class="p">,</span> <span class="n">symbol</span><span class="o">=</span><span class="n">symbol</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">genome</span></div>
+
+
+<div class="viewcode-block" id="Evolution.evolve">
+<a class="viewcode-back" href="../../core.html#core.evolution.Evolution.evolve">[docs]</a>
+    <span class="k">def</span> <span class="nf">evolve</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">info</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span> <span class="n">stop</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Evolve the population over a specified number of generations.</span>
+
+<span class="sd">        This method manages the evolutionary process by generating offspring, selecting the best individuals, </span>
+<span class="sd">        and tracking the best fitness scores over generations. It also logs information about the evolution </span>
+<span class="sd">        process and stops if the maximum allowed time is exceeded.</span>
+
+<span class="sd">        :param info: Whether to log detailed information about each generation (default is True).</span>
+<span class="sd">        :param stop: Whether to stop if the best fitness score is 1 (default is True).</span>
+
+<span class="sd">        :return: A tuple containing the best individual from the final population and the number of generations completed.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">best_score</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="s1">&#39;-inf&#39;</span><span class="p">)</span>
+        <span class="n">start_time</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">generations</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">population</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="mi">0</span>
+
+        <span class="k">for</span> <span class="n">generation</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">generations</span><span class="p">):</span>
+            <span class="n">generation_start_time</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Generation </span><span class="si">{</span><span class="n">generation</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">generations</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="n">offspring</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_offspring</span><span class="p">()</span>
+            <span class="n">new_population</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">population</span> <span class="o">+</span> <span class="n">offspring</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">population</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">fitness_scores</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">select_best</span><span class="p">(</span>
+                <span class="n">new_population</span><span class="p">)</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">fitness_scores</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">&gt;</span> <span class="n">best_score</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">innovative_individuals</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+                    <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">population</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">fitness_scores</span><span class="p">[</span><span class="mi">0</span><span class="p">]))</span>
+                <span class="n">best_score</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">fitness_scores</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+
+            <span class="bp">self</span><span class="o">.</span><span class="n">generation_time</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">generation_start_time</span>
+
+            <span class="k">if</span> <span class="n">info</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">logs</span><span class="o">.</span><span class="n">append</span><span class="p">({</span>
+                    <span class="s1">&#39;best_score&#39;</span><span class="p">:</span> <span class="n">best_score</span><span class="p">,</span>
+                    <span class="s1">&#39;generation_time&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">generation_time</span><span class="p">,</span>
+                    <span class="c1"># &#39;individuals&#39;: [individual.json_pickle() for individual in self.population],</span>
+                    <span class="c1"># &#39;fitness_scores&#39;: self.fitness_scores</span>
+                <span class="p">})</span>
+
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">generation_time</span><span class="si">}</span><span class="s1"> s&#39;</span><span class="p">)</span>
+
+            <span class="k">if</span> <span class="n">stop</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">fitness_scores</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+                <span class="k">break</span>
+
+            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Elapsed time:&#39;</span><span class="p">,</span> <span class="p">(</span><span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">start_time</span><span class="p">)</span> <span class="o">/</span> <span class="mi">60</span><span class="p">,</span> <span class="s1">&#39;min&#39;</span><span class="p">)</span>
+
+        <span class="c1"># self.lineage = self.get_lineage()</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">saved_individuals</span> <span class="o">=</span> <span class="p">[</span><span class="n">individual</span><span class="o">.</span><span class="n">json_pickle</span><span class="p">()</span> <span class="k">for</span> <span class="n">individual</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">population</span><span class="p">[:</span><span class="mi">10</span><span class="p">]]</span> <span class="o">+</span> \
+            <span class="p">[</span><span class="n">individual</span><span class="o">.</span><span class="n">json_pickle</span><span class="p">()</span>
+             <span class="k">for</span> <span class="n">individual</span> <span class="ow">in</span> <span class="n">random</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">population</span><span class="p">[</span><span class="mi">10</span><span class="p">:],</span> <span class="mi">10</span><span class="p">)]</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">population</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">generation</span> <span class="o">+</span> <span class="mi">1</span></div>
+
+
+<div class="viewcode-block" id="Evolution.get_offspring">
+<a class="viewcode-back" href="../../core.html#core.evolution.Evolution.get_offspring">[docs]</a>
+    <span class="k">def</span> <span class="nf">get_offspring</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Generate offspring from the current population through crossover and mutation.</span>
+
+<span class="sd">        This method selects pairs of parents from the population, performs crossover to create new individuals, </span>
+<span class="sd">        and applies mutation to introduce variability. The resulting offspring are returned for inclusion in the </span>
+<span class="sd">        next generation.</span>
+
+<span class="sd">        :return: A list of mutated offspring generated from the current population.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">start_time</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+        <span class="n">offspring</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">parent1</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">population</span><span class="p">:</span>
+            <span class="n">parent2</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">population</span><span class="p">)</span>
+            <span class="n">index1</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">population</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">parent1</span><span class="p">)</span>
+            <span class="k">while</span> <span class="n">parent1</span> <span class="o">==</span> <span class="n">parent2</span><span class="p">:</span>
+                <span class="n">parent2</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">population</span><span class="p">)</span>
+            <span class="n">index2</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">population</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">parent2</span><span class="p">)</span>
+            <span class="n">child1</span><span class="p">,</span> <span class="n">child2</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">crossover</span><span class="p">(</span><span class="n">parent1</span><span class="p">,</span> <span class="n">parent2</span><span class="p">,</span> <span class="p">[</span><span class="n">index1</span><span class="p">,</span> <span class="n">index2</span><span class="p">])</span>
+            <span class="n">child1</span><span class="o">.</span><span class="n">update_ids</span><span class="p">()</span>
+            <span class="n">child2</span><span class="o">.</span><span class="n">update_ids</span><span class="p">()</span>
+            <span class="n">offspring</span><span class="o">.</span><span class="n">extend</span><span class="p">((</span><span class="n">child1</span><span class="p">,</span> <span class="n">child2</span><span class="p">))</span>
+
+        <span class="n">population</span> <span class="o">=</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">mutate</span><span class="p">(</span><span class="n">individual</span><span class="p">)</span> <span class="k">for</span> <span class="n">individual</span> <span class="ow">in</span> <span class="n">offspring</span><span class="p">]</span>
+        <span class="c1"># print(&#39;Evolution time:&#39;, time.time() - start_time)</span>
+        <span class="k">return</span> <span class="n">population</span></div>
+
+
+<div class="viewcode-block" id="Evolution.select_best">
+<a class="viewcode-back" href="../../core.html#core.evolution.Evolution.select_best">[docs]</a>
+    <span class="k">def</span> <span class="nf">select_best</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">population</span><span class="p">:</span> <span class="nb">list</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Select the best individuals from the given population based on fitness scores.</span>
+
+<span class="sd">        This method evaluates the fitness of each individual in the population using parallel processing, </span>
+<span class="sd">        sorts them by their fitness scores, and selects the top individuals to form the new population. </span>
+<span class="sd">        It also updates the fitness history with the best score from the current selection.</span>
+
+<span class="sd">        :param population: The population of individuals to evaluate.</span>
+
+<span class="sd">        :return: A tuple containing two lists: the best individuals and their corresponding fitness scores.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">start_time</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+        <span class="n">ns</span> <span class="o">=</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">inputs</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">population</span><span class="p">))]</span>
+        <span class="c1"># ns = [1 for _ in range(len(population))]</span>
+        <span class="k">with</span> <span class="n">ProcessPoolExecutor</span><span class="p">(</span><span class="n">cpus</span><span class="p">)</span> <span class="k">as</span> <span class="n">executor</span><span class="p">:</span>
+            <span class="n">fitness_list</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">executor</span><span class="o">.</span><span class="n">map</span><span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">fitness_function</span><span class="p">,</span> <span class="n">population</span><span class="p">,</span> <span class="n">ns</span><span class="p">))</span>
+        <span class="c1"># print(&#39;Selection time:&#39;, time.time() - start_time)</span>
+        <span class="n">individuals_and_fitness</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span>
+            <span class="nb">zip</span><span class="p">(</span><span class="n">population</span><span class="p">,</span> <span class="n">fitness_list</span><span class="p">),</span> <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">reverse</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="n">best_individuals</span> <span class="o">=</span> <span class="p">[</span><span class="n">individual</span> <span class="k">for</span> <span class="n">individual</span><span class="p">,</span>
+                            <span class="n">_</span> <span class="ow">in</span> <span class="n">individuals_and_fitness</span><span class="p">[:</span><span class="bp">self</span><span class="o">.</span><span class="n">population_size</span><span class="p">]]</span>
+        <span class="n">best_fitness_scores</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="n">fitness</span> <span class="k">for</span> <span class="n">_</span><span class="p">,</span> <span class="n">fitness</span> <span class="ow">in</span> <span class="n">individuals_and_fitness</span><span class="p">[:</span><span class="bp">self</span><span class="o">.</span><span class="n">population_size</span><span class="p">]]</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">fitness_history</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">best_fitness_scores</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+        <span class="k">return</span> <span class="n">best_individuals</span><span class="p">,</span> <span class="n">best_fitness_scores</span></div>
+
+
+<div class="viewcode-block" id="Evolution.crossover">
+<a class="viewcode-back" href="../../core.html#core.evolution.Evolution.crossover">[docs]</a>
+    <span class="k">def</span> <span class="nf">crossover</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent1</span><span class="p">:</span> <span class="n">Genome</span><span class="p">,</span> <span class="n">parent2</span><span class="p">:</span> <span class="n">Genome</span><span class="p">,</span> <span class="n">parents_indexes</span><span class="p">:</span> <span class="nb">list</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Perform crossover between two parent individuals to create two children.</span>
+
+<span class="sd">        This method generates two offspring by combining genetic information from the provided parent individuals. </span>
+<span class="sd">        It utilizes the indices of the parents to facilitate the crossover process.</span>
+
+<span class="sd">        :param parent1: The first parent individual.</span>
+<span class="sd">        :param parent2: The second parent individual.</span>
+<span class="sd">        :param parents_indexes: The indices of the parents in the population.</span>
+
+<span class="sd">        :return: A tuple containing the two newly created child individuals.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">child1</span><span class="p">,</span> <span class="n">child2</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_children</span><span class="p">(</span><span class="n">parent1</span><span class="p">,</span> <span class="n">parent2</span><span class="p">,</span> <span class="n">parents_indexes</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">child1</span><span class="p">,</span> <span class="n">child2</span></div>
+
+
+<div class="viewcode-block" id="Evolution.get_children">
+<a class="viewcode-back" href="../../core.html#core.evolution.Evolution.get_children">[docs]</a>
+    <span class="k">def</span> <span class="nf">get_children</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent1</span><span class="p">:</span> <span class="n">Genome</span><span class="p">,</span> <span class="n">parent2</span><span class="p">:</span> <span class="n">Genome</span><span class="p">,</span> <span class="n">parents_indexes</span><span class="p">:</span> <span class="nb">list</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Create two children from two parent individuals through genetic crossover.</span>
+
+<span class="sd">        This method generates two new genomes by combining genetic material from the provided parent individuals. </span>
+<span class="sd">        It selects random cut points in the trees of the parents and performs crossover to create offspring that </span>
+<span class="sd">        inherit characteristics from both parents.</span>
+
+<span class="sd">        :param parent1: The first parent individual.</span>
+<span class="sd">        :param parent2: The second parent individual.</span>
+<span class="sd">        :param parents_indexes: The indices of the parents in the population.</span>
+
+<span class="sd">        :return: A tuple containing the two newly created child individuals.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">trees</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">trees2</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">g</span> <span class="o">=</span> <span class="n">Genome</span><span class="p">()</span>
+
+        <span class="k">for</span> <span class="n">level</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">g</span><span class="o">.</span><span class="n">get_levels</span><span class="p">()):</span>
+            <span class="n">tree1</span> <span class="o">=</span> <span class="n">Tree</span><span class="p">(</span><span class="n">tree</span><span class="o">=</span><span class="n">parent1</span><span class="o">.</span><span class="n">get_tree</span><span class="p">(</span><span class="n">level</span><span class="p">),</span> <span class="n">deep</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+            <span class="n">tree2</span> <span class="o">=</span> <span class="n">Tree</span><span class="p">(</span><span class="n">tree</span><span class="o">=</span><span class="n">parent2</span><span class="o">.</span><span class="n">get_tree</span><span class="p">(</span><span class="n">level</span><span class="p">),</span> <span class="n">deep</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+            <span class="n">cutpoint1</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">tree1</span><span class="o">.</span><span class="n">all_nodes_itr</span><span class="p">()))</span><span class="o">.</span><span class="n">identifier</span>
+            <span class="n">cutpoint2</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">tree2</span><span class="o">.</span><span class="n">all_nodes_itr</span><span class="p">()))</span><span class="o">.</span><span class="n">identifier</span>
+            <span class="n">tree2</span> <span class="o">=</span> <span class="n">tree2</span><span class="o">.</span><span class="n">subtree</span><span class="p">(</span><span class="n">cutpoint2</span><span class="p">)</span>
+            <span class="n">parent</span> <span class="o">=</span> <span class="n">tree1</span><span class="o">.</span><span class="n">parent</span><span class="p">(</span><span class="n">cutpoint1</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">parent</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">root</span> <span class="o">=</span> <span class="n">tree2</span><span class="o">.</span><span class="n">root</span>
+                <span class="n">tree2</span><span class="o">.</span><span class="n">get_node</span><span class="p">(</span><span class="n">root</span><span class="p">)</span><span class="o">.</span><span class="n">parent</span> <span class="o">=</span> <span class="n">parent</span><span class="o">.</span><span class="n">identifier</span>
+                <span class="n">tree1</span><span class="o">.</span><span class="n">remove_node</span><span class="p">(</span><span class="n">cutpoint1</span><span class="p">)</span>
+                <span class="n">tree1</span><span class="o">.</span><span class="n">paste</span><span class="p">(</span><span class="n">parent</span><span class="o">.</span><span class="n">identifier</span><span class="p">,</span> <span class="n">tree2</span><span class="p">)</span>
+                <span class="n">tree</span> <span class="o">=</span> <span class="n">Tree</span><span class="p">(</span><span class="n">tree</span><span class="o">=</span><span class="n">tree1</span><span class="p">,</span> <span class="n">deep</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">tree</span> <span class="o">=</span> <span class="n">Tree</span><span class="p">(</span><span class="n">tree</span><span class="o">=</span><span class="n">tree2</span><span class="p">,</span> <span class="n">deep</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+            <span class="n">trees</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">tree</span><span class="p">)</span>
+
+            <span class="n">tree1</span> <span class="o">=</span> <span class="n">Tree</span><span class="p">(</span><span class="n">tree</span><span class="o">=</span><span class="n">parent1</span><span class="o">.</span><span class="n">get_tree</span><span class="p">(</span><span class="n">level</span><span class="p">),</span> <span class="n">deep</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+            <span class="n">tree2</span> <span class="o">=</span> <span class="n">Tree</span><span class="p">(</span><span class="n">tree</span><span class="o">=</span><span class="n">parent2</span><span class="o">.</span><span class="n">get_tree</span><span class="p">(</span><span class="n">level</span><span class="p">),</span> <span class="n">deep</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+            <span class="n">subtree1</span> <span class="o">=</span> <span class="n">tree1</span><span class="o">.</span><span class="n">subtree</span><span class="p">(</span><span class="n">cutpoint1</span><span class="p">)</span>
+            <span class="n">parent2_node</span> <span class="o">=</span> <span class="n">tree2</span><span class="o">.</span><span class="n">parent</span><span class="p">(</span><span class="n">cutpoint2</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">parent2_node</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">root</span> <span class="o">=</span> <span class="n">subtree1</span><span class="o">.</span><span class="n">root</span>
+                <span class="n">subtree1</span><span class="o">.</span><span class="n">get_node</span><span class="p">(</span>
+                    <span class="n">root</span><span class="p">)</span><span class="o">.</span><span class="n">parent</span> <span class="o">=</span> <span class="n">parent2_node</span><span class="o">.</span><span class="n">identifier</span>
+                <span class="n">tree2</span><span class="o">.</span><span class="n">remove_node</span><span class="p">(</span><span class="n">cutpoint2</span><span class="p">)</span>
+                <span class="n">tree2</span><span class="o">.</span><span class="n">paste</span><span class="p">(</span><span class="n">parent2_node</span><span class="o">.</span><span class="n">identifier</span><span class="p">,</span> <span class="n">subtree1</span><span class="p">)</span>
+                <span class="n">new_tree2</span> <span class="o">=</span> <span class="n">Tree</span><span class="p">(</span><span class="n">tree</span><span class="o">=</span><span class="n">tree2</span><span class="p">,</span> <span class="n">deep</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">new_tree2</span> <span class="o">=</span> <span class="n">Tree</span><span class="p">(</span><span class="n">tree</span><span class="o">=</span><span class="n">subtree1</span><span class="p">,</span> <span class="n">deep</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+            <span class="n">trees2</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">new_tree2</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">Genome</span><span class="p">(</span><span class="n">trees</span><span class="p">,</span> <span class="n">parents_indexes</span><span class="p">),</span> <span class="n">Genome</span><span class="p">(</span><span class="n">trees2</span><span class="p">,</span> <span class="n">parents_indexes</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="Evolution.mutate">
+<a class="viewcode-back" href="../../core.html#core.evolution.Evolution.mutate">[docs]</a>
+    <span class="k">def</span> <span class="nf">mutate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">genome</span><span class="p">:</span> <span class="n">Genome</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Apply mutation to an individual genome.</span>
+
+<span class="sd">        This method introduces small random changes in the genome by modifying the genetic material of the individual. </span>
+<span class="sd">        Mutation helps introduce genetic diversity and allows the evolutionary process to explore a larger solution space.</span>
+
+<span class="sd">        :param individual: The individual genome to mutate.</span>
+
+<span class="sd">        :return: The mutated individual genome.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">tree</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">genome</span><span class="o">.</span><span class="n">get_trees</span><span class="p">()):</span>
+            <span class="n">nodes</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">tree</span><span class="o">.</span><span class="n">all_nodes_itr</span><span class="p">())</span>
+            <span class="k">for</span> <span class="n">node</span> <span class="ow">in</span> <span class="n">nodes</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">random</span><span class="o">.</span><span class="n">random</span><span class="p">()</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">mutation_rate</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="n">node</span><span class="o">.</span><span class="n">tag</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;e&#39;</span><span class="p">,</span> <span class="s1">&#39;n&#39;</span><span class="p">]:</span>
+                        <span class="n">new_symbol</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="n">genome</span><span class="o">.</span><span class="n">SYMBOLS</span><span class="p">)</span>
+                        <span class="n">genome</span><span class="o">.</span><span class="n">change_symbol</span><span class="p">(</span>
+                            <span class="n">level</span><span class="o">=</span><span class="n">i</span><span class="p">,</span> <span class="n">node_id</span><span class="o">=</span><span class="n">node</span><span class="o">.</span><span class="n">identifier</span><span class="p">,</span> <span class="n">symbol</span><span class="o">=</span><span class="n">new_symbol</span><span class="p">)</span>
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="n">new_symbol</span> <span class="o">=</span> <span class="p">(</span>
+                            <span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="n">genome</span><span class="o">.</span><span class="n">DIVISION_SYMBOLS</span><span class="p">)</span>
+                            <span class="k">if</span> <span class="n">node</span><span class="o">.</span><span class="n">tag</span> <span class="ow">in</span> <span class="n">genome</span><span class="o">.</span><span class="n">DIVISION_SYMBOLS</span>
+                            <span class="k">else</span> <span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="n">genome</span><span class="o">.</span><span class="n">OPERATIONAL_SYMBOLS</span><span class="p">)</span>
+                        <span class="p">)</span>
+                        <span class="n">tree</span><span class="o">.</span><span class="n">update_node</span><span class="p">(</span><span class="n">nid</span><span class="o">=</span><span class="n">node</span><span class="o">.</span><span class="n">identifier</span><span class="p">,</span> <span class="n">tag</span><span class="o">=</span><span class="n">new_symbol</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">genome</span></div>
+
+
+<div class="viewcode-block" id="Evolution.get_lineage">
+<a class="viewcode-back" href="../../core.html#core.evolution.Evolution.get_lineage">[docs]</a>
+    <span class="k">def</span> <span class="nf">get_lineage</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">gens_to_save</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">5</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Generate a lineage of the best individuals over generations.</span>
+
+<span class="sd">        This method creates a record of the best individuals from each generation, which is useful for tracking </span>
+<span class="sd">        the evolutionary progress and visualizing how the population has changed over time.</span>
+
+<span class="sd">        :return: A list of the best individuals from each generation.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">def</span> <span class="nf">traverse_generations</span><span class="p">(</span><span class="n">data</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span> <span class="n">generation_idx</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">individual_idx</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">genomes</span><span class="p">:</span> <span class="nb">list</span><span class="p">):</span>
+
+            <span class="n">individual</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="n">generation_idx</span><span class="p">][</span><span class="s1">&#39;individuals&#39;</span><span class="p">][</span><span class="n">individual_idx</span><span class="p">]</span>
+            <span class="n">genomes</span><span class="o">.</span><span class="n">append</span><span class="p">({</span><span class="s1">&#39;generation&#39;</span><span class="p">:</span> <span class="n">generation_idx</span><span class="p">,</span>
+                            <span class="s1">&#39;genome&#39;</span><span class="p">:</span> <span class="n">individual</span><span class="p">[</span><span class="s1">&#39;genome&#39;</span><span class="p">]})</span>
+
+            <span class="n">parents</span> <span class="o">=</span> <span class="n">individual</span><span class="p">[</span><span class="s1">&#39;parents&#39;</span><span class="p">]</span>
+            <span class="k">if</span> <span class="n">parents</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">generation_idx</span> <span class="o">&gt;</span> <span class="nb">max</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">)</span> <span class="o">-</span> <span class="n">gens_to_save</span><span class="p">,</span> <span class="mi">0</span><span class="p">):</span>
+                <span class="n">traverse_generations</span><span class="p">(</span>
+                    <span class="n">data</span><span class="p">,</span> <span class="n">generation_idx</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="n">parents</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">genomes</span><span class="p">)</span>
+                <span class="n">traverse_generations</span><span class="p">(</span>
+                    <span class="n">data</span><span class="p">,</span> <span class="n">generation_idx</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="n">parents</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">genomes</span><span class="p">)</span>
+
+        <span class="n">genomes</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">generations</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">logs</span><span class="p">)</span>
+        <span class="n">traverse_generations</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">logs</span><span class="p">,</span> <span class="n">generations</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">genomes</span><span class="p">)</span>
+
+        <span class="k">for</span> <span class="n">generation</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">logs</span><span class="p">:</span>
+            <span class="k">del</span> <span class="n">generation</span><span class="p">[</span><span class="s1">&#39;individuals&#39;</span><span class="p">]</span>
+        <span class="k">return</span> <span class="n">genomes</span></div>
+</div>
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, Giacomo Vassallo.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

@@ -47,7 +47,10 @@
 <li class="toctree-l1 current"><a class="reference internal" href="modules.html">Modules</a><ul class="current">
 <li class="toctree-l2 current"><a class="current reference internal" href="#">Core package</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#submodules">Submodules</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#core-evolution-module">core.evolution module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#module-core.evolution">core.evolution module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#core.evolution.Evolution"><code class="docutils literal notranslate"><span class="pre">Evolution</span></code></a></li>
+</ul>
+</li>
 <li class="toctree-l3"><a class="reference internal" href="#module-core.genome">core.genome module</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="#core.genome.Genome"><code class="docutils literal notranslate"><span class="pre">Genome</span></code></a></li>
 </ul>
@@ -99,8 +102,187 @@
 <section id="submodules">
 <h2>Submodules<a class="headerlink" href="#submodules" title="Link to this heading"></a></h2>
 </section>
-<section id="core-evolution-module">
-<h2>core.evolution module<a class="headerlink" href="#core-evolution-module" title="Link to this heading"></a></h2>
+<section id="module-core.evolution">
+<span id="core-evolution-module"></span><h2>core.evolution module<a class="headerlink" href="#module-core.evolution" title="Link to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="core.evolution.Evolution">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">core.evolution.</span></span><span class="sig-name descname"><span class="pre">Evolution</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">population_size</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1000</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">generations</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">300</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mutation_rate</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0.05</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">inputs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">population</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/core/evolution.html#Evolution"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#core.evolution.Evolution" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Manages the evolution of a population of genomes over multiple generations.</p>
+<p>This class implements an evolutionary algorithm that evolves a population of genomes through selection,
+crossover, and mutation. It tracks fitness scores, maintains a history of fitness, and allows for the
+generation of offspring based on the best individuals in the population.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>population_size</strong> – The size of the population (default is 1000).</p></li>
+<li><p><strong>generations</strong> – The number of generations to evolve (default is 300).</p></li>
+<li><p><strong>mutation_rate</strong> – The rate of mutation for individuals (default is 0.05).</p></li>
+<li><p><strong>inputs</strong> – The number of inputs for the genomes (default is 2).</p></li>
+<li><p><strong>population</strong> – An optional initial population (default is None).</p></li>
+</ul>
+</dd>
+<dt class="field-even">Variables<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>fitness_history</strong> – A history of the best fitness scores over generations.</p></li>
+<li><p><strong>innovative_individuals</strong> – A list of individuals that achieved the best fitness scores.</p></li>
+<li><p><strong>fitness_grids</strong> – A dictionary to store fitness grids.</p></li>
+<li><p><strong>fitness_scores</strong> – A list of fitness scores for the current population.</p></li>
+<li><p><strong>logs</strong> – A log of the evolution process.</p></li>
+<li><p><strong>lineage</strong> – A record of the lineage of the best individuals.</p></li>
+<li><p><strong>fitness_function</strong> – The function used to compute the fitness of individuals.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="core.evolution.Evolution.create_individual">
+<span class="sig-name descname"><span class="pre">create_individual</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/core/evolution.html#Evolution.create_individual"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#core.evolution.Evolution.create_individual" title="Link to this definition"></a></dt>
+<dd><p>Generate a new individual with a randomly initialized genome.</p>
+<p>This method creates a new instance of a genome and assigns random symbols to the root nodes of each tree
+within the genome. It ensures that each individual in the population starts with a unique genetic configuration.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The newly created individual represented as a genome.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="core.evolution.Evolution.crossover">
+<span class="sig-name descname"><span class="pre">crossover</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parent1</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#core.genome.Genome" title="core.genome.Genome"><span class="pre">Genome</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">parent2</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#core.genome.Genome" title="core.genome.Genome"><span class="pre">Genome</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">parents_indexes</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/core/evolution.html#Evolution.crossover"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#core.evolution.Evolution.crossover" title="Link to this definition"></a></dt>
+<dd><p>Perform crossover between two parent individuals to create two children.</p>
+<p>This method generates two offspring by combining genetic information from the provided parent individuals.
+It utilizes the indices of the parents to facilitate the crossover process.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>parent1</strong> – The first parent individual.</p></li>
+<li><p><strong>parent2</strong> – The second parent individual.</p></li>
+<li><p><strong>parents_indexes</strong> – The indices of the parents in the population.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A tuple containing the two newly created child individuals.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="core.evolution.Evolution.evolve">
+<span class="sig-name descname"><span class="pre">evolve</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">info</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">stop</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/core/evolution.html#Evolution.evolve"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#core.evolution.Evolution.evolve" title="Link to this definition"></a></dt>
+<dd><p>Evolve the population over a specified number of generations.</p>
+<p>This method manages the evolutionary process by generating offspring, selecting the best individuals,
+and tracking the best fitness scores over generations. It also logs information about the evolution
+process and stops if the maximum allowed time is exceeded.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>info</strong> – Whether to log detailed information about each generation (default is True).</p></li>
+<li><p><strong>stop</strong> – Whether to stop if the best fitness score is 1 (default is True).</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A tuple containing the best individual from the final population and the number of generations completed.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="core.evolution.Evolution.get_children">
+<span class="sig-name descname"><span class="pre">get_children</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parent1</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#core.genome.Genome" title="core.genome.Genome"><span class="pre">Genome</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">parent2</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#core.genome.Genome" title="core.genome.Genome"><span class="pre">Genome</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">parents_indexes</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/core/evolution.html#Evolution.get_children"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#core.evolution.Evolution.get_children" title="Link to this definition"></a></dt>
+<dd><p>Create two children from two parent individuals through genetic crossover.</p>
+<p>This method generates two new genomes by combining genetic material from the provided parent individuals.
+It selects random cut points in the trees of the parents and performs crossover to create offspring that
+inherit characteristics from both parents.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>parent1</strong> – The first parent individual.</p></li>
+<li><p><strong>parent2</strong> – The second parent individual.</p></li>
+<li><p><strong>parents_indexes</strong> – The indices of the parents in the population.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A tuple containing the two newly created child individuals.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="core.evolution.Evolution.get_lineage">
+<span class="sig-name descname"><span class="pre">get_lineage</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">gens_to_save</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">5</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/core/evolution.html#Evolution.get_lineage"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#core.evolution.Evolution.get_lineage" title="Link to this definition"></a></dt>
+<dd><p>Generate a lineage of the best individuals over generations.</p>
+<p>This method creates a record of the best individuals from each generation, which is useful for tracking
+the evolutionary progress and visualizing how the population has changed over time.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>A list of the best individuals from each generation.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="core.evolution.Evolution.get_offspring">
+<span class="sig-name descname"><span class="pre">get_offspring</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/core/evolution.html#Evolution.get_offspring"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#core.evolution.Evolution.get_offspring" title="Link to this definition"></a></dt>
+<dd><p>Generate offspring from the current population through crossover and mutation.</p>
+<p>This method selects pairs of parents from the population, performs crossover to create new individuals,
+and applies mutation to introduce variability. The resulting offspring are returned for inclusion in the
+next generation.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>A list of mutated offspring generated from the current population.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="core.evolution.Evolution.initialize_population">
+<span class="sig-name descname"><span class="pre">initialize_population</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/core/evolution.html#Evolution.initialize_population"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#core.evolution.Evolution.initialize_population" title="Link to this definition"></a></dt>
+<dd><p>Create and initialize the population of individuals.</p>
+<p>This method generates a list of individuals for the population by calling the method to create each individual.
+It ensures that the population is ready for the evolutionary process.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>A list containing the initialized individuals in the population.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="core.evolution.Evolution.mutate">
+<span class="sig-name descname"><span class="pre">mutate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">genome</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#core.genome.Genome" title="core.genome.Genome"><span class="pre">Genome</span></a></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/core/evolution.html#Evolution.mutate"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#core.evolution.Evolution.mutate" title="Link to this definition"></a></dt>
+<dd><p>Apply mutation to an individual genome.</p>
+<p>This method introduces small random changes in the genome by modifying the genetic material of the individual.
+Mutation helps introduce genetic diversity and allows the evolutionary process to explore a larger solution space.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>individual</strong> – The individual genome to mutate.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The mutated individual genome.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="core.evolution.Evolution.select_best">
+<span class="sig-name descname"><span class="pre">select_best</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">population</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/core/evolution.html#Evolution.select_best"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#core.evolution.Evolution.select_best" title="Link to this definition"></a></dt>
+<dd><p>Select the best individuals from the given population based on fitness scores.</p>
+<p>This method evaluates the fitness of each individual in the population using parallel processing,
+sorts them by their fitness scores, and selects the top individuals to form the new population.
+It also updates the fitness history with the best score from the current selection.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>population</strong> – The population of individuals to evaluate.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A tuple containing two lists: the best individuals and their corresponding fitness scores.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
 </section>
 <section id="module-core.genome">
 <span id="core-genome-module"></span><h2>core.genome module<a class="headerlink" href="#module-core.genome" title="Link to this heading"></a></h2>

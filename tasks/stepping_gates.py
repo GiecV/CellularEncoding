@@ -4,7 +4,7 @@ from core.phenotype import Phenotype
 from core.neural_network_from_graph import NNFromGraph
 
 
-def compute_fitness(individual, max_gate=3):
+def compute_fitness(individual, max_gate=3, print_output=False):
     """
     Evaluate the fitness of an individual in the stepping gates task.
 
@@ -15,17 +15,17 @@ def compute_fitness(individual, max_gate=3):
     """
     # Create the Phenotype and neural network from the individual
     p = Phenotype(individual)
-    nn = NNFromGraph(p, inputs=6, outputs=1)
+    nn = NNFromGraph(p, inputs=8, outputs=1)
 
     if nn.r == 0:  # Check if the neural network is functional
         return 0
 
     # Define the gate functions
-    def copy_1(inputs):
-        return inputs[0]
+    def ex(inputs):
+        return int(any(inputs))
 
-    def copy_2(inputs):
-        return inputs[1]
+    def multiplexer(inputs):
+        return inputs[1] if inputs[0] else inputs[2]
 
     def nand_gate(inputs):
         return int(not (inputs[0] and inputs[1]))
@@ -43,7 +43,8 @@ def compute_fitness(individual, max_gate=3):
         return int(inputs[0] != inputs[1])
 
     # gates = [copy_1, copy_2, nand_gate, not_gate, and_gate, or_gate, xor_gate]
-    gates = [nand_gate, not_gate, and_gate, or_gate, xor_gate]
+    gates = [(multiplexer, 3), (nand_gate, 2), (not_gate, 2),
+             (and_gate, 2), (or_gate, 2), (xor_gate, 2)]
     if max_gate > len(gates):
         raise ValueError("max_gate exceeds the number of available gates")
 
@@ -54,10 +55,12 @@ def compute_fitness(individual, max_gate=3):
     total_tests = 0
     correct_outputs = 0
 
-    for control, gate_function in zip(control_bits, gates[:max_gate]):
+    for control, gate in zip(control_bits, gates[:max_gate]):
+        gate_function, input_size = gate
         # Generate all combinations of 4 input bits
-        for inputs in itertools.product([0, 1], repeat=2):
-            # Full input to the neural network: control bits + inputs
+        for inputs in itertools.product([0, 1], repeat=input_size):
+            inputs = inputs + (-1,) * (4 - input_size)\
+                # Full input to the neural network: control bits + inputs
             full_input = torch.tensor(
                 control + list(inputs), dtype=torch.float32)
 
@@ -73,8 +76,10 @@ def compute_fitness(individual, max_gate=3):
                 correct_outputs += 1
             total_tests += 1
 
-            print(f'Control: {control} Input: {inputs}')
-            print(f'Expected: {expected_output} Predicted: {predicted_output}')
+            if print_output:
+                print(f'Control: {control} Input: {inputs}')
+                print(f'Expected: {expected_output} Predicted: {
+                      predicted_output}')
 
     # Compute the fitness as the proportion of correct outputs
     fitness = correct_outputs / total_tests

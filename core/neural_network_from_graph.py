@@ -103,7 +103,10 @@ class NNFromGraph(nn.Module):
         zero_tensor = torch.tensor(0.0)
         one_tensor = torch.tensor(1.0)
 
+        obs = torch.where(obs == -1, torch.tensor(0.0), obs)
+
         for _ in range(self.depth):
+
             x[self.input_ids] = obs
             # x = torch.tanh((torch.matmul(W.T, x) - self.thresholds))
             x = torch.where((torch.matmul(W.T, x) - self.thresholds)

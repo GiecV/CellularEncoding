@@ -78,7 +78,7 @@
 <span class="kn">import</span> <span class="nn">warnings</span>
 <span class="kn">import</span> <span class="nn">torch</span>
 <span class="kn">import</span> <span class="nn">os</span>
-<span class="kn">from</span> <span class="nn">tasks.stepping_gates</span> <span class="kn">import</span> <span class="n">compute_fitness</span> <span class="k">as</span> <span class="n">compute_fitness</span>
+<span class="kn">from</span> <span class="nn">tasks.stepping_gates</span> <span class="kn">import</span> <span class="n">compute_fitness_just_n</span> <span class="k">as</span> <span class="n">compute_fitness</span>
 
 <span class="n">warnings</span><span class="o">.</span><span class="n">filterwarnings</span><span class="p">(</span><span class="s2">&quot;ignore&quot;</span><span class="p">)</span>
 <span class="n">cpus</span> <span class="o">=</span> <span class="n">multiprocessing</span><span class="o">.</span><span class="n">cpu_count</span><span class="p">()</span>
@@ -219,6 +219,7 @@
                 <span class="p">})</span>
 
             <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">generation_time</span><span class="si">}</span><span class="s1"> s&#39;</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Best fitness: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">fitness_scores</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
 
             <span class="k">if</span> <span class="n">stop</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">fitness_scores</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
                 <span class="k">break</span>

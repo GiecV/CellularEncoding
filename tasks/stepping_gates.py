@@ -78,8 +78,8 @@ def compute_fitness(individual, max_gate=3, print_output=False):
 
             if print_output:
                 print(f'Control: {control} Input: {inputs}')
-                print(f'Expected: {expected_output} 
-                      Predicted: {predicted_output}')
+                print(f'Expected: {expected_output}' +
+                      f'Predicted: {predicted_output}')
 
     # Compute the fitness as the proportion of correct outputs
     fitness = correct_outputs / total_tests

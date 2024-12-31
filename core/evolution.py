@@ -7,7 +7,7 @@ import multiprocessing
 import warnings
 import torch
 import os
-from tasks.stepping_gates import compute_fitness_just_n as compute_fitness
+from tasks.stepping_gates import compute_fitness as compute_fitness
 
 warnings.filterwarnings("ignore")
 cpus = multiprocessing.cpu_count()
@@ -37,7 +37,7 @@ class Evolution:
     :ivar fitness_function: The function used to compute the fitness of individuals.
     """
 
-    def __init__(self, population_size: int = 1000, generations: int = 300, mutation_rate: float = 0.05, inputs: int = 2, population: list = None):
+    def __init__(self, population_size: int = 1, generations: int = 300, mutation_rate: float = 0.05, inputs: int = 2, population: list = None):
         """
         Initialize the Evolution class with specified parameters.
 
@@ -111,6 +111,8 @@ class Evolution:
         """
         best_score = float('-inf')
         start_time = time.time()
+
+        print(f'Population size: {self.population_size}')
 
         if self.generations <= 0:
             return self.population[0], 0

@@ -6,7 +6,7 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>core.phenotype &mdash; Cellular Encoding 0.1.0 documentation</title>
-      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
 
   
@@ -69,14 +69,14 @@
            <div itemprop="articleBody">
              
   <h1>Source code for core.phenotype</h1><div class="highlight"><pre>
-<span></span><span class="kn">import</span> <span class="nn">networkx</span> <span class="k">as</span> <span class="nn">nx</span>
-<span class="kn">from</span> <span class="nn">core.genome</span> <span class="kn">import</span> <span class="n">Genome</span>
-<span class="kn">import</span> <span class="nn">copy</span>
+<span></span><span class="kn">import</span><span class="w"> </span><span class="nn">networkx</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">nx</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">core.genome</span><span class="w"> </span><span class="kn">import</span> <span class="n">Genome</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">copy</span>
 
 
 <div class="viewcode-block" id="Phenotype">
 <a class="viewcode-back" href="../../core.html#core.phenotype.Phenotype">[docs]</a>
-<span class="k">class</span> <span class="nc">Phenotype</span><span class="p">:</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">Phenotype</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Represents the phenotype of a genome in a directed graph structure.</span>
 
@@ -89,7 +89,7 @@
 <span class="sd">    :ivar internal_register: Register used for internal operations within the phenotype.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">genome</span><span class="p">:</span> <span class="n">Genome</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">genome</span><span class="p">:</span> <span class="n">Genome</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Initializes a Phenotype instance with a given genome.</span>
 
@@ -116,7 +116,7 @@
     <span class="c1"># * Add a new cell to the structure</span>
 <div class="viewcode-block" id="Phenotype.add_cell">
 <a class="viewcode-back" href="../../core.html#core.phenotype.Phenotype.add_cell">[docs]</a>
-    <span class="k">def</span> <span class="nf">add_cell</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">add_cell</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Adds a new cell to the phenotype&#39;s structure.</span>
 
@@ -136,7 +136,7 @@
     <span class="c1"># * Divide cells or do operations</span>
 <div class="viewcode-block" id="Phenotype.develop">
 <a class="viewcode-back" href="../../core.html#core.phenotype.Phenotype.develop">[docs]</a>
-    <span class="k">def</span> <span class="nf">develop</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">develop</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Develops the phenotype&#39;s structure based on its genome.</span>
 
@@ -159,7 +159,7 @@
     <span class="c1"># * Perform the proper operation according to the symbol</span>
 <div class="viewcode-block" id="Phenotype.perform_operation">
 <a class="viewcode-back" href="../../core.html#core.phenotype.Phenotype.perform_operation">[docs]</a>
-    <span class="k">def</span> <span class="nf">perform_operation</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">structural_node</span><span class="p">,</span> <span class="n">symbol</span><span class="p">,</span> <span class="n">genome</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">perform_operation</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">structural_node</span><span class="p">,</span> <span class="n">symbol</span><span class="p">,</span> <span class="n">genome</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Performs an operation on a structural node based on the given symbol.</span>
 
@@ -204,7 +204,7 @@
     <span class="c1"># * Edit threshold of a cell</span>
 <div class="viewcode-block" id="Phenotype.edit_threshold">
 <a class="viewcode-back" href="../../core.html#core.phenotype.Phenotype.edit_threshold">[docs]</a>
-    <span class="k">def</span> <span class="nf">edit_threshold</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">structural_node</span><span class="p">,</span> <span class="n">delta</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">edit_threshold</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">structural_node</span><span class="p">,</span> <span class="n">delta</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Sets the threshold of a specified node to 1.</span>
 
@@ -218,7 +218,7 @@
     <span class="c1"># * Jump to the next level</span>
 <div class="viewcode-block" id="Phenotype.jump">
 <a class="viewcode-back" href="../../core.html#core.phenotype.Phenotype.jump">[docs]</a>
-    <span class="k">def</span> <span class="nf">jump</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">structural_node</span><span class="p">,</span> <span class="n">genome</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">jump</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">structural_node</span><span class="p">,</span> <span class="n">genome</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Performs a jump operation on the specified node.</span>
 
@@ -230,7 +230,7 @@
 
 <div class="viewcode-block" id="Phenotype.split_parallel">
 <a class="viewcode-back" href="../../core.html#core.phenotype.Phenotype.split_parallel">[docs]</a>
-    <span class="k">def</span> <span class="nf">split_parallel</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">structural_node</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">split_parallel</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">structural_node</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Creates a new node that splits connections in parallel.</span>
 
@@ -277,7 +277,7 @@
     <span class="c1"># * Perform a sequential split</span>
 <div class="viewcode-block" id="Phenotype.split_sequential">
 <a class="viewcode-back" href="../../core.html#core.phenotype.Phenotype.split_sequential">[docs]</a>
-    <span class="k">def</span> <span class="nf">split_sequential</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">structural_node</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">split_sequential</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">structural_node</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Creates a new node that splits connections sequentially.</span>
 
@@ -323,7 +323,7 @@
     <span class="c1"># * Add a recurrent edge</span>
 <div class="viewcode-block" id="Phenotype.add_recurrent_edge">
 <a class="viewcode-back" href="../../core.html#core.phenotype.Phenotype.add_recurrent_edge">[docs]</a>
-    <span class="k">def</span> <span class="nf">add_recurrent_edge</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">structural_node</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">add_recurrent_edge</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">structural_node</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Adds a recurrent edge to the specified node by creating a self-loop.</span>
 
@@ -339,7 +339,7 @@
     <span class="c1"># * Set self.internal_register to value</span>
 <div class="viewcode-block" id="Phenotype.edit_register">
 <a class="viewcode-back" href="../../core.html#core.phenotype.Phenotype.edit_register">[docs]</a>
-    <span class="k">def</span> <span class="nf">edit_register</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">edit_register</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Modifies the internal register by adding a specified value.</span>
 
@@ -350,7 +350,7 @@
 
 <div class="viewcode-block" id="Phenotype.read_genome">
 <a class="viewcode-back" href="../../core.html#core.phenotype.Phenotype.read_genome">[docs]</a>
-    <span class="k">def</span> <span class="nf">read_genome</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">structural_node</span><span class="p">,</span> <span class="n">new_node</span><span class="p">,</span> <span class="n">symbol</span><span class="p">,</span> <span class="n">genome</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">read_genome</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">structural_node</span><span class="p">,</span> <span class="n">new_node</span><span class="p">,</span> <span class="n">symbol</span><span class="p">,</span> <span class="n">genome</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Processes the genome based on the specified symbol and updates the node accordingly.</span>
 
@@ -372,7 +372,7 @@
     <span class="c1"># * Choose next symbols for the new cells</span>
 <div class="viewcode-block" id="Phenotype.split">
 <a class="viewcode-back" href="../../core.html#core.phenotype.Phenotype.split">[docs]</a>
-    <span class="k">def</span> <span class="nf">split</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">structural_node</span><span class="p">,</span> <span class="n">new_node</span><span class="p">,</span> <span class="n">genome</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">split</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">structural_node</span><span class="p">,</span> <span class="n">new_node</span><span class="p">,</span> <span class="n">genome</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Splits genome attributes between specified nodes.</span>
 
@@ -393,7 +393,7 @@
     <span class="c1"># * Move to the next symbol</span>
 <div class="viewcode-block" id="Phenotype.continue_reading">
 <a class="viewcode-back" href="../../core.html#core.phenotype.Phenotype.continue_reading">[docs]</a>
-    <span class="k">def</span> <span class="nf">continue_reading</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">structural_node</span><span class="p">,</span> <span class="n">genome</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">continue_reading</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">structural_node</span><span class="p">,</span> <span class="n">genome</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Updates the genome attribute of the specified node, continuing the genome reading process.</span>
 
@@ -408,7 +408,7 @@
     <span class="c1"># * Set weight as the weight of the input edge pointed by the internal register</span>
 <div class="viewcode-block" id="Phenotype.change_weight">
 <a class="viewcode-back" href="../../core.html#core.phenotype.Phenotype.change_weight">[docs]</a>
-    <span class="k">def</span> <span class="nf">change_weight</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">structural_node</span><span class="p">,</span> <span class="n">weight</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">change_weight</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">structural_node</span><span class="p">,</span> <span class="n">weight</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Updates the weight of the edge connecting a predecessor to the specified node.</span>
 
@@ -439,7 +439,7 @@
     <span class="c1"># * Return True if every cell finished developing, otherwise False</span>
 <div class="viewcode-block" id="Phenotype.development_finished">
 <a class="viewcode-back" href="../../core.html#core.phenotype.Phenotype.development_finished">[docs]</a>
-    <span class="k">def</span> <span class="nf">development_finished</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">development_finished</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Checks if development of all cells is complete.</span>
 
@@ -462,7 +462,7 @@
     <span class="c1"># * Expand the single input and output to match the number of neurons in the first layer</span>
 <div class="viewcode-block" id="Phenotype.expand_inputs_and_outputs">
 <a class="viewcode-back" href="../../core.html#core.phenotype.Phenotype.expand_inputs_and_outputs">[docs]</a>
-    <span class="k">def</span> <span class="nf">expand_inputs_and_outputs</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">inputs</span><span class="p">,</span> <span class="n">outputs</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">expand_inputs_and_outputs</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">inputs</span><span class="p">,</span> <span class="n">outputs</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Expands the input and output nodes of the structure, ensuring validity of connections.</span>
 

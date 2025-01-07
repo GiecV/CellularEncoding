@@ -6,7 +6,7 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>tasks.xor_gate &mdash; Cellular Encoding 0.1.0 documentation</title>
-      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
 
   
@@ -69,16 +69,16 @@
            <div itemprop="articleBody">
              
   <h1>Source code for tasks.xor_gate</h1><div class="highlight"><pre>
-<span></span><span class="kn">from</span> <span class="nn">sklearn.metrics</span> <span class="kn">import</span> <span class="n">mutual_info_score</span>
-<span class="kn">from</span> <span class="nn">core.genome</span> <span class="kn">import</span> <span class="n">Genome</span>
-<span class="kn">from</span> <span class="nn">core.phenotype</span> <span class="kn">import</span> <span class="n">Phenotype</span>
-<span class="kn">from</span> <span class="nn">core.neural_network_from_graph</span> <span class="kn">import</span> <span class="n">NNFromGraph</span>
-<span class="kn">import</span> <span class="nn">torch</span>
+<span></span><span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.metrics</span><span class="w"> </span><span class="kn">import</span> <span class="n">mutual_info_score</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">core.genome</span><span class="w"> </span><span class="kn">import</span> <span class="n">Genome</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">core.phenotype</span><span class="w"> </span><span class="kn">import</span> <span class="n">Phenotype</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">core.neural_network_from_graph</span><span class="w"> </span><span class="kn">import</span> <span class="n">NNFromGraph</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
 
 
 <div class="viewcode-block" id="target_function">
 <a class="viewcode-back" href="../../tasks.html#tasks.xor_gate.target_function">[docs]</a>
-<span class="k">def</span> <span class="nf">target_function</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">target_function</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Compute the XOR of two binary inputs.</span>
 
@@ -98,7 +98,7 @@
 
 <div class="viewcode-block" id="compute_fitness">
 <a class="viewcode-back" href="../../tasks.html#tasks.xor_gate.compute_fitness">[docs]</a>
-<span class="k">def</span> <span class="nf">compute_fitness</span><span class="p">(</span><span class="n">individual</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">compute_fitness</span><span class="p">(</span><span class="n">individual</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Compute the fitness of an individual for the XOR problem.</span>
 
@@ -129,7 +129,7 @@
 
 <div class="viewcode-block" id="compute_fitness_information_formula">
 <a class="viewcode-back" href="../../tasks.html#tasks.xor_gate.compute_fitness_information_formula">[docs]</a>
-<span class="k">def</span> <span class="nf">compute_fitness_information_formula</span><span class="p">(</span><span class="n">individual</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">compute_fitness_information_formula</span><span class="p">(</span><span class="n">individual</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Compute the fitness of an individual using an information-theoretic formula.</span>
 
@@ -165,7 +165,7 @@
 
 <div class="viewcode-block" id="compute_fitness_target">
 <a class="viewcode-back" href="../../tasks.html#tasks.xor_gate.compute_fitness_target">[docs]</a>
-<span class="k">def</span> <span class="nf">compute_fitness_target</span><span class="p">(</span><span class="n">individual</span><span class="p">,</span> <span class="n">print_info</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">compute_fitness_target</span><span class="p">(</span><span class="n">individual</span><span class="p">,</span> <span class="n">print_info</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Compute the fitness of an individual with an option to print detailed information.</span>
 

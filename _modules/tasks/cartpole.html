@@ -6,7 +6,7 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>tasks.cartpole &mdash; Cellular Encoding 0.1.0 documentation</title>
-      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
 
   
@@ -69,11 +69,11 @@
            <div itemprop="articleBody">
              
   <h1>Source code for tasks.cartpole</h1><div class="highlight"><pre>
-<span></span><span class="kn">from</span> <span class="nn">core.phenotype</span> <span class="kn">import</span> <span class="n">Phenotype</span>
-<span class="kn">from</span> <span class="nn">core.neural_network_from_graph</span> <span class="kn">import</span> <span class="n">NNFromGraph</span>
+<span></span><span class="kn">from</span><span class="w"> </span><span class="nn">core.phenotype</span><span class="w"> </span><span class="kn">import</span> <span class="n">Phenotype</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">core.neural_network_from_graph</span><span class="w"> </span><span class="kn">import</span> <span class="n">NNFromGraph</span>
 
-<span class="kn">import</span> <span class="nn">gym</span>
-<span class="kn">import</span> <span class="nn">torch</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">gym</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
 
 <span class="n">env</span> <span class="o">=</span> <span class="n">gym</span><span class="o">.</span><span class="n">make</span><span class="p">(</span><span class="s1">&#39;CartPole-v1&#39;</span><span class="p">)</span>
 <span class="n">torch</span><span class="o">.</span><span class="n">set_num_threads</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
@@ -81,7 +81,7 @@
 
 <div class="viewcode-block" id="compute_fitness">
 <a class="viewcode-back" href="../../tasks.html#tasks.cartpole.compute_fitness">[docs]</a>
-<span class="k">def</span> <span class="nf">compute_fitness</span><span class="p">(</span><span class="n">individual</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">compute_fitness</span><span class="p">(</span><span class="n">individual</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Compute the fitness of an individual in the CartPole environment.</span>
 
@@ -126,7 +126,7 @@
 
 <div class="viewcode-block" id="compute_fitness_growth_penalty">
 <a class="viewcode-back" href="../../tasks.html#tasks.cartpole.compute_fitness_growth_penalty">[docs]</a>
-<span class="k">def</span> <span class="nf">compute_fitness_growth_penalty</span><span class="p">(</span><span class="n">individual</span><span class="p">,</span> <span class="n">penalty</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">compute_fitness_growth_penalty</span><span class="p">(</span><span class="n">individual</span><span class="p">,</span> <span class="n">penalty</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Compute the fitness of an individual with a growth penalty.</span>
 

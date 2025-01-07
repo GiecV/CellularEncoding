@@ -6,7 +6,7 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>utils.visualizer &mdash; Cellular Encoding 0.1.0 documentation</title>
-      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
 
   
@@ -69,22 +69,22 @@
            <div itemprop="articleBody">
              
   <h1>Source code for utils.visualizer</h1><div class="highlight"><pre>
-<span></span><span class="kn">from</span> <span class="nn">core.phenotype</span> <span class="kn">import</span> <span class="n">Phenotype</span>
-<span class="kn">from</span> <span class="nn">core.neural_network_from_graph</span> <span class="kn">import</span> <span class="n">NNFromGraph</span>
-<span class="kn">from</span> <span class="nn">core.genome</span> <span class="kn">import</span> <span class="n">Genome</span>
-<span class="kn">import</span> <span class="nn">networkx</span> <span class="k">as</span> <span class="nn">nx</span>
-<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
-<span class="kn">from</span> <span class="nn">collections</span> <span class="kn">import</span> <span class="n">defaultdict</span><span class="p">,</span> <span class="n">deque</span>
-<span class="kn">from</span> <span class="nn">matplotlib.gridspec</span> <span class="kn">import</span> <span class="n">GridSpec</span>
-<span class="kn">import</span> <span class="nn">os</span>
-<span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">datetime</span>
-<span class="kn">import</span> <span class="nn">json</span>
-<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span></span><span class="kn">from</span><span class="w"> </span><span class="nn">core.phenotype</span><span class="w"> </span><span class="kn">import</span> <span class="n">Phenotype</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">core.neural_network_from_graph</span><span class="w"> </span><span class="kn">import</span> <span class="n">NNFromGraph</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">core.genome</span><span class="w"> </span><span class="kn">import</span> <span class="n">Genome</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">networkx</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">nx</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">collections</span><span class="w"> </span><span class="kn">import</span> <span class="n">defaultdict</span><span class="p">,</span> <span class="n">deque</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">matplotlib.gridspec</span><span class="w"> </span><span class="kn">import</span> <span class="n">GridSpec</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">datetime</span><span class="w"> </span><span class="kn">import</span> <span class="n">datetime</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">json</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 
 
 <div class="viewcode-block" id="Visualizer">
 <a class="viewcode-back" href="../../utils.html#utils.visualizer.Visualizer">[docs]</a>
-<span class="k">class</span> <span class="nc">Visualizer</span><span class="p">:</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">Visualizer</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    A class for visualizing neural networks, phenotypes, and evolutionary runs.</span>
 
@@ -99,7 +99,7 @@
 <span class="sd">    :type outputs: int, optional</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">inputs</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">outputs</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">inputs</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">outputs</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Initialize the Visualizer with the number of inputs and outputs.</span>
 
@@ -111,7 +111,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">inputs</span> <span class="o">=</span> <span class="n">inputs</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">outputs</span> <span class="o">=</span> <span class="n">outputs</span>
 
-    <span class="k">def</span> <span class="nf">_calculate_node_positions</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">structure</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_calculate_node_positions</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">structure</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Calculate the positions of nodes in the neural network graph.</span>
 
@@ -151,7 +151,7 @@
 
 <div class="viewcode-block" id="Visualizer.print_innovative_networks">
 <a class="viewcode-back" href="../../utils.html#utils.visualizer.Visualizer.print_innovative_networks">[docs]</a>
-    <span class="k">def</span> <span class="nf">print_innovative_networks</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">innovative_individuals</span><span class="p">,</span> <span class="n">save</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">print_innovative_networks</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">innovative_individuals</span><span class="p">,</span> <span class="n">save</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Print and optionally save the innovative neural networks.</span>
 
@@ -217,7 +217,7 @@
 
 <div class="viewcode-block" id="Visualizer.treelib_to_nx">
 <a class="viewcode-back" href="../../utils.html#utils.visualizer.Visualizer.treelib_to_nx">[docs]</a>
-    <span class="k">def</span> <span class="nf">treelib_to_nx</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tree</span><span class="p">,</span> <span class="n">node_labels</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">treelib_to_nx</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tree</span><span class="p">,</span> <span class="n">node_labels</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Convert a tree structure from treelib to a NetworkX directed graph.</span>
 
@@ -230,7 +230,7 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">graph</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">DiGraph</span><span class="p">()</span>  <span class="c1"># Create a directed graph</span>
 
-        <span class="k">def</span> <span class="nf">add_edges</span><span class="p">(</span><span class="n">node</span><span class="p">):</span>
+        <span class="k">def</span><span class="w"> </span><span class="nf">add_edges</span><span class="p">(</span><span class="n">node</span><span class="p">):</span>
             <span class="c1"># Use children() to get the child nodes</span>
             <span class="k">for</span> <span class="n">child</span> <span class="ow">in</span> <span class="n">tree</span><span class="o">.</span><span class="n">children</span><span class="p">(</span><span class="n">node</span><span class="o">.</span><span class="n">identifier</span><span class="p">):</span>
                 <span class="c1"># Add edge from parent to child</span>
@@ -250,7 +250,7 @@
 
 <div class="viewcode-block" id="Visualizer.print_population">
 <a class="viewcode-back" href="../../utils.html#utils.visualizer.Visualizer.print_population">[docs]</a>
-    <span class="k">def</span> <span class="nf">print_population</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">population</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">print_population</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">population</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Print the details of each individual in the population.</span>
 
@@ -263,7 +263,7 @@
 
 <div class="viewcode-block" id="Visualizer.print_phenotype">
 <a class="viewcode-back" href="../../utils.html#utils.visualizer.Visualizer.print_phenotype">[docs]</a>
-    <span class="k">def</span> <span class="nf">print_phenotype</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">phenotype</span><span class="p">,</span> <span class="n">save</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">print_phenotype</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">phenotype</span><span class="p">,</span> <span class="n">save</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Print and optionally save the phenotype structure.</span>
 
@@ -302,7 +302,7 @@
 
 <div class="viewcode-block" id="Visualizer.save_file_with_name">
 <a class="viewcode-back" href="../../utils.html#utils.visualizer.Visualizer.save_file_with_name">[docs]</a>
-    <span class="k">def</span> <span class="nf">save_file_with_name</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">save_file_with_name</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Save the current plot with a given name.</span>
 
@@ -316,7 +316,7 @@
 
 <div class="viewcode-block" id="Visualizer.print_no_position">
 <a class="viewcode-back" href="../../utils.html#utils.visualizer.Visualizer.print_no_position">[docs]</a>
-    <span class="k">def</span> <span class="nf">print_no_position</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">phenotype</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">print_no_position</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">phenotype</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Print the phenotype without positioning information.</span>
 
@@ -329,7 +329,7 @@
 
 <div class="viewcode-block" id="Visualizer.plot_all_runs">
 <a class="viewcode-back" href="../../utils.html#utils.visualizer.Visualizer.plot_all_runs">[docs]</a>
-    <span class="k">def</span> <span class="nf">plot_all_runs</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">json_file_path</span><span class="p">,</span> <span class="n">save</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">plot_all_runs</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">json_file_path</span><span class="p">,</span> <span class="n">save</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Plot the fitness of all runs from a JSON file.</span>
 
@@ -375,7 +375,7 @@
 
 <div class="viewcode-block" id="Visualizer.plot_all_times">
 <a class="viewcode-back" href="../../utils.html#utils.visualizer.Visualizer.plot_all_times">[docs]</a>
-    <span class="k">def</span> <span class="nf">plot_all_times</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">json_file_path</span><span class="p">,</span> <span class="n">save</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">plot_all_times</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">json_file_path</span><span class="p">,</span> <span class="n">save</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Plot the fitness of all runs from a JSON file.</span>
 
@@ -421,7 +421,7 @@
 
 <div class="viewcode-block" id="Visualizer.save_lineage">
 <a class="viewcode-back" href="../../utils.html#utils.visualizer.Visualizer.save_lineage">[docs]</a>
-    <span class="k">def</span> <span class="nf">save_lineage</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">json_path</span><span class="p">,</span> <span class="n">show</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">save_lineage</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">json_path</span><span class="p">,</span> <span class="n">show</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Print and optionally save the innovative neural networks.</span>
 
@@ -499,7 +499,7 @@
 
 <div class="viewcode-block" id="Visualizer.plot_times">
 <a class="viewcode-back" href="../../utils.html#utils.visualizer.Visualizer.plot_times">[docs]</a>
-    <span class="k">def</span> <span class="nf">plot_times</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">json_file_paths</span><span class="p">,</span> <span class="n">save</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">plot_times</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">json_file_paths</span><span class="p">,</span> <span class="n">save</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Plot the time taken for each generation for multiple JSON files.</span>
 
@@ -569,7 +569,7 @@
 
 <div class="viewcode-block" id="Visualizer.plot_avg_fitness">
 <a class="viewcode-back" href="../../utils.html#utils.visualizer.Visualizer.plot_avg_fitness">[docs]</a>
-    <span class="k">def</span> <span class="nf">plot_avg_fitness</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">json_file_paths</span><span class="p">,</span> <span class="n">save</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">plot_avg_fitness</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">json_file_paths</span><span class="p">,</span> <span class="n">save</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Plot the average fitness over generations with standard deviation for multiple JSON files.</span>
 
@@ -636,7 +636,7 @@
 
 <div class="viewcode-block" id="Visualizer.create_boxplots">
 <a class="viewcode-back" href="../../utils.html#utils.visualizer.Visualizer.create_boxplots">[docs]</a>
-    <span class="k">def</span> <span class="nf">create_boxplots</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">json_file_paths</span><span class="p">,</span> <span class="n">save</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">create_boxplots</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">json_file_paths</span><span class="p">,</span> <span class="n">save</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Creates boxplots to visualize the average number of generations required to achieve optimal results across different input configurations from multiple JSON files. This method aggregates data from the specified JSON files and generates a bar plot with error bars representing the standard deviation.</span>
 
@@ -733,7 +733,7 @@
 
 <div class="viewcode-block" id="Visualizer.compute_averages">
 <a class="viewcode-back" href="../../utils.html#utils.visualizer.Visualizer.compute_averages">[docs]</a>
-    <span class="k">def</span> <span class="nf">compute_averages</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">all_data</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">compute_averages</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">all_data</span><span class="p">):</span>
         <span class="n">averages</span> <span class="o">=</span> <span class="p">{}</span>
         <span class="n">std_devs</span> <span class="o">=</span> <span class="p">{}</span>
 
@@ -758,7 +758,7 @@
 
 <div class="viewcode-block" id="Visualizer.create_sum_boxplots">
 <a class="viewcode-back" href="../../utils.html#utils.visualizer.Visualizer.create_sum_boxplots">[docs]</a>
-    <span class="k">def</span> <span class="nf">create_sum_boxplots</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">json_file_paths</span><span class="p">,</span> <span class="n">save</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">create_sum_boxplots</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">json_file_paths</span><span class="p">,</span> <span class="n">save</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Generates boxplots to visualize the average number of generations required to achieve optimal results across different input configurations from multiple JSON files. This method aggregates data from the specified JSON files, computes averages and standard deviations, and creates a bar plot with error bars.</span>
 
@@ -831,7 +831,7 @@
 
 <div class="viewcode-block" id="Visualizer.save_best_networks">
 <a class="viewcode-back" href="../../utils.html#utils.visualizer.Visualizer.save_best_networks">[docs]</a>
-    <span class="k">def</span> <span class="nf">save_best_networks</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">json_path</span><span class="p">,</span> <span class="n">show</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">save_best_networks</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">json_path</span><span class="p">,</span> <span class="n">show</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Saves visual representations of the best neural networks and their associated trees from a JSON file. This method reads the JSON data, processes the neural networks and trees, and generates plots for each iteration.</span>
 

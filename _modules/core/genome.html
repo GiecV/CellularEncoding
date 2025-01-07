@@ -6,7 +6,7 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>core.genome &mdash; Cellular Encoding 0.1.0 documentation</title>
-      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
 
   
@@ -69,15 +69,15 @@
            <div itemprop="articleBody">
              
   <h1>Source code for core.genome</h1><div class="highlight"><pre>
-<span></span><span class="kn">from</span> <span class="nn">treelib</span> <span class="kn">import</span> <span class="n">Tree</span>
-<span class="kn">from</span> <span class="nn">utils.counter</span> <span class="kn">import</span> <span class="n">GlobalCounter</span>
-<span class="kn">import</span> <span class="nn">base64</span>
-<span class="kn">import</span> <span class="nn">pickle</span>
+<span></span><span class="kn">from</span><span class="w"> </span><span class="nn">treelib</span><span class="w"> </span><span class="kn">import</span> <span class="n">Tree</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">utils.counter</span><span class="w"> </span><span class="kn">import</span> <span class="n">GlobalCounter</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">base64</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pickle</span>
 
 
 <div class="viewcode-block" id="Genome">
 <a class="viewcode-back" href="../../core.html#core.genome.Genome">[docs]</a>
-<span class="k">class</span> <span class="nc">Genome</span><span class="p">:</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">Genome</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Represents a genome consisting of multiple trees. The nodes are operations to be performed on a neural network (NN).</span>
 
@@ -86,7 +86,7 @@
 <span class="sd">    in the trees.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">trees</span><span class="p">:</span> <span class="nb">list</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">parents</span><span class="p">:</span> <span class="nb">list</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">trees</span><span class="p">:</span> <span class="nb">list</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">parents</span><span class="p">:</span> <span class="nb">list</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Initializes a genome with a specified number of trees or uses provided trees.</span>
 
@@ -128,7 +128,7 @@
 
 <div class="viewcode-block" id="Genome.change_symbol">
 <a class="viewcode-back" href="../../core.html#core.genome.Genome.change_symbol">[docs]</a>
-    <span class="k">def</span> <span class="nf">change_symbol</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">level</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">node_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">symbol</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">change_symbol</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">level</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">node_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">symbol</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Changes the symbol of a specified gene and creates child nodes as necessary.</span>
 
@@ -171,7 +171,7 @@
 
 <div class="viewcode-block" id="Genome.get_symbol">
 <a class="viewcode-back" href="../../core.html#core.genome.Genome.get_symbol">[docs]</a>
-    <span class="k">def</span> <span class="nf">get_symbol</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">level</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">node_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_symbol</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">level</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">node_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Retrieves the symbol of a specified gene from a given tree level.</span>
 
@@ -187,7 +187,7 @@
 
 <div class="viewcode-block" id="Genome.print">
 <a class="viewcode-back" href="../../core.html#core.genome.Genome.print">[docs]</a>
-    <span class="k">def</span> <span class="nf">print</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">level</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">print</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">level</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Prints the structure of the genome&#39;s trees at a specified level or all levels.</span>
 
@@ -204,7 +204,7 @@
 
 <div class="viewcode-block" id="Genome.get_genome_from_starting_point">
 <a class="viewcode-back" href="../../core.html#core.genome.Genome.get_genome_from_starting_point">[docs]</a>
-    <span class="k">def</span> <span class="nf">get_genome_from_starting_point</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">node_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_genome_from_starting_point</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">node_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Retrieves the subtree of the genome starting from a specified node.</span>
 
@@ -226,7 +226,7 @@
 
 <div class="viewcode-block" id="Genome.get_left_child_genome">
 <a class="viewcode-back" href="../../core.html#core.genome.Genome.get_left_child_genome">[docs]</a>
-    <span class="k">def</span> <span class="nf">get_left_child_genome</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_left_child_genome</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Retrieves the genome structure starting from the left child of the root node.</span>
 
@@ -242,7 +242,7 @@
 
 <div class="viewcode-block" id="Genome.get_right_child_genome">
 <a class="viewcode-back" href="../../core.html#core.genome.Genome.get_right_child_genome">[docs]</a>
-    <span class="k">def</span> <span class="nf">get_right_child_genome</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_right_child_genome</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Retrieves the genome structure starting from the right child of the root node.</span>
 
@@ -257,7 +257,7 @@
 
 <div class="viewcode-block" id="Genome.get_root_symbol">
 <a class="viewcode-back" href="../../core.html#core.genome.Genome.get_root_symbol">[docs]</a>
-    <span class="k">def</span> <span class="nf">get_root_symbol</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_root_symbol</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Retrieves the symbol of the root node.</span>
 
@@ -269,7 +269,7 @@
 
 <div class="viewcode-block" id="Genome.jump">
 <a class="viewcode-back" href="../../core.html#core.genome.Genome.jump">[docs]</a>
-    <span class="k">def</span> <span class="nf">jump</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">jump</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Cuts off the first level of the genome and adds a new tree.</span>
 
@@ -287,7 +287,7 @@
 
 <div class="viewcode-block" id="Genome.get_trees">
 <a class="viewcode-back" href="../../core.html#core.genome.Genome.get_trees">[docs]</a>
-    <span class="k">def</span> <span class="nf">get_trees</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_trees</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Retrieves the genome&#39;s tree structure.</span>
 
@@ -299,7 +299,7 @@
 
 <div class="viewcode-block" id="Genome.get_levels">
 <a class="viewcode-back" href="../../core.html#core.genome.Genome.get_levels">[docs]</a>
-    <span class="k">def</span> <span class="nf">get_levels</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_levels</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Retrieves the number of levels in the genome.</span>
 
@@ -312,7 +312,7 @@
     <span class="c1"># * Get the tree at a specific level</span>
 <div class="viewcode-block" id="Genome.get_tree">
 <a class="viewcode-back" href="../../core.html#core.genome.Genome.get_tree">[docs]</a>
-    <span class="k">def</span> <span class="nf">get_tree</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">level</span><span class="p">:</span> <span class="nb">int</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_tree</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">level</span><span class="p">:</span> <span class="nb">int</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Retrieves the tree at a specific level.</span>
 
@@ -327,7 +327,7 @@
     <span class="c1"># * Update the identifiers of the nodes</span>
 <div class="viewcode-block" id="Genome.update_ids">
 <a class="viewcode-back" href="../../core.html#core.genome.Genome.update_ids">[docs]</a>
-    <span class="k">def</span> <span class="nf">update_ids</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">update_ids</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Updates the identifiers of all nodes in the genome&#39;s trees.</span>
 
@@ -344,7 +344,7 @@
 
 <div class="viewcode-block" id="Genome.json_pickle">
 <a class="viewcode-back" href="../../core.html#core.genome.Genome.json_pickle">[docs]</a>
-    <span class="k">def</span> <span class="nf">json_pickle</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">json_pickle</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Serializes the genome data using pickle.</span>
 
@@ -366,7 +366,7 @@
 
 <div class="viewcode-block" id="Genome.from_json_pickle">
 <a class="viewcode-back" href="../../core.html#core.genome.Genome.from_json_pickle">[docs]</a>
-    <span class="k">def</span> <span class="nf">from_json_pickle</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">json_individual</span><span class="p">:</span> <span class="nb">dict</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">from_json_pickle</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">json_individual</span><span class="p">:</span> <span class="nb">dict</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Deserializes the genome data from a pickled format.</span>
 

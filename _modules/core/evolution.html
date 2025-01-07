@@ -6,7 +6,7 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>core.evolution &mdash; Cellular Encoding 0.1.0 documentation</title>
-      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
 
   
@@ -69,16 +69,16 @@
            <div itemprop="articleBody">
              
   <h1>Source code for core.evolution</h1><div class="highlight"><pre>
-<span></span><span class="kn">import</span> <span class="nn">random</span>
-<span class="kn">import</span> <span class="nn">time</span>
-<span class="kn">from</span> <span class="nn">treelib</span> <span class="kn">import</span> <span class="n">Tree</span>
-<span class="kn">from</span> <span class="nn">core.genome</span> <span class="kn">import</span> <span class="n">Genome</span>
-<span class="kn">from</span> <span class="nn">concurrent.futures</span> <span class="kn">import</span> <span class="n">ProcessPoolExecutor</span>
-<span class="kn">import</span> <span class="nn">multiprocessing</span>
-<span class="kn">import</span> <span class="nn">warnings</span>
-<span class="kn">import</span> <span class="nn">torch</span>
-<span class="kn">import</span> <span class="nn">os</span>
-<span class="kn">from</span> <span class="nn">tasks.stepping_gates</span> <span class="kn">import</span> <span class="n">compute_fitness</span> <span class="k">as</span> <span class="n">compute_fitness</span>
+<span></span><span class="kn">import</span><span class="w"> </span><span class="nn">random</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">time</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">treelib</span><span class="w"> </span><span class="kn">import</span> <span class="n">Tree</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">core.genome</span><span class="w"> </span><span class="kn">import</span> <span class="n">Genome</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">concurrent.futures</span><span class="w"> </span><span class="kn">import</span> <span class="n">ProcessPoolExecutor</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">multiprocessing</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">warnings</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">tasks.stepping_gates</span><span class="w"> </span><span class="kn">import</span> <span class="n">compute_fitness</span> <span class="k">as</span> <span class="n">compute_fitness</span>
 
 <span class="n">warnings</span><span class="o">.</span><span class="n">filterwarnings</span><span class="p">(</span><span class="s2">&quot;ignore&quot;</span><span class="p">)</span>
 <span class="n">cpus</span> <span class="o">=</span> <span class="n">multiprocessing</span><span class="o">.</span><span class="n">cpu_count</span><span class="p">()</span>
@@ -87,7 +87,7 @@
 
 <div class="viewcode-block" id="Evolution">
 <a class="viewcode-back" href="../../core.html#core.evolution.Evolution">[docs]</a>
-<span class="k">class</span> <span class="nc">Evolution</span><span class="p">:</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">Evolution</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Manages the evolution of a population of genomes over multiple generations.</span>
 
@@ -110,7 +110,7 @@
 <span class="sd">    :ivar fitness_function: The function used to compute the fitness of individuals.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">population_size</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1000</span><span class="p">,</span> <span class="n">generations</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">300</span><span class="p">,</span> <span class="n">mutation_rate</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.05</span><span class="p">,</span> <span class="n">inputs</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">2</span><span class="p">,</span> <span class="n">population</span><span class="p">:</span> <span class="nb">list</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">population_size</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1000</span><span class="p">,</span> <span class="n">generations</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">300</span><span class="p">,</span> <span class="n">mutation_rate</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.05</span><span class="p">,</span> <span class="n">inputs</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">2</span><span class="p">,</span> <span class="n">population</span><span class="p">:</span> <span class="nb">list</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Initialize the Evolution class with specified parameters.</span>
 
@@ -142,7 +142,7 @@
 
 <div class="viewcode-block" id="Evolution.initialize_population">
 <a class="viewcode-back" href="../../core.html#core.evolution.Evolution.initialize_population">[docs]</a>
-    <span class="k">def</span> <span class="nf">initialize_population</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">initialize_population</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Create and initialize the population of individuals.</span>
 
@@ -156,7 +156,7 @@
 
 <div class="viewcode-block" id="Evolution.create_individual">
 <a class="viewcode-back" href="../../core.html#core.evolution.Evolution.create_individual">[docs]</a>
-    <span class="k">def</span> <span class="nf">create_individual</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">create_individual</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Generate a new individual with a randomly initialized genome.</span>
 
@@ -177,7 +177,7 @@
 
 <div class="viewcode-block" id="Evolution.evolve">
 <a class="viewcode-back" href="../../core.html#core.evolution.Evolution.evolve">[docs]</a>
-    <span class="k">def</span> <span class="nf">evolve</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">info</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span> <span class="n">stop</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">evolve</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">info</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span> <span class="n">stop</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Evolve the population over a specified number of generations.</span>
 
@@ -237,7 +237,7 @@
 
 <div class="viewcode-block" id="Evolution.get_offspring">
 <a class="viewcode-back" href="../../core.html#core.evolution.Evolution.get_offspring">[docs]</a>
-    <span class="k">def</span> <span class="nf">get_offspring</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_offspring</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Generate offspring from the current population through crossover and mutation.</span>
 
@@ -267,7 +267,7 @@
 
 <div class="viewcode-block" id="Evolution.select_best">
 <a class="viewcode-back" href="../../core.html#core.evolution.Evolution.select_best">[docs]</a>
-    <span class="k">def</span> <span class="nf">select_best</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">population</span><span class="p">:</span> <span class="nb">list</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">select_best</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">population</span><span class="p">:</span> <span class="nb">list</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Select the best individuals from the given population based on fitness scores.</span>
 
@@ -299,7 +299,7 @@
 
 <div class="viewcode-block" id="Evolution.crossover">
 <a class="viewcode-back" href="../../core.html#core.evolution.Evolution.crossover">[docs]</a>
-    <span class="k">def</span> <span class="nf">crossover</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent1</span><span class="p">:</span> <span class="n">Genome</span><span class="p">,</span> <span class="n">parent2</span><span class="p">:</span> <span class="n">Genome</span><span class="p">,</span> <span class="n">parents_indexes</span><span class="p">:</span> <span class="nb">list</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">crossover</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent1</span><span class="p">:</span> <span class="n">Genome</span><span class="p">,</span> <span class="n">parent2</span><span class="p">:</span> <span class="n">Genome</span><span class="p">,</span> <span class="n">parents_indexes</span><span class="p">:</span> <span class="nb">list</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Perform crossover between two parent individuals to create two children.</span>
 
@@ -319,7 +319,7 @@
 
 <div class="viewcode-block" id="Evolution.get_children">
 <a class="viewcode-back" href="../../core.html#core.evolution.Evolution.get_children">[docs]</a>
-    <span class="k">def</span> <span class="nf">get_children</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent1</span><span class="p">:</span> <span class="n">Genome</span><span class="p">,</span> <span class="n">parent2</span><span class="p">:</span> <span class="n">Genome</span><span class="p">,</span> <span class="n">parents_indexes</span><span class="p">:</span> <span class="nb">list</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_children</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent1</span><span class="p">:</span> <span class="n">Genome</span><span class="p">,</span> <span class="n">parent2</span><span class="p">:</span> <span class="n">Genome</span><span class="p">,</span> <span class="n">parents_indexes</span><span class="p">:</span> <span class="nb">list</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Create two children from two parent individuals through genetic crossover.</span>
 
@@ -374,7 +374,7 @@
 
 <div class="viewcode-block" id="Evolution.mutate">
 <a class="viewcode-back" href="../../core.html#core.evolution.Evolution.mutate">[docs]</a>
-    <span class="k">def</span> <span class="nf">mutate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">genome</span><span class="p">:</span> <span class="n">Genome</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">mutate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">genome</span><span class="p">:</span> <span class="n">Genome</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Apply mutation to an individual genome.</span>
 
@@ -405,7 +405,7 @@
 
 <div class="viewcode-block" id="Evolution.get_lineage">
 <a class="viewcode-back" href="../../core.html#core.evolution.Evolution.get_lineage">[docs]</a>
-    <span class="k">def</span> <span class="nf">get_lineage</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">gens_to_save</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">5</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_lineage</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">gens_to_save</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">5</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Generate a lineage of the best individuals over generations.</span>
 
@@ -414,7 +414,7 @@
 
 <span class="sd">        :return: A list of the best individuals from each generation.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">def</span> <span class="nf">traverse_generations</span><span class="p">(</span><span class="n">data</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span> <span class="n">generation_idx</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">individual_idx</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">genomes</span><span class="p">:</span> <span class="nb">list</span><span class="p">):</span>
+        <span class="k">def</span><span class="w"> </span><span class="nf">traverse_generations</span><span class="p">(</span><span class="n">data</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span> <span class="n">generation_idx</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">individual_idx</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">genomes</span><span class="p">:</span> <span class="nb">list</span><span class="p">):</span>
 
             <span class="n">individual</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="n">generation_idx</span><span class="p">][</span><span class="s1">&#39;individuals&#39;</span><span class="p">][</span><span class="n">individual_idx</span><span class="p">]</span>
             <span class="n">genomes</span><span class="o">.</span><span class="n">append</span><span class="p">({</span><span class="s1">&#39;generation&#39;</span><span class="p">:</span> <span class="n">generation_idx</span><span class="p">,</span>

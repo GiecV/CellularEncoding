@@ -8,7 +8,7 @@ torch.set_num_threads(1)
 
 inputs = [1, 2, 3, 4, 5, 6]  # [3,6]
 iterations = 10
-gen_budget = [800] * iterations
+gen_budget = [750] * iterations
 
 
 def run():

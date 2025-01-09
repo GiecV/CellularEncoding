@@ -2,7 +2,6 @@ import torch
 from core.phenotype import Phenotype
 from core.sig_nn import NNFromGraph
 import gym
-import numpy as np
 
 torch.set_num_threads(1)
 
@@ -30,7 +29,7 @@ def compute_fitness(individual, n=2):
     # Initialize the Ant environment
     env = gym.make('Ant-v4')
 
-    total_distance = 0
+    total_reward = 0
 
     for episode in range(num_episodes):
         obs = env.reset()
@@ -44,12 +43,12 @@ def compute_fitness(individual, n=2):
             obs, reward, terminated, truncated, info = env.step(action)
 
             # Calculate the distance traveled
-            position = env.env.data.qpos[0]
-            total_distance += position
+            # position = env.env.data.qpos[0]
+            total_reward += reward
 
             if terminated or truncated:
                 break
 
     # print(f'Evaluation Stopped')
     env.close()
-    return total_distance / num_episodes  # Average distance traveled per episode
+    return total_reward / num_episodes  # Average distance traveled per episode

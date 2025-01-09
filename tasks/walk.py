@@ -36,7 +36,6 @@ def compute_fitness(individual, n=2):
         obs = env.reset()
         obs = obs[0]
         for t in range(max_timesteps):
-            print(f'Episode {episode}: {t}')
             # Get the neural network output
             action = nn.forward(torch.tensor(
                 obs, dtype=torch.float32)).detach().numpy()
@@ -51,5 +50,6 @@ def compute_fitness(individual, n=2):
             if terminated or truncated:
                 break
 
+    print(f'Evaluation Stopped')
     env.close()
     return total_distance / num_episodes  # Average distance traveled per episode

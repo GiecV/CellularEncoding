@@ -36,6 +36,7 @@ def compute_fitness(individual, n=2):
         obs = env.reset()
         obs = obs[0]
         for t in range(max_timesteps):
+            print(f'Episode {episode}: {t}')
             # Get the neural network output
             action = nn.forward(torch.tensor(
                 obs, dtype=torch.float32)).detach().numpy()

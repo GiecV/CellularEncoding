@@ -50,6 +50,6 @@ def compute_fitness(individual, n=2):
             if terminated or truncated:
                 break
 
-    print(f'Evaluation Stopped')
+    # print(f'Evaluation Stopped')
     env.close()
     return total_distance / num_episodes  # Average distance traveled per episode

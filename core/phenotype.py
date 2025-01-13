@@ -340,8 +340,8 @@ class Phenotype:
         outputs = sum(
             self.structure.nodes[node]["type"] == "output" for node in self.structure.nodes)
 
-        print(f"Hidden units: {hidden_units} vs. Inputs: {
-              inputs} vs. Outputs: {outputs}")
+        # print(f"Hidden units: {hidden_units} vs. Inputs: {
+        #       inputs} vs. Outputs: {outputs}")
 
         if hidden_units / (inputs + outputs) > 5:
             r = 0

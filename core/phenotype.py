@@ -332,6 +332,22 @@ class Phenotype:
         :return: True if all cells have finished developing; otherwise, False.
         :rtype: bool
         """
+
+        hidden_units = sum(
+            self.structure.nodes[node]["type"] == "hidden" for node in self.structure.nodes)
+        inputs = sum(
+            self.structure.nodes[node]["type"] == "input" for node in self.structure.nodes)
+        outputs = sum(
+            self.structure.nodes[node]["type"] == "output" for node in self.structure.nodes)
+
+        print(f"Hidden units: {hidden_units} vs. Inputs: {
+              inputs} vs. Outputs: {outputs}")
+
+        if hidden_units / (inputs + outputs) > 5:
+            r = 0
+            t = 0
+            return True
+
         for node in self.structure.nodes:
             if node[0] not in ["I", "O"]:
                 genome = self.structure.nodes[node]["attr"]

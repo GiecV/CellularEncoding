@@ -558,7 +558,8 @@ class Visualizer:
                     all_data[json_file_path][inputs].append(generations)
 
         color_map = {'logs/6i.json': '#d9e7dc', 'logs/36i.json': '#eb3e56',
-                     'logs/23456i.json': '#8296b5'}
+                     'logs/23456i.json': '#8296b5', 'logs/stepping_gates_just_n.json': '#d9e7dc',
+                     'logs/gates_up_to_n.json': '#d9e7dc'}
         names = ['1 stage', '2 stages', '5 stages']
 
         # Prepare figure and axes
@@ -677,7 +678,8 @@ class Visualizer:
         averages, std_devs = self.compute_averages(all_data)
 
         color_map = {'logs/6i.json': '#d9e7dc', 'logs/36i.json': '#eb3e56',
-                     'logs/23456i.json': '#8296b5'}
+                     'logs/23456i.json': '#8296b5', 'logs/stepping_gates_just_n.json': '#d9e7dc',
+                     'logs/gates_up_to_n.json': '#d9e7dc'}
         names = ['1 stage', '2 stages', '5 stages']
 
         # Prepare figure and axes
@@ -795,4 +797,86 @@ class Visualizer:
             plt.subplots_adjust(hspace=0.8)
             self.save_file_with_name(f'champions_{iteration}')
             if show:
+                plt.show()
+
+    def save_best(self, json_path, show=False):
+        """
+        Saves visual representations of the best neural networks and their associated trees from a JSON file. This method reads the JSON data, processes the neural networks and trees, and generates plots for each iteration.
+
+        :param json_path: The path to the JSON file containing network data.
+        :type json_path: str
+        :param show: If True, displays the generated plots. Defaults to False.
+        :type show: bool
+        :returns: None
+        :examples:
+            >>> Visualizer.save_best_networks('path/to/json_file.json', show=True)
+        """
+        with open(json_path, 'r') as file:
+            json_file = json.load(file)
+
+            cols = 4  # 1 for NN + 3 for trees
+            individuals = {}
+            inputs_gates = {1: 3, 2: 2, 3: 2, 4: 2, 5: 2, 6: 2}
+
+        for run in json_file:
+            if run['log'] != [] and run['log'][-1]['best_score'] == 1:
+                json_individual = run['individuals'][0]
+                individual = Genome()
+                individual.from_json_pickle(json_individual)
+                iteration = run['iteration']
+                gate_number = run['inputs']
+                inputs = inputs_gates[gate_number]
+
+                print(iteration, gate_number)
+
+                num_individuals = 1
+                rows = num_individuals
+
+                fig = plt.figure(figsize=(13, rows * 6))
+                gs = GridSpec(rows, cols, figure=fig)
+                idx = 0
+                ins = inputs_gates[gate_number]
+
+                phenotype = Phenotype(individual)
+                nn = NNFromGraph(phenotype, inputs=ins,
+                                 outputs=1)
+
+                # Neural network plot (col 0)
+                pos = self._calculate_node_positions(nn.phenotype.structure)
+                node_labels = {node: f"{node}[{nn.phenotype.structure.nodes[node]['threshold']}]"
+                               for node in nn.phenotype.structure.nodes}
+
+                ax_nn = fig.add_subplot(gs[idx, 0])
+                nx.draw(nn.phenotype.structure, pos, labels=node_labels, with_labels=True, node_size=500,
+                        node_color="skyblue", font_size=10, font_weight="bold", arrows=True, ax=ax_nn)
+                labels = nx.get_edge_attributes(
+                    nn.phenotype.structure, 'weight')
+                nx.draw_networkx_edge_labels(
+                    nn.phenotype.structure, pos, edge_labels=labels, ax=ax_nn)
+                ax_nn.set_title(f'Iteration: {iteration}', fontsize=14)
+
+                genome = individual.get_trees()  # Assuming the genome is a list of 3 trees
+                for tree_idx, tree in enumerate(genome):
+                    # tree_idx + 1 to skip the NN column
+                    ax_tree = fig.add_subplot(gs[idx, tree_idx + 1])
+
+                    node_labels = {}
+
+                    # Convert treelib tree to NetworkX graph
+                    tree_graph = self.treelib_to_nx(tree, node_labels)
+
+                    # Layout for tree graph
+                    tree_pos = nx.bfs_layout(
+                        tree_graph, tree.root, align='horizontal')  # type: ignore
+                    max_y = max(y for x, y in tree_pos.values())
+                    tree_pos = {node: (x, max_y - y)
+                                for node, (x, y) in tree_pos.items()}
+
+                    # Plot the tree as a NetworkX graph
+                    nx.draw(tree_graph, pos=tree_pos, labels=node_labels, with_labels=True, node_size=500, node_color="lightgreen",
+                            font_size=10, font_weight="bold", arrows=False, ax=ax_tree)
+                    ax_tree.set_title(f'Tree {tree_idx + 1}', fontsize=12)
+
+                plt.tight_layout()
+                plt.subplots_adjust(hspace=0.8)
                 plt.show()

@@ -6,6 +6,7 @@ import gym
 torch.set_num_threads(1)
 
 max_timesteps = 1000
+episodes = 3
 
 
 def compute_fitness(individual, n=2):
@@ -30,22 +31,22 @@ def compute_fitness(individual, n=2):
 
     total_reward = 0
 
-    obs = env.reset()
-    obs = obs[0]
+    for episode in range(episodes):
+        obs = env.reset()
+        obs = obs[0]
+        for t in range(max_timesteps):
+            # Get the neural network output
+            action = nn.forward(torch.tensor(
+                obs, dtype=torch.float32)).detach().numpy()
 
-    for t in range(max_timesteps):
-        # Get the neural network output
-        action = nn.forward(torch.tensor(
-            obs, dtype=torch.float32)).detach().numpy()
+            action = action.argmax()
 
-        action = action.argmax()
+            # Step the environment with the neural network output
+            obs, reward, terminated, truncated, info = env.step(action)
+            total_reward += reward
 
-        # Step the environment with the neural network output
-        obs, reward, terminated, truncated, info = env.step(action)
-        total_reward += reward
-
-        if terminated or truncated:
-            break
+            if terminated or truncated:
+                break
 
     env.close()
-    return total_reward  # Average reward per episode
+    return total_reward/episodes  # Average reward per episode

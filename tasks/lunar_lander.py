@@ -38,9 +38,7 @@ def compute_fitness(individual, n=2):
         action = nn.forward(torch.tensor(
             obs, dtype=torch.float32)).detach().numpy()
 
-        print(action)
         action = action.argmax()
-        print(action)
 
         # Step the environment with the neural network output
         obs, reward, terminated, truncated, info = env.step(action)

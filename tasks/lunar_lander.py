@@ -1,5 +1,5 @@
 import torch
-from core.phenotype import Phenotype
+from core.phenotype2 import Phenotype
 from core.sig_nn import NNFromGraph
 import gym
 

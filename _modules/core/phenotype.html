@@ -147,6 +147,17 @@
         <span class="n">old_structure</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">structure</span><span class="p">)</span>
 
         <span class="k">for</span> <span class="n">structural_node</span> <span class="ow">in</span> <span class="n">old_structure</span><span class="o">.</span><span class="n">nodes</span><span class="p">:</span>
+            <span class="n">hidden_units</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">structure</span><span class="o">.</span><span class="n">nodes</span><span class="p">[</span><span class="n">node</span><span class="p">][</span><span class="s2">&quot;type&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;hidden&quot;</span> <span class="k">for</span> <span class="n">node</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">structure</span><span class="o">.</span><span class="n">nodes</span><span class="p">)</span>
+            <span class="n">inputs</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">structure</span><span class="o">.</span><span class="n">nodes</span><span class="p">[</span><span class="n">node</span><span class="p">][</span><span class="s2">&quot;type&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;input&quot;</span> <span class="k">for</span> <span class="n">node</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">structure</span><span class="o">.</span><span class="n">nodes</span><span class="p">)</span>
+            <span class="n">outputs</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">structure</span><span class="o">.</span><span class="n">nodes</span><span class="p">[</span><span class="n">node</span><span class="p">][</span><span class="s2">&quot;type&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;output&quot;</span> <span class="k">for</span> <span class="n">node</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">structure</span><span class="o">.</span><span class="n">nodes</span><span class="p">)</span>
+
+            <span class="k">if</span> <span class="n">hidden_units</span> <span class="o">/</span> <span class="p">(</span><span class="n">inputs</span> <span class="o">+</span> <span class="n">outputs</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">4</span><span class="p">:</span>
+                <span class="n">r</span> <span class="o">=</span> <span class="mi">0</span>
+                <span class="n">t</span> <span class="o">=</span> <span class="mi">0</span>
+                <span class="k">break</span>
             <span class="k">if</span> <span class="n">structural_node</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;I&quot;</span><span class="p">,</span> <span class="s2">&quot;O&quot;</span><span class="p">]:</span>
                 <span class="k">continue</span>
             <span class="n">genome</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">structure</span><span class="o">.</span><span class="n">nodes</span><span class="p">[</span><span class="n">structural_node</span><span class="p">][</span><span class="s2">&quot;attr&quot;</span><span class="p">]</span>
@@ -457,7 +468,7 @@
         <span class="c1"># print(f&quot;Hidden units: {hidden_units} vs. Inputs: {</span>
         <span class="c1">#       inputs} vs. Outputs: {outputs}&quot;)</span>
 
-        <span class="k">if</span> <span class="n">hidden_units</span> <span class="o">/</span> <span class="p">(</span><span class="n">inputs</span> <span class="o">+</span> <span class="n">outputs</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">5</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">hidden_units</span> <span class="o">/</span> <span class="p">(</span><span class="n">inputs</span> <span class="o">+</span> <span class="n">outputs</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">4</span><span class="p">:</span>
             <span class="n">r</span> <span class="o">=</span> <span class="mi">0</span>
             <span class="n">t</span> <span class="o">=</span> <span class="mi">0</span>
             <span class="k">return</span> <span class="kc">True</span>

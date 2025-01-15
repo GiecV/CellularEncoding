@@ -69,6 +69,17 @@ class Phenotype:
         old_structure = copy.deepcopy(self.structure)
 
         for structural_node in old_structure.nodes:
+            hidden_units = sum(
+                self.structure.nodes[node]["type"] == "hidden" for node in self.structure.nodes)
+            inputs = sum(
+                self.structure.nodes[node]["type"] == "input" for node in self.structure.nodes)
+            outputs = sum(
+                self.structure.nodes[node]["type"] == "output" for node in self.structure.nodes)
+
+            if hidden_units / (inputs + outputs) > 4:
+                r = 0
+                t = 0
+                break
             if structural_node[0] in ["I", "O"]:
                 continue
             genome = self.structure.nodes[structural_node]["attr"]

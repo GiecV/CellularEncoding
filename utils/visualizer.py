@@ -559,7 +559,8 @@ class Visualizer:
 
         color_map = {'logs/6i.json': '#d9e7dc', 'logs/36i.json': '#eb3e56',
                      'logs/23456i.json': '#8296b5', 'logs/stepping_gates_just_n.json': '#d9e7dc',
-                     'logs/gates_up_to_n.json': '#d9e7dc'}
+                     'logs/gates_up_to_n.json': '#d9e7dc',
+                     'logs/stepping_gates_up_to_n_updated.json': '#d9e7dc'}
         names = ['1 stage', '2 stages', '5 stages']
 
         # Prepare figure and axes

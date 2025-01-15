@@ -24,7 +24,7 @@ def compute_fitness(individual, n=2):
 
     if nn.r == 0:  # Check if the neural network is functional
         # print(f'r is 0')
-        return 0
+        return -1000
 
     # Initialize the Lunar Lander environment
     env = gym.make('LunarLander-v2')

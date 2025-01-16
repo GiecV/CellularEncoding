@@ -168,8 +168,8 @@ class Evolution:
         for parent1 in self.population:
             parent2 = random.choice(self.population)
             index1 = self.population.index(parent1)
-            while parent1 == parent2:
-                parent2 = random.choice(self.population)
+            # while parent1 == parent2: #! MAYBE THIS IS THE ERROR
+            parent2 = random.choice(self.population)
             index2 = self.population.index(parent2)
             child1, child2 = self.crossover(parent1, parent2, [index1, index2])
             child1.update_ids()

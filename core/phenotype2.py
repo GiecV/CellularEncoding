@@ -1,6 +1,7 @@
 import networkx as nx
 from core.genome import Genome
 import copy
+import time
 
 
 class Phenotype:
@@ -410,7 +411,8 @@ class Phenotype:
             self.structure.remove_node("O")
             self.structure.remove_node("I")
 
-            while self.development_finished() == False:
+            start_time = time.time()
+            while self.development_finished() == False and time.time() - start_time < 60:
                 self.develop()
 
             predecessors = list(self.structure.predecessors("O0"))
@@ -428,7 +430,7 @@ class Phenotype:
             hidden_units = sum(
                 self.structure.nodes[node]["type"] == "hidden" for node in self.structure.nodes)
 
-            if hidden_units / (inputs + outputs) > 4:
+            if hidden_units / (inputs + outputs) > 4 or time.time() - start_time >= 60:
                 r = 0
                 t = 0
 

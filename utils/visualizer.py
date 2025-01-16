@@ -640,6 +640,9 @@ class Visualizer:
                 for i, value in enumerate(values):
                     summed_values[i] += value
 
+            #! To account for steps
+            summed_values = [value for value in summed_values]
+
             # Compute the average for each index
             averages[file] = sum(summed_values) / len(summed_values)
             std_devs[file] = np.std(summed_values)
@@ -673,7 +676,9 @@ class Visualizer:
                     generations = len(run['log'])
                     if inputs not in all_data[json_file_path]:
                         all_data[json_file_path][inputs] = []
-                    all_data[json_file_path][inputs].append(generations)
+                    all_data[json_file_path][inputs].append(
+                        generations*1000 * (2**inputs))
+                    print(f'Generations: {generations}, Inputs: {inputs}')
 
         print(all_data)
         averages, std_devs = self.compute_averages(all_data)

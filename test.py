@@ -1,8 +1,7 @@
-from tasks.walk import compute_fitness
-from core.genome import Genome
+from utils.visualizer import Visualizer
 
-individual = Genome()
+visualizer = Visualizer()
 
-fitness = compute_fitness(individual)
+paths = ['logs/lunar_lander.json']
 
-print(fitness)
+visualizer.plot_avg_fitness(paths, save=False)

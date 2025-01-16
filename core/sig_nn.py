@@ -2,7 +2,7 @@ import torch
 import torch.nn as nn
 import networkx as nx
 
-from core.phenotype import Phenotype
+from core.phenotype2 import Phenotype
 
 torch.set_num_threads(1)
 

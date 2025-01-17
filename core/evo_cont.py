@@ -142,6 +142,7 @@ class Evolution:
 
         for generation in range(self.generations):
             generation_start_time = time.time()
+            print(f'Run {index}/10')
             print(f"Generation {generation + 1}/{self.generations}")
             offspring = self.get_offspring()
             new_population = self.population + offspring

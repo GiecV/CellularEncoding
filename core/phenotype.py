@@ -431,6 +431,10 @@ class Phenotype:
                 self.structure.nodes[node]["type"] == "hidden" for node in self.structure.nodes)
 
             if hidden_units / (inputs + outputs) > 4 or i>= 7:
+
+                if i >= 7:
+                    print(f'i>=7')
+
                 r = 0
                 t = 0
 

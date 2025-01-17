@@ -104,8 +104,6 @@ class Phenotype:
         """
         new_node = None
 
-        print(f"Symbol: {symbol[0]}")
-
         if symbol == "t":
             self.edit_threshold(structural_node, delta=1)
         if symbol == "u":
@@ -131,7 +129,6 @@ class Phenotype:
         elif symbol == "c":
             self.change_weight(structural_node, 0)
         elif symbol[0] == "z":
-            print("Changing weight")
             self.change_weight(structural_node, int(symbol[1:])/256)
 
         return new_node

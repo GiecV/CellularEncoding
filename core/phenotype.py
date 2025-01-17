@@ -29,6 +29,7 @@ class Phenotype:
         self.genome = genome
         self.cell_count = 0
         self.internal_register = 0
+        self.level_limit = 100
 
         # Define initial structure: Input, Initial Cell, Output
         self.structure.add_node("I", attr=genome, type="input", threshold=0)
@@ -411,7 +412,7 @@ class Phenotype:
             self.structure.remove_node("I")
 
             i = 0
-            while self.development_finished() == False and i < 7:
+            while self.development_finished() == False and i < self.level_limit:
                 i += 1
                 self.develop()
 
@@ -430,11 +431,9 @@ class Phenotype:
             hidden_units = sum(
                 self.structure.nodes[node]["type"] == "hidden" for node in self.structure.nodes)
 
-            if hidden_units / (inputs + outputs) > 4 or i>= 7:
+            print(f'Levels: {i}')
 
-                if i >= 7:
-                    print(f'i>=7')
-
+            if hidden_units / (inputs + outputs) > 4 or i>= self.level_limit:
                 r = 0
                 t = 0
 

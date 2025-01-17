@@ -1,6 +1,6 @@
 import torch
 from core.phenotype import Phenotype
-from core.sig_nn import NNFromGraph
+from core.nn_cont import NNFromGraph
 import gym
 
 torch.set_num_threads(1)

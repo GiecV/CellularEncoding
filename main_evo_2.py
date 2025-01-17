@@ -1,4 +1,4 @@
-from core.evo_2 import Evolution
+from core.evo_cont import Evolution
 import os
 from datetime import datetime
 import json

@@ -1,5 +1,5 @@
 import networkx as nx
-from core.genome import Genome
+from core.genome_cont import Genome
 import copy
 import time
 

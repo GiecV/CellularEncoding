@@ -1,7 +1,7 @@
 import random
 import time
 from treelib import Tree
-from core.genome import Genome
+from core.genome_cont import Genome
 from concurrent.futures import ProcessPoolExecutor
 import multiprocessing
 import warnings

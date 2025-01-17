@@ -67,6 +67,28 @@ class Evolution:
 
         self.population = population or self.initialize_population()
 
+    def resume_evolution(self, state_file: str):
+        """
+        Resume the evolution process from a saved state file.
+
+        This method loads the state of the evolution process from a specified file and continues the evolution 
+        from where it left off. It updates the population, fitness scores, and other relevant attributes.
+
+        :param state_file: The path to the file containing the saved state.
+
+        :return: None
+        """
+        if not os.path.exists(state_file):
+            raise FileNotFoundError(f"State file {state_file} not found.")
+
+        state = torch.load(state_file)
+        self.population = state['population']
+        self.fitness_scores = state['fitness_scores']
+        self.logs = state['logs']
+        self.innovative_individuals = state['innovative_individuals']
+        self.fitness_history = [log['best_score'] for log in self.logs]
+        self.generations -= state['generation']
+
     def initialize_population(self):
         """
         Create and initialize the population of individuals.
@@ -99,7 +121,7 @@ class Evolution:
 
         return genome
 
-    def evolve(self, info: bool = True, stop: bool = True):
+    def evolve(self, info: bool = True, stop: bool = True, index: int = 0):
         """
         Evolve the population over a specified number of generations.
 
@@ -145,6 +167,20 @@ class Evolution:
 
             if stop and self.fitness_scores[0] == 1:
                 break
+
+            state_folder = 'state'
+            if not os.path.exists(state_folder):
+                os.makedirs(state_folder)
+            state_file = os.path.join(state_folder, f'state_cont_{index}.pkl')
+            with open(state_file, 'wb') as f:
+                torch.save({
+                    'generation': generation,
+                    'population': self.population,
+                    'fitness_scores': self.fitness_scores,
+                    'best_score': best_score,
+                    'logs': self.logs,
+                    'innovative_individuals': self.innovative_individuals
+                }, f)
 
             print('Elapsed time:', (time.time() - start_time) / 60, 'min')
 

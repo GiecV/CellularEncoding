@@ -60,7 +60,7 @@ def evolve_stage(ins, iterations, log, pops=None):
         print(f'Individual {i + 1} with {ins} inputs:')
         evolution = Evolution(
             inputs=ins, population=pops[i], generations=gen_budget[i])
-        best_individual = evolution.evolve()
+        best_individual = evolution.evolve(index=i)
 
         log.append({
             'iteration': i,

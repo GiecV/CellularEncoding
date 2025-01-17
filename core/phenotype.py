@@ -410,7 +410,9 @@ class Phenotype:
             self.structure.remove_node("O")
             self.structure.remove_node("I")
 
-            while self.development_finished() == False:
+            i = 0
+            while self.development_finished() == False or i < 7:
+                i += 1
                 self.develop()
 
             predecessors = list(self.structure.predecessors("O0"))
@@ -428,7 +430,7 @@ class Phenotype:
             hidden_units = sum(
                 self.structure.nodes[node]["type"] == "hidden" for node in self.structure.nodes)
 
-            if hidden_units / (inputs + outputs) > 4:
+            if hidden_units / (inputs + outputs) > 4 or i>= 7:
                 r = 0
                 t = 0
 

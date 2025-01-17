@@ -49,4 +49,5 @@ def compute_fitness(individual, n=2):
                 break
 
     env.close()
+    print(individual, ' done')
     return total_reward/episodes  # Average reward per episode

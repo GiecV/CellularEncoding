@@ -104,6 +104,8 @@ class Phenotype:
         """
         new_node = None
 
+        print(f"Symbol: {symbol[0]}")
+
         if symbol == "t":
             self.edit_threshold(structural_node, delta=1)
         if symbol == "u":
@@ -128,6 +130,9 @@ class Phenotype:
             self.change_weight(structural_node, -1)
         elif symbol == "c":
             self.change_weight(structural_node, 0)
+        elif symbol[0] == "z":
+            print("Changing weight")
+            self.change_weight(structural_node, int(symbol[1:])/256)
 
         return new_node
 
@@ -271,7 +276,7 @@ class Phenotype:
         """
         if symbol in ["p", "s"]:
             self.split(structural_node, new_node, genome)
-        elif symbol in ["t", "u", "w", "r", "i", "d", "+", "-", "c"]:
+        elif symbol in ["t", "u", "w", "r", "i", "d", "+", "-", "c"] or symbol[0] == "z":
             self.continue_reading(structural_node, genome)
         elif symbol == "n":
             self.structure.nodes[structural_node]["attr"] = Genome(

@@ -92,7 +92,10 @@ class Evolution:
         for n in range(genome.get_levels()):
             symbol = random.choice(symbols)
             root = genome.get_tree(n).root
-            genome.change_symbol(level=n, node_id=root, symbol=symbol)
+            if symbol == 'z':
+                genome.change_symbol(level=n, node_id=root, symbol=symbol+str(random.randint(-255,255)))
+            else:
+                genome.change_symbol(level=n, node_id=root, symbol=symbol)
 
         return genome
 
@@ -295,6 +298,7 @@ class Evolution:
                 if random.random() < self.mutation_rate:
                     if node.tag in ['e', 'n']:
                         new_symbol = random.choice(genome.SYMBOLS)
+
                         genome.change_symbol(
                             level=i, node_id=node.identifier, symbol=new_symbol)
                     else:
@@ -303,7 +307,10 @@ class Evolution:
                             if node.tag in genome.DIVISION_SYMBOLS
                             else random.choice(genome.OPERATIONAL_SYMBOLS)
                         )
-                        tree.update_node(nid=node.identifier, tag=new_symbol)
+                        if new_symbol == 'z':
+                            tree.update_node(nid=node.identifier, symbol=new_symbol+str(random.randint(-255, 255)))
+                        else:
+                            tree.update_node(nid=node.identifier, tag=new_symbol)
         return genome
 
     def get_lineage(self, gens_to_save: int = 5):

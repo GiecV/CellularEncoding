@@ -2,6 +2,7 @@ from treelib import Tree
 from utils.counter import GlobalCounter
 import base64
 import pickle
+import random
 
 
 class Genome:
@@ -30,8 +31,7 @@ class Genome:
         self.STARTING_SYMBOL = "e"  # Each newborn gene will start with the end symbol
         self.TERMINAL_SYMBOLS = ["e", "n"]
         self.DIVISION_SYMBOLS = ["p", "s"]
-        self.OPERATIONAL_SYMBOLS = [
-            "w", "i", "d", "+", "-", "c", "r", "t", "u"]
+        self.OPERATIONAL_SYMBOLS = ["w", "i", "d", "r", "t", "u", "z", "+", "-", "c"] #
 
         self.SYMBOLS = self.TERMINAL_SYMBOLS + \
             self.DIVISION_SYMBOLS + self.OPERATIONAL_SYMBOLS
@@ -70,10 +70,13 @@ class Genome:
         :example: 
             >>> genome.change_symbol(0, "node0", "w")
         """
-        if symbol not in self.SYMBOLS and symbol not in self.OPERATIONAL_SYMBOLS:
+        if symbol[0] not in self.SYMBOLS and symbol[0] not in self.OPERATIONAL_SYMBOLS:
             raise ValueError(f"Invalid symbol: {symbol}")
 
-        self._trees[level].update_node(nid=node_id, tag=symbol)
+        if symbol == 'z':
+            self._trees[level].update_node(nid=node_id, tag=symbol+str(random.randint(-255, 255)))
+        else:
+            self._trees[level].update_node(nid=node_id, tag=symbol)
 
         if symbol not in self.TERMINAL_SYMBOLS:
             end_symbol = 'e' if level == 2 else 'n'

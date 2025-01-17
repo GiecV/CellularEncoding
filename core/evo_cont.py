@@ -147,10 +147,7 @@ class Evolution:
             new_population = self.population + offspring
             self.population, self.fitness_scores = self.select_best(
                 new_population)
-            if self.fitness_scores[0] > best_score:
-                self.innovative_individuals.append(
-                    (self.population[0], self.fitness_scores[0]))
-                best_score = self.fitness_scores[0]
+            best_score = self.fitness_scores[0]
 
             self.generation_time = time.time() - generation_start_time
 

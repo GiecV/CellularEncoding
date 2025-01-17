@@ -140,6 +140,31 @@
 
         <span class="bp">self</span><span class="o">.</span><span class="n">population</span> <span class="o">=</span> <span class="n">population</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">initialize_population</span><span class="p">()</span>
 
+<div class="viewcode-block" id="Evolution.resume_evolution">
+<a class="viewcode-back" href="../../core.html#core.evolution.Evolution.resume_evolution">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">resume_evolution</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">state_file</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Resume the evolution process from a saved state file.</span>
+
+<span class="sd">        This method loads the state of the evolution process from a specified file and continues the evolution </span>
+<span class="sd">        from where it left off. It updates the population, fitness scores, and other relevant attributes.</span>
+
+<span class="sd">        :param state_file: The path to the file containing the saved state.</span>
+
+<span class="sd">        :return: None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">state_file</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">FileNotFoundError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;State file </span><span class="si">{</span><span class="n">state_file</span><span class="si">}</span><span class="s2"> not found.&quot;</span><span class="p">)</span>
+
+        <span class="n">state</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">state_file</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">population</span> <span class="o">=</span> <span class="n">state</span><span class="p">[</span><span class="s1">&#39;population&#39;</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">fitness_scores</span> <span class="o">=</span> <span class="n">state</span><span class="p">[</span><span class="s1">&#39;fitness_scores&#39;</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">logs</span> <span class="o">=</span> <span class="n">state</span><span class="p">[</span><span class="s1">&#39;logs&#39;</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">innovative_individuals</span> <span class="o">=</span> <span class="n">state</span><span class="p">[</span><span class="s1">&#39;innovative_individuals&#39;</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">fitness_history</span> <span class="o">=</span> <span class="p">[</span><span class="n">log</span><span class="p">[</span><span class="s1">&#39;best_score&#39;</span><span class="p">]</span> <span class="k">for</span> <span class="n">log</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">logs</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">generations</span> <span class="o">-=</span> <span class="n">state</span><span class="p">[</span><span class="s1">&#39;generation&#39;</span><span class="p">]</span></div>
+
+
 <div class="viewcode-block" id="Evolution.initialize_population">
 <a class="viewcode-back" href="../../core.html#core.evolution.Evolution.initialize_population">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">initialize_population</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -177,7 +202,7 @@
 
 <div class="viewcode-block" id="Evolution.evolve">
 <a class="viewcode-back" href="../../core.html#core.evolution.Evolution.evolve">[docs]</a>
-    <span class="k">def</span><span class="w"> </span><span class="nf">evolve</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">info</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span> <span class="n">stop</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">evolve</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">info</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span> <span class="n">stop</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span> <span class="n">index</span> <span class="o">=</span> <span class="mi">0</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Evolve the population over a specified number of generations.</span>
 
@@ -223,6 +248,20 @@
 
             <span class="k">if</span> <span class="n">stop</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">fitness_scores</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
                 <span class="k">break</span>
+
+            <span class="n">state_folder</span> <span class="o">=</span> <span class="s1">&#39;state&#39;</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">state_folder</span><span class="p">):</span>
+                <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">state_folder</span><span class="p">)</span>
+            <span class="n">state_file</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">state_folder</span><span class="p">,</span> <span class="sa">f</span><span class="s1">&#39;state_</span><span class="si">{</span><span class="n">index</span><span class="si">}</span><span class="s1">.pkl&#39;</span><span class="p">)</span>
+            <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">state_file</span><span class="p">,</span> <span class="s1">&#39;wb&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+                <span class="n">torch</span><span class="o">.</span><span class="n">save</span><span class="p">({</span>
+                    <span class="s1">&#39;generation&#39;</span><span class="p">:</span> <span class="n">generation</span><span class="p">,</span>
+                    <span class="s1">&#39;population&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">population</span><span class="p">,</span>
+                    <span class="s1">&#39;fitness_scores&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">fitness_scores</span><span class="p">,</span>
+                    <span class="s1">&#39;best_score&#39;</span><span class="p">:</span> <span class="n">best_score</span><span class="p">,</span>
+                    <span class="s1">&#39;logs&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">logs</span><span class="p">,</span>
+                    <span class="s1">&#39;innovative_individuals&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">innovative_individuals</span>
+                <span class="p">},</span> <span class="n">f</span><span class="p">)</span>
 
             <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Elapsed time:&#39;</span><span class="p">,</span> <span class="p">(</span><span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">start_time</span><span class="p">)</span> <span class="o">/</span> <span class="mi">60</span><span class="p">,</span> <span class="s1">&#39;min&#39;</span><span class="p">)</span>
 

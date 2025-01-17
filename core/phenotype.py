@@ -411,7 +411,7 @@ class Phenotype:
             self.structure.remove_node("I")
 
             i = 0
-            while self.development_finished() == False or i < 7:
+            while self.development_finished() == False and i < 7:
                 i += 1
                 self.develop()
 

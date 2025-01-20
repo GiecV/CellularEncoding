@@ -1,5 +1,5 @@
 import torch
-from core.phenotype_cont import Phenotype
+from core.phenotype import Phenotype
 from core.nn_cont import NNFromGraph
 import gym
 

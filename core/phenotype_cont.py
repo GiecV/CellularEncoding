@@ -434,8 +434,6 @@ class Phenotype:
             hidden_units = sum(
                 self.structure.nodes[node]["type"] == "hidden" for node in self.structure.nodes)
 
-            print(f'Levels: {i}')
-
             if hidden_units / (inputs + outputs) > 4 or i >= self.level_limit:
                 r = 0
                 t = 0

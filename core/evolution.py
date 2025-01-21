@@ -169,7 +169,7 @@ class Evolution:
             state_folder = 'state'
             if not os.path.exists(state_folder):
                 os.makedirs(state_folder)
-            state_file = os.path.join(state_folder, f'state_{index}.pkl')
+            state_file = os.path.join(state_folder, f'state_parity_{index}.pkl')
             with open(state_file, 'wb') as f:
                 torch.save({
                     'generation': generation,

@@ -1,6 +1,6 @@
 import torch
 
-from core.phenotype import Phenotype
+from core.phenotype_cont import Phenotype
 from core.nn_cont import NNFromGraph
 from tasks.maze import Maze
 from tasks.robot import Robot
@@ -26,11 +26,14 @@ def compute_fitness(individual, n=5):
             robot.update_lidar()
             readings = robot.lidar_readings
             action = nn.forward(torch.tensor(readings, dtype=torch.float32)).detach().numpy()
-            if action < 0.5:
-                robot.move_forward(0.1)
-            else:    
-                robot.rotate(0.1)
+            # if action < 0.5:
+            #     robot.move_forward(0.1)
+            # else:    
+            #     robot.rotate(0.1)
+            robot.rotate(.2)
+            robot.move_forward(0.1)
             
+            maze.plot(robot)
             if robot.check_goal_reached():
                 break
 

@@ -5,7 +5,7 @@ import gym
 
 torch.set_num_threads(1)
 
-max_timesteps = 500
+max_timesteps = 300
 episodes = 3
 
 

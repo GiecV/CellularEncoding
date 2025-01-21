@@ -1,4 +1,5 @@
 import torch
+import math
 
 from core.phenotype_cont import Phenotype
 from core.nn_cont import NNFromGraph
@@ -29,7 +30,7 @@ def compute_fitness(individual, n=5):
             if action < 0.5:
                 robot.move_forward(0.1)
             else:    
-                robot.rotate(0.1)
+                robot.rotate(math.pi/2)
             if robot.check_goal_reached():
                 break
 

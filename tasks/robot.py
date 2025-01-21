@@ -62,7 +62,17 @@ class Robot:
 
     def get_fitness(self):
         goal = Point(self.maze.goals[self.goal_index])
+
+        if self.goal_index == 0:
+            max_distance = 1
+        else:
+            previous_goal = Point(self.maze.goals[self.goal_index - 1])
+            current_goal = Point(self.maze.goals[self.goal_index])
+            max_distance = previous_goal.distance(current_goal)
+
+        d = self.position.distance(goal) / max_distance
+        
         return (
             10 if self.goal_index == len(self.maze.goals) - 1 else
-            self.goal_index + max(1 - self.position.distance(goal), 0)
+            self.goal_index + (1-d)
         )

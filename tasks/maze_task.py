@@ -30,6 +30,9 @@ def compute_fitness(individual, n=5):
                 robot.move_forward(0.1)
             else:    
                 robot.rotate(0.1)
+            
+            maze.plot(robot)
+            print(robot.get_fitness())
             if robot.check_goal_reached():
                 break
 

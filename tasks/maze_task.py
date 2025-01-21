@@ -9,7 +9,7 @@ from tasks.robot import Robot
 def compute_fitness(individual, n=5):
     # Simulation Parameters
     walls = [((0, 0), (10, 0)), ((10, 0), (10, 10)), ((10, 10), (0, 10)), ((0, 10), (0, 0)),
-            ((0, 6), (4, 9)), ((3, 8.3), (4, 4)), ((4, 0), (4, 2)), ((10, 8), (6, 5))]
+            ((0, 6), (4, 8)), ((3, 8.3), (4, 4)), ((4, 0), (4, 2)), ((10, 8), (6, 5))]
     start = (1, 1)
     goals = [(1, 2), (7, 1), (5, 6), (8, 9), (2, 9)]
 
@@ -20,7 +20,7 @@ def compute_fitness(individual, n=5):
     nn = NNFromGraph(p, inputs=5, outputs=1)
 
     # Simulate Episode
-    num_steps = 100
+    num_steps = 120
     for step in range(num_steps):
         # Example control logic (replace with neural network output)
         if robot.goal_index < len(maze.goals):

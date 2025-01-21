@@ -30,7 +30,7 @@ class Phenotype:
         self.genome = genome
         self.cell_count = 0
         self.internal_register = 0
-        self.level_limit = 15
+        self.level_limit = 10
 
         # Define initial structure: Input, Initial Cell, Output
         self.structure.add_node("I", attr=genome, type="input", threshold=0)

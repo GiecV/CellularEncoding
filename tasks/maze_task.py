@@ -28,7 +28,7 @@ def compute_fitness(individual, n=5):
             readings = robot.lidar_readings
             action = nn.forward(torch.tensor(readings, dtype=torch.float32)).detach().numpy()
             if action < 0:
-                robot.move_forward(0.1)
+                robot.move_forward(0.5)
             else:    
                 robot.rotate(math.pi/2)
 

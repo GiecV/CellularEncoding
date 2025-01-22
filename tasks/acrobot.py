@@ -24,7 +24,7 @@ def compute_fitness(individual, n=5):
     :rtype: float
     """
     p = Phenotype(individual)
-    nn = NNFromGraph(p, inputs=6, outputs=3)
+    nn = NNFromGraph(p, inputs=6, outputs=1)
 
     total_reward = 0
     max_steps = 500
@@ -41,9 +41,14 @@ def compute_fitness(individual, n=5):
             if done:
                 break
             # Get the action from the individual
-            action = nn.forward(torch.tensor(obs, dtype=torch.float32))
+            action = nn.forward(torch.tensor(obs, dtype=torch.float32)).item()
+            if action < -1/3:
+                action = 0  # Category 1
+            elif action < 1/3:
+                action = 1  # Category 2
+            else:
+                action = 2  # Category 3
             print(action)
-            action = torch.argmax(action).item()
             obs, reward, done, truncated, info = env.step(
                 action)  # Perform the action
             total_reward += reward

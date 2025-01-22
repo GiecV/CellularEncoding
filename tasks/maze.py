@@ -1,5 +1,7 @@
 import matplotlib.pyplot as plt
 from shapely.geometry import LineString
+from matplotlib.patches import Circle
+import numpy as np
 
 class Maze:
     def __init__(self, walls, goals):
@@ -21,6 +23,11 @@ class Maze:
 
         # Plot robot
         robot.plot(ax)
+
+        # distance = np.linalg.norm(np.array(self.goals[0]) - np.array(self.goals[1]))
+        # radius = 0.26 * distance
+        # circle = Circle(self.goals[1], radius, color='purple', fill=False, linestyle='--')
+        # ax.add_patch(circle)
 
         # Configure plot
         ax.set_xlim(-1, 11)

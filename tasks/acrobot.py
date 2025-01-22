@@ -1,4 +1,4 @@
-from core.phenotype import Phenotype
+from core.phenotype_cont import Phenotype
 from core.nn_cont import NNFromGraph
 
 import gym
@@ -42,6 +42,7 @@ def compute_fitness(individual, n=5):
                 break
             # Get the action from the individual
             action = nn.forward(torch.tensor(obs, dtype=torch.float32))
+            print(action)
             action = torch.argmax(action).item()
             obs, reward, done, truncated, info = env.step(
                 action)  # Perform the action

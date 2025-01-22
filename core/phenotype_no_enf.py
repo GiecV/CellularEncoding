@@ -39,7 +39,7 @@ class Phenotype:
         # Connect the initial structure
         self.structure.add_edge("I", identificator, weight=1)
         # ! Set to -1 to go back to usual setting
-        self.structure.add_edge(identificator, "O", weight=1)
+        self.structure.add_edge(identificator, "O", weight=-1)
 
     # * Add a new cell to the structure
     def add_cell(self):

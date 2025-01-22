@@ -48,7 +48,6 @@ def compute_fitness(individual, n=5):
                 action = 1  # Category 2
             else:
                 action = 2  # Category 3
-            print(action)
             obs, reward, done, truncated, info = env.step(
                 action)  # Perform the action
             total_reward += reward

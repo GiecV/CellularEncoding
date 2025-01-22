@@ -163,7 +163,7 @@ class Evolution:
             print(f'{self.generation_time} s')
             print(f'Best fitness: {self.fitness_scores[0]}')
 
-            if stop and self.fitness_scores[0] == 1:
+            if stop and self.fitness_scores[0] == 0:
                 break
 
             state_folder = 'state'

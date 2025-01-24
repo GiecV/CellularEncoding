@@ -31,7 +31,7 @@ def compute_fitness(individual, n=5):
     trials = 3
 
     if nn.r == 0:
-        return 0
+        return -10000
 
     for _ in range(trials):
         obs = env.reset()  # Reset the environment

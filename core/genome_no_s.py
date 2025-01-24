@@ -29,7 +29,7 @@ class Genome:
         self.LEVELS = 3  # How many trees to consider
         self.STARTING_SYMBOL = "e"  # Each newborn gene will start with the end symbol
         self.TERMINAL_SYMBOLS = ["e", "n"]
-        self.DIVISION_SYMBOLS = ["s"] #, "p"]
+        self.DIVISION_SYMBOLS = ["p"] #, "s"]
         self.OPERATIONAL_SYMBOLS = [
             "w", "i", "d", "+", "-", "c", "r", "t", "u"]
 

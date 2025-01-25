@@ -23,7 +23,9 @@ class Robot:
 
     def check_collision(self, new_position):
         path = LineString([self.position, new_position])
-        return any(path.intersects(wall) for wall in self.maze.walls)
+        collision_happened = any(path.intersects(wall) for wall in self.maze.walls)
+        print(collision_happened)
+        return collision_happened
 
     def check_goal_reached(self):
         goal = Point(self.maze.goals[self.goal_index])

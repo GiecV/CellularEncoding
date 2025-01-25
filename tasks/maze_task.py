@@ -32,7 +32,7 @@ def compute_fitness(individual, n=5):
             else:    
                 robot.rotate(math.pi/2)
 
-            maze.plot(robot)
+            # maze.plot(robot)
 
             if robot.check_goal_reached():
                 break

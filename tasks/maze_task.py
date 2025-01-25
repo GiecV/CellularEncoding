@@ -39,5 +39,5 @@ def compute_fitness(individual, n=5):
 
     # Compute and print fitness
     fitness = robot.get_fitness()
-    # print(f"Step: {step}, Position: {robot.position}, Fitness: {fitness}")
+    print(f"Step: {step}, Position: {robot.position}, Fitness: {fitness}")
     return fitness

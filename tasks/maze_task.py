@@ -35,6 +35,7 @@ def compute_fitness(individual, n=5):
             # maze.plot(robot)
 
             if robot.check_goal_reached():
+                print('Done! Goal Reached!')
                 break
 
     # Compute and print fitness

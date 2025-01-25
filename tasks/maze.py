@@ -29,9 +29,9 @@ class Maze:
         # circle = Circle(self.goals[1], radius, color='purple', fill=False, linestyle='--')
         # ax.add_patch(circle)
 
-        # Configure plot
-        ax.set_xlim(-1, 11)
-        ax.set_ylim(-1, 11)
-        ax.set_aspect('equal', adjustable='box')
-        plt.grid(True)
-        plt.show()
+        # # Configure plot
+        # ax.set_xlim(-1, 11)
+        # ax.set_ylim(-1, 11)
+        # ax.set_aspect('equal', adjustable='box')
+        # plt.grid(True)
+        # plt.show()

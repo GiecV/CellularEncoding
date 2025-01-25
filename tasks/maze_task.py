@@ -21,7 +21,7 @@ def compute_fitness(individual, n=5):
     nn = NNFromGraph(p, inputs=5, outputs=1)
 
     # Simulate Episode
-    num_steps = 110
+    num_steps = 80
     for step in range(num_steps):
         # Example control logic (replace with neural network output)
         if robot.goal_index < len(maze.goals):

@@ -236,15 +236,15 @@ class Evolution:
             fitness_list = list(executor.map(
                 self.fitness_function, population, ns))
         # print('Selection time:', time.time() - start_time)
-        print('Evaluation finished')
+        # print('Evaluation finished')
         individuals_and_fitness = sorted(
             zip(population, fitness_list), key=lambda x: x[1], reverse=True)
-        print('Sorting finished')
+        # print('Sorting finished')
         best_individuals = [individual for individual,
                             _ in individuals_and_fitness[:self.population_size]]
         best_fitness_scores = [
             fitness for _, fitness in individuals_and_fitness[:self.population_size]]
-        print('Selection finished')
+        # print('Selection finished')
         self.fitness_history.append(best_fitness_scores[0])
         return best_individuals, best_fitness_scores
 

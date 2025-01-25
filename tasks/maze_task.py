@@ -29,6 +29,8 @@ def compute_fitness(individual, n=5):
             action = nn.forward(torch.tensor(readings, dtype=torch.float32)).detach().numpy()
             if action < 0:
                 robot.move_forward(0.5)
+                robot.position.x = round(robot.position.x, 2)
+                robot.position.y = round(robot.position.y, 2)
             else:    
                 robot.rotate(math.pi/2)
 

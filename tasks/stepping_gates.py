@@ -127,9 +127,16 @@ def compute_fitness_just_n(individual, gate_index=1, print_output=False):
 
     def xor_gate(inputs):
         return int(inputs[0] != inputs[1])
+    
+    def xax_gate(inputs):
+        return int(inputs[0] and inputs[1] and inputs[2])
+    
+    def incr_gate(inputs):
+        return 0
 
-    gates = [(multiplexer, 3), (nand_gate, 2), (not_gate, 2),
-             (and_gate, 2), (or_gate, 2), (xor_gate, 2)]
+    # gates = [(multiplexer, 3), (nand_gate, 2), (not_gate, 2),
+    #          (and_gate, 2), (or_gate, 2), (xor_gate, 2)]
+    gates = [(nand_gate, 2), (not_gate, 2), (and_gate, 2), (xor_gate, 2),(xax_gate, 3), (incr_gate, 4), (decr_gate, 4), (shiftleft, 4)]
     if gate_index >= len(gates):
         raise ValueError("gate_index exceeds the number of available gates")
 

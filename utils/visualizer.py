@@ -562,7 +562,8 @@ class Visualizer:
                      'logs/gates_up_to_n.json': '#d9e7dc',
                      'logs/stepping_gates_up_to_n_updated.json': '#d9e7dc',
                      'logs/acrobot.json': '#d9e7dc',
-                     'logs/parity_up_to_n.json': '#d9e7dc'}
+                     'logs/parity_up_to_n.json': '#d9e7dc',
+                     'logs/parity_no_enf.json': '#eb3e56'}
         names = ['1 stage', '2 stages', '5 stages']
 
         # Prepare figure and axes
@@ -689,7 +690,8 @@ class Visualizer:
                      'logs/23456i.json': '#8296b5', 'logs/stepping_gates_just_n.json': '#d9e7dc',
                      'logs/gates_up_to_n.json': '#d9e7dc',
                      'logs/acrobot.json': '#d9e7dc',
-                     'logs/parity_up_to_n.json': '#d9e7dc'}
+                     'logs/parity_up_to_n.json': '#d9e7dc',
+                     'logs/parity_no_enf.json': '#eb3e56'}
         names = ['1 stage', '2 stages', '5 stages']
 
         # Prepare figure and axes

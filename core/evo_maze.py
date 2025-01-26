@@ -37,7 +37,7 @@ class Evolution:
     :ivar fitness_function: The function used to compute the fitness of individuals.
     """
 
-    def __init__(self, population_size: int = 1000, generations: int = 300, mutation_rate: float = 0.05, inputs: int = 2, population: list = None):
+    def __init__(self, population_size: int = 256, generations: int = 300, mutation_rate: float = 0.05, inputs: int = 2, population: list = None):
         """
         Initialize the Evolution class with specified parameters.
 
@@ -139,7 +139,7 @@ class Evolution:
 
         for generation in range(self.generations):
             generation_start_time = time.time()
-            print(f'Run {index}/10')
+            print(f'Run {index}/5')
             print(f"Generation {generation + 1}/{self.generations}")
             offspring = self.get_offspring()
             new_population = self.population + offspring

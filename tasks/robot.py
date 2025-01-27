@@ -43,12 +43,12 @@ class Robot:
             ray = LineString([
                 self.position,
                 (
-                    self.position.x + math.cos(ray_angle) * 10,  # Max range 10
-                    self.position.y + math.sin(ray_angle) * 10
+                    self.position.x + math.cos(ray_angle) * 3,  # Max range 10
+                    self.position.y + math.sin(ray_angle) * 3
                 )
             ])
             distances = [ray.intersection(wall).distance(self.position) for wall in self.maze.walls if ray.intersects(wall)]
-            self.lidar_readings.append(min(distances, default=10))
+            self.lidar_readings.append(min(distances, default=3))
 
     def plot(self, ax):
         # Plot robot's position

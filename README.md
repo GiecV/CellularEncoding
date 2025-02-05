@@ -1,6 +1,6 @@
 # Cellular Encoding Project
 
-Welcome to the **Cellular Encoding Project**, a deep dive into evolutionary computation and neural architecture synthesis. This repository showcases work conducted during my internship at the Creative AI Lab, IT University of Copenhagen, where I explored **cellular encoding** — a fascinating method that leverages genetic principles to automatically develop neural network architectures.
+Welcome to the **Cellular Encoding Project**, a deep dive into evolutionary computation and neural architecture synthesis. This repository showcases work exploring **cellular encoding** — a fascinating method that leverages genetic principles to develop neural network architectures automatically.
 
 ## 🚀 Project Overview
 
@@ -57,10 +57,6 @@ Explore the [documentation site on GitHub Pages](https://giecv.github.io/Cellula
 - **Core Modules**: Detailed breakdowns of the main components.
 - **Task Modules**: Descriptions of task environments used for testing and validation.
 - **Utilities**: Tools developed for the project, including visualizations for better analysis and understanding.
-
-## 🙏 Acknowledgments
-
-A special thanks to the **Creative AI Lab** at ITU Copenhagen and my mentors for their guidance and support. This project wouldn’t have been possible without the insights and feedback from my colleagues and mentors.
 
 ---
 
